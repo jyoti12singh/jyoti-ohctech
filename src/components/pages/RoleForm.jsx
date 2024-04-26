@@ -41,32 +41,32 @@ import PropTypes from "prop-types";
     <Stack direction="row" spacing={2}>
         <Input 
         label="Role Name"
-        name="rolename"
+        name="roleName"
         type="text"
         size="large"
-        value={values.rolename}
-     onChange={handleChange}
-     onBlur={handleBlur}
-     helperText={
-         errors.rolename && touched.rolename ? (
+        value={values.roleName}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        helperText={
+         errors.roleName && touched.roleName ? (
            <span style={{ color: "red" }}>
-             {errors.rolename}
+             {errors.roleName}
            </span>
          ) : null
        }
         />
         <Input 
         label="Role Description"
-        name="roledes"
+        name="roleDescription"
         type="text"
         size="large"
-        value={values.roledes}
+        value={values.roleDescription}
      onChange={handleChange}
      onBlur={handleBlur}
      helperText={
-         errors.roledes && touched.roledes ? (
+         errors.roleDescription && touched.roleDescription ? (
            <span style={{ color: "red" }}>
-             {errors.roledes}
+             {errors.roleDescription}
            </span>
          ) : null
        }
@@ -75,32 +75,32 @@ import PropTypes from "prop-types";
     <Stack direction="row" spacing={2}>
         <Input 
         label="Role Home Page"
-        name="homepage"
+        name="roleHomePage"
         type="text"
         size="large"
-        value={values.homepage}
+        value={values.roleHomePage}
      onChange={handleChange}
      onBlur={handleBlur}
      helperText={
-         errors.homepage && touched.homepage ? (
+         errors.roleHomePage && touched.roleHomePage ? (
            <span style={{ color: "red" }}>
-             {errors.homepage}
+             {errors.roleHomePage}
            </span>
          ) : null
        }
         />
         <Input 
         label="Role code"
-        name="rolecode"
-        type="number"
+        name="roleCode"
+        type="text"
         size="large"
-        value={values.rolecode}
+        value={values.roleCode}
      onChange={handleChange}
      onBlur={handleBlur}
      helperText={
-         errors.rolecode && touched.rolecode ? (
+         errors.roleCode && touched.roleCode ? (
            <span style={{ color: "red" }}>
-             {errors.rolecode}
+             {errors.roleCode}
            </span>
          ) : null
        }
@@ -109,32 +109,32 @@ import PropTypes from "prop-types";
     <Stack direction="row" spacing={2}>
     <Input 
     label="Icon Colour"
-    name="iconcolor"
+    name="iconColor"
     type="text"
     size="large"
-    value={values.iconcolor}
+    value={values.iconColor}
      onChange={handleChange}
      onBlur={handleBlur}
      helperText={
-         errors.iconcolor && touched.iconcolor ? (
+         errors.iconColor && touched.iconColor ? (
            <span style={{ color: "red" }}>
-             {errors.iconcolor}
+             {errors.iconColor}
            </span>
          ) : null
        }
     />
     <Input 
     label="Icon Text"
-    name="icontext"
+    name="iconText"
     type="text"
     size="large"
-    value={values.icontext}
+    value={values.iconText}
      onChange={handleChange}
      onBlur={handleBlur}
      helperText={
-         errors.icontext && touched.icontext ? (
+         errors.iconText && touched.iconText ? (
            <span style={{ color: "red" }}>
-             {errors.icontext}
+             {errors.iconText}
            </span>
          ) : null
        }

@@ -7,10 +7,10 @@ export const ValidationForm = Yup.object({
   ohcCode: Yup.string().min(2).max(25).required("Please enter OHC Code"),
   state: Yup.string().min(2).max(25).required("Please enter State Code"),
   pinCode: Yup.number().min(6).required("Please enter Pin Code"),
-    primaryPhone: Yup.number().required("Please enter Pin Code"),
-    primaryEmail: Yup.string().email().required("Please enter your email"),
-    iconText: Yup.string().required("Please enter your icon text"),
-    iconColor: Yup.string().required("Please enter your icon text"),
+  primaryPhone: Yup.number().required("Please enter Pin Code"),
+  primaryEmail: Yup.string().email().required("Please enter your email"),
+  iconText: Yup.string().required("Please enter your icon text"),
+  iconColor: Yup.string().required("Please enter your icon text"),
     // homeohc: Yup.string().required("Please enter home ohc"),
     ohcType: Yup.string().required("Please enter ohc type"),
     address: Yup.string().required("Please enter address"),
@@ -41,12 +41,12 @@ export const menuValidationForm = Yup.object({
 
 
 export const roleValidationForm = Yup.object({
-  rolename: Yup.string().required("Please enter Role Name"),
-  roledes: Yup.string().required("Please enter Role Description"),
-  homepage : Yup.string().required("Please enter Role Home Page"),
-  rolecode : Yup.number().required("Please enter Role code"),
-  iconcolor: Yup.string().required("Please enter Icon Colour"),
-  icontext: Yup.string().required("Please enterIcon Text"),
+  roleName: Yup.string().required("Please enter Role Name"),
+  roleDescription: Yup.string().required("Please enter Role Description"),
+  roleHomePage : Yup.string().required("Please enter Role Home Page"),
+  roleCode : Yup.string().required("Please enter Role code"),
+  iconColor: Yup.string().required("Please enter Icon Colour"),
+  iconText: Yup.string().required("Please enterIcon Text"),
 });
 
 

@@ -10,8 +10,13 @@ import Popup from "./Popup";
 import UserForm from "./UserForm";
 import { useFormik } from "formik";
 import { useState,useEffect } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UserList = () => {
+
+  const [id,setId] = useState();
+  const [showupdate,setShowupdate] = useState(false);
 
   const initialValues = {
     roles: [],
@@ -36,10 +41,25 @@ const UserList = () => {
   } = useFormik({
     initialValues: initialValues,
     validationSchema: userValidationForm,
-    onSubmit: (values, action) => {
-      console.log(values);
-      action.resetForm();
-    },
+    // onSubmit: (values, action) => {
+    //   console.log(values);
+    //   action.resetForm();
+    // },
+
+    onSubmit: async (values, {resetForm}) => {
+      try {
+           await axiosClientPrivate.post('/users', values);
+          toast.success("Saved Successfully!",{
+            position:"top-center"
+         });
+          setRowData(prevRowData => [...prevRowData, values]);
+          resetForm();
+        } catch (error) {
+          console.log(values);
+          console.error('Error:', error);
+        }
+      },
+
   });
 
   const axiosClientPrivate = useAxiosPrivate();
@@ -49,10 +69,25 @@ const UserList = () => {
   const [colDefs, setColDefs] = useState([]);
 
   const [openPopup, setOpenPopup] = useState(false);
+
+  // to delete a row
+const handleDeleteRow = async (id) => {
+  alert(id)
+ if(window.confirm('Are you sure you want to delete this data?')){
+ try {
+     await axiosClientPrivate.delete(`/users/${id}`);
+     setRowData(prevData => prevData.filter(row => row.id !== id));
+ } catch (error) {
+     console.error('Error deleting row:', error);
+ }
+}
+};
+
+
   
   const CustomActionComponent = (props) => {
-    return <> <Button onClick={() => console.log(props.data)}> <EditNoteRoundedIcon /></Button>
-        <Button color="error" onClick={() => window.alert('alert')}><DeleteSweepRoundedIcon /></Button> </>
+    return <> <Button  onClick={() =>  handleEdit(props.id) }> <EditNoteRoundedIcon /></Button>
+    <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
 };
 
 const pagination = true;
@@ -64,9 +99,9 @@ useEffect(() => {
 
     const getAllOhc = async () => {
         try {
-            const response = await axiosClientPrivate.get('ohcs', { signal: controller.signal });
+            const response = await axiosClientPrivate.get('users', { signal: controller.signal });
             const items = response.data;
-
+              console.log(items);
             if (items.length > 0) {
                 const columns = Object.keys(items[0]).map(key => ({
                     field: key,
@@ -76,9 +111,13 @@ useEffect(() => {
                     sortable: true
                 }));
 
-                columns.push({
-                    field: "Actions", cellRenderer: CustomActionComponent
-                });
+                columns.unshift({
+                  // field: "Actions", cellRenderer: CustomActionComponent
+                  field: "Actions", cellRenderer:  (params) =>{
+                      const id = params.data.id;
+                      return <CustomActionComponent id={id} />
+                  }
+              });
 
                 setColDefs(columns);
             }
@@ -98,6 +137,51 @@ useEffect(() => {
     };
 
 }, []);
+
+
+const handleEdit = async (id) => {
+  try {
+    const response = await axiosClientPrivate.get(`/ohcs/${id}`);
+      console.log(response.data);
+      setFieldValue("id",response.data.id);
+      setFieldValue("ohcName",response.data.ohcName);
+      setFieldValue("ohcCode",response.data.ohcCode);
+      setFieldValue("ohcDescription",response.data.ohcDescription);
+      setFieldValue("address", response.data.address);
+      setFieldValue( "state", response.data.state);
+      setFieldValue("fax", response.data.fax);
+      setFieldValue("primaryPhone", response.data.primaryPhone);
+      setFieldValue("primaryEmail", response.data.primaryEmail);
+    setId(id);
+    setShowupdate(true);
+    setOpenPopup(true);
+  } catch (error) {
+    console.error('Error fetching item for edit:', error);
+  }
+};
+
+const handleUpdate = async (id)=> {
+  alert(id);
+  const update = values;
+  try{
+       console.log(values);
+       await axiosClientPrivate.put(`/ohcs/${id}`,update);
+       toast.success("Updated Successfully!",{
+          position:"top-center",
+          autoClose: 3000,
+       });
+       resetForm();
+  }
+  catch(err){
+      console.log(values);
+      console.log(err);
+  }
+}
+
+
+
+
+
 
   return (
     <>
@@ -140,6 +224,10 @@ useEffect(() => {
       </Box>
 
       <Popup
+        handleUpdate = {handleUpdate}
+        id= {id}
+        setShowupdate={setShowupdate}
+        showupdate={showupdate}
         resetForm={resetForm}
         handleSubmit={handleSubmit}
         openPopup={openPopup}

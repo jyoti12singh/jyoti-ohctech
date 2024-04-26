@@ -1,15 +1,15 @@
 import Ohclogo from "./Ohclogo";
-import { FormControl, Stack, Box, TextField } from "@mui/material";
+import { FormControl, Stack, Box } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "./Input";
 import SingleSelect from "./SingleSelect";
-import MultipleSelect from "./MultipleSelect";
-// import TextArea from "./TextArea";
+// import MultipleSelect from "./MultipleSelect";
+// // import TextArea from "./TextArea";
+// // import { useState } from "react";
+// import { InputLabel, MenuItem, Select } from "@mui/material";
+// import Autocomplete from '@mui/material/Autocomplete';
 // import { useState } from "react";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import Autocomplete from '@mui/material/Autocomplete';
-import { useState } from "react";
-import MultiCheckbox from "./MultiCheckbox";
+// import MultiCheckbox from "./MultiCheckbox";
 
 
 const OhcForm = ({
@@ -70,8 +70,9 @@ const OhcForm = ({
   // ];
 
   return (
-    <form onSubmit={handleSubmit}>
+    // <form onSubmit={handleSubmit}>
       <Box
+      onSubmit={handleSubmit}
         sx={{
           display: "flex",
           flexDirection: "row",
@@ -80,6 +81,7 @@ const OhcForm = ({
           gap: "25px",
         }}
         m={2}
+        component="form"
       >
         <Stack>
           <Ohclogo setFieldValue={setFieldValue} />
@@ -147,7 +149,6 @@ const OhcForm = ({
               }
             />
             <Input
-            
               label="State Code"
               name="state"
               type="number"
@@ -407,7 +408,7 @@ const OhcForm = ({
 
         </FormControl>
       </Box>
-    </form>
+    // </form>
   );
 };
 

@@ -8,7 +8,8 @@ import PropTypes from "prop-types";
   errors,
   handleChange,
   // setFieldValue,
-  handleSubmit}) => {
+  handleSubmit,
+}) => {
 
     MenuForm.propTypes = {
       values: PropTypes.object.isRequired,
@@ -23,7 +24,7 @@ import PropTypes from "prop-types";
 
   return (
     <Box
-     component="form"
+    onSubmit={handleSubmit}
      sx={{
         // top: "40px",
         display: "flex",
@@ -34,38 +35,23 @@ import PropTypes from "prop-types";
         gap: "12px",
         width: "100%",
       }}
-      onSubmit={handleSubmit}
+      component="form"
     >
 
     <Stack direction="row" spacing={2}>
+        
         <Input 
-        label="Menu Id"
-        name="menuid"
+        label="Menu Name"
+        name="menuName"
         type="text"
         size="large"
-        value={values.menuid}
+        value={values.menuName}
       onChange={handleChange}
       onBlur={handleBlur}
       helperText={
-         errors.menuid && touched.menuid ? (
+         errors.menuName && touched.menuName ? (
            <span style={{ color: "red" }}>
-             {errors.menuid}
-           </span>
-         ) : null
-       }
-        />
-        <Input 
-        label="Menu Name"
-        name="menuname"
-        type="text"
-        size="large"
-        value={values.menuname}
-     onChange={handleChange}
-     onBlur={handleBlur}
-     helperText={
-         errors.menuname && touched.menuname ? (
-           <span style={{ color: "red" }}>
-             {errors.menuname}
+             {errors.menuName}
            </span>
          ) : null
        }
@@ -74,32 +60,32 @@ import PropTypes from "prop-types";
     <Stack direction="row" spacing={2}>
         <Input 
         label="Menu Description"
-        name="menudescription"
+        name="menuDescription"
         type="text"
         size="large"
-        value={values.menudescription}
+        value={values.menuDescription}
      onChange={handleChange}
      onBlur={handleBlur}
      helperText={
-         errors.menudescription && touched.menudescription ? (
+         errors.menuDescription && touched.menuDescription ? (
            <span style={{ color: "red" }}>
-             {errors.menudescription}
+             {errors.menuDescription}
            </span>
          ) : null
        }
         />
         <Input 
         label="Menu Url"
-        name="menuurl"
+        name="menuUrl"
         type="text"
         size="large"
-        value={values.menuurl}
+        value={values.menuUrl}
         onChange={handleChange}
         onBlur={handleBlur}
         helperText={
-         errors.menuurl && touched.menuurl ? (
+         errors.menuUrl && touched.menuUrl ? (
            <span style={{ color: "red" }}>
-             {errors.menuurl}
+             {errors.menuUrl}
            </span>
          ) : null
        }
@@ -108,32 +94,32 @@ import PropTypes from "prop-types";
     <Stack direction="row" spacing={2}>
     <Input 
     label="Parent Menu"
-    name="parentmanu"
-    type="text"
+    name="parentMenu"
+    type="number"
     size="large"
-    value={values.parentmanu}
+    value={values.parentMenu}
      onChange={handleChange}
      onBlur={handleBlur}
      helperText={
-         errors.parentmanu && touched.parentmanu ? (
+         errors.parentMenu && touched.parentMenu ? (
            <span style={{ color: "red" }}>
-             {errors.parentmanu}
+             {errors.parentMenu}
            </span>
          ) : null
        }
     />
     <Input 
     label="Display Sequence"
-    name="displaysequence"
+    name="displaySequence"
     type="text"
     size="large"
-    value={values.displaysequence}
+    value={values.displaySequence}
      onChange={handleChange}
      onBlur={handleBlur}
      helperText={
-         errors.displaysequence && touched.displaysequence ? (
+         errors.displaySequence && touched.displaySequence ? (
            <span style={{ color: "red" }}>
-             {errors.displaysequence}
+             {errors.displaySequence}
            </span>
          ) : null
        }

@@ -5,23 +5,32 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import ImportExportRoundedIcon from "@mui/icons-material/ImportExportRounded";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
-// import  {userValidationForm}  from './Validationform';
-import { roleValidationForm } from './Validationform';
+import  {roleValidationForm}  from './Validationform';
 import Popup from "./Popup";
 import RoleForm from './RoleForm';
 import { useFormik } from "formik";
 import { useState,useEffect } from "react";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const RoleList = () => {
 
+    const [id,setId] = useState(1);
+    const [showupdate,setShowupdate] = useState(false);
+
   const initialValues = {
-    rolename: "",
-    roledes: "",
-    homepage: "",
-    rolecode: "",
-    iconcolor: "",
-    icontext: "",
+    id:"",
+    roleName: "",
+    roleDescription: "",
+    roleHomePage: "",
+    roleCode: "",
+    iconColor: "",
+    iconText: "",
+    // lastModified: "",
+    // modifiedBy: ""
   };
+
+
+  const axiosClientPrivate = useAxiosPrivate();
 
   const {
     values,
@@ -35,23 +44,153 @@ const RoleList = () => {
   } = useFormik({
     initialValues: initialValues,
     validationSchema: roleValidationForm,
-    onSubmit: (values, action) => {
-      console.log(values);
-      action.resetForm();
-    },
+    // onSubmit: (values, action) => {
+    //   console.log(values);
+    //   action.resetForm();
+    // },
+    onSubmit: async (values, {resetForm}) => {
+      try {
+           await axiosClientPrivate.post('/roles', values);
+          toast.success("Saved Successfully!",{
+            position:"top-center"
+         });
+          setRowData(prevRowData => [...prevRowData, values]);
+          resetForm();
+        } catch (error) {
+          console.log(values);
+          console.error('Error:', error);
+        }
+      },
+
+
   });
 
-  const axiosClientPrivate = useAxiosPrivate();
+  
 
   const [rowData, setRowData] = useState([]);
 
   const [colDefs, setColDefs] = useState([]);
 
   const [openPopup, setOpenPopup] = useState(false);
+
+
+  const handleEdit = async (id) => {
+    alert(id);
+    try {
+      const response = await axiosClientPrivate.get(`/roles/${id}`);
+        // console.log(response.data);
+        // console.log(response.data.id);
+        setFieldValue("id",response.data.id);
+        setFieldValue("roleName",response.data.roleName);
+        setFieldValue("roleDescription",response.data.roleDescription);
+        setFieldValue("roleHomePage",response.data.roleHomePage);
+        setFieldValue("roleCode", response.data.roleCode);
+        setFieldValue( "iconColor", response.data.iconColor);
+        setFieldValue("iconText", response.data.iconText);
+        // console.log(values.id);
+      setId(id);
+      setShowupdate(true);
+      setOpenPopup(true);
+    } catch (error) {
+      console.error('Error fetching item for edit:', error);
+    }
+  };
+
+
+  const handleUpdate = async (id)=> {
+    alert(id);
+    // const update = values;
+    try{
+         console.log(values);
+        //  setFieldValue("id",id);
+         await axiosClientPrivate.put(`/roles/${id}`,values);
+         toast.success("Updated Successfully!",{
+          position:"top-center",
+          autoClose: 3000,
+       });
+        
+         resetForm();
+    }
+    catch(err){
+        console.log(err);
+    }
+  }
+
+
+  //   // to fetch data
+  //   useEffect(() => {
+  //     const controller = new AbortController();
+
+  //     const getAllOhc = async () => {
+  //         try {
+  //             const response = await axiosClientPrivate.get('roles', { signal: controller.signal });
+  //             const items = response.data;
+  //                 console.log(items);
+              
+  //             if (items.length > 0) {
+  //                 // columns.push({
+  //                 //     // field: "Actions", cellRenderer: CustomActionComponent
+  //                 //     field: "Actions", cellRenderer:  (params) =>{
+  //                 //         const id = params.data.id;
+  //                 //         return <CustomActionComponent id={id} />
+  //                 //     }
+  //                 // });
+
+  //                 const columns = Object.keys(items[0]).map(key => ({
+  //                     field: key,
+  //                     headerName: key.charAt(0).toUpperCase() + key.slice(1),
+  //                     filter: true,
+  //                     floatingFilter: true,
+  //                     sortable: true
+  //                 }));
+
+  //                 columns.unshift({
+  //                     // field: "Actions", cellRenderer: CustomActionComponent
+  //                     field: "Actions", cellRenderer:  (params) =>{
+  //                         const id = params.data.id;
+  //                         return <CustomActionComponent id={id} />
+  //                     }
+  //                 });
+
+  //                 setColDefs(columns);
+  //             }
+
+  //             setRowData(items);
+
+  //         } catch (err) {
+  //             console.error("Failed to fetch data: ", err);
+  //             setRowData([]);
+  //         }
+  //     };
+
+  //     getAllOhc();
+
+  //     return () => {
+  //         controller.abort();
+  //     };
+
+  // }, []);
+
+
+    //  to delete a row
+     const handleDeleteRow = async (id) => {
+      alert(id)
+     if(window.confirm('Are you sure you want to delete this data?')){
+     try {
+         await axiosClientPrivate.delete(`/roles/${id}`);
+         setRowData(prevData => prevData.filter(row => row.id !== id));
+     } catch (error) {
+         console.error('Error deleting row:', error);
+     }
+ }
+ };
+
+
+
   
   const CustomActionComponent = (props) => {
-    return <> <Button onClick={() => console.log(props.data)}> <EditNoteRoundedIcon /></Button>
-        <Button color="error" onClick={() => window.alert('alert')}><DeleteSweepRoundedIcon /></Button> </>
+    return <> <Button onClick={() =>  handleEdit(props.id)}> <EditNoteRoundedIcon /></Button>
+        <Button color="error" onClick={()=>handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
 };
 
 const pagination = true;
@@ -63,7 +202,7 @@ useEffect(() => {
 
     const getAllOhc = async () => {
         try {
-            const response = await axiosClientPrivate.get('ohcs', { signal: controller.signal });
+            const response = await axiosClientPrivate.get('roles', { signal: controller.signal });
             const items = response.data;
 
             if (items.length > 0) {
@@ -75,9 +214,13 @@ useEffect(() => {
                     sortable: true
                 }));
 
-                columns.push({
-                    field: "Actions", cellRenderer: CustomActionComponent
-                });
+                columns.unshift({
+                  // field: "Actions", cellRenderer: CustomActionComponent
+                  field: "Actions", cellRenderer:  (params) =>{
+                      const id = params.data.id;
+                      return <CustomActionComponent id={id} />
+                  }
+              });
 
                 setColDefs(columns);
             }
@@ -139,6 +282,10 @@ useEffect(() => {
       </Box>
 
       <Popup
+        handleUpdate = {handleUpdate}
+        id= {id}
+        setShowupdate={setShowupdate}
+        showupdate={showupdate}
         resetForm={resetForm}
         handleSubmit={handleSubmit}
         openPopup={openPopup}
