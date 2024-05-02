@@ -12,10 +12,9 @@ import { ValidationForm } from './Validationform';
 import { Formik, useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import axios from 'axios';
+// import { useMemo } from 'react';
 
 const OhcList = ()=> {
-
 
     const [id,setId] = useState(1);
 
@@ -28,6 +27,15 @@ const OhcList = ()=> {
     const [colDefs, setColDefs] = useState([]);
 
     const [openPopup, setOpenPopup] = useState(false);
+
+    const [paginationPageSize, setPaginationPageSize] = useState(2);
+    
+    const [currentPageIndex, setCurrentPageIndex] = useState(0);
+    
+    const [paginationTotalRowCount, setPaginationTotalRowCount] = useState(0);  // need to getallOhc
+
+    const pageSizeOptions = [2, 4, 8, 10];
+
 
 
     let initialValues = {
@@ -63,10 +71,6 @@ const OhcList = ()=> {
       } = useFormik({
         initialValues: initialValues,
         validationSchema: ValidationForm,
-        // onSubmit: (values, action) => {
-        //     console.log(values);
-        //     action.resetForm();
-        //   },
         onSubmit: async (values, {resetForm}) => {
         try {
                  await axiosClientPrivate.post('/ohcs', values);
@@ -83,36 +87,25 @@ const OhcList = ()=> {
         },
       });
 
-
-      
-  
   const CustomActionComponent = (props) => {
-          
     return <> <Button  onClick={() =>  handleEdit(props.id)}> <EditNoteRoundedIcon /></Button>
         <Button color="error" onClick={()=>handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
-};
-    
+  };
+
 
 // to fetch data
 useEffect(() => {
+
   const controller = new AbortController();
 
   const getAllOhc = async () => {
       try {
-          const response = await axiosClientPrivate.get('ohcs', { signal: controller.signal });
-          const items = response.data;
-              console.log(items);
-          // setRowData(items);
-
+          const response = await axiosClientPrivate.get(`ohcs?page=${currentPageIndex}&size=${paginationPageSize}`, { signal: controller.signal });
+          const items = response.data.content;
+                console.log("fetch");
+                setRowData(items);
+                setPaginationTotalRowCount(items.length);
           if (items.length > 0) {
-              // columns.push({
-              //     // field: "Actions", cellRenderer: CustomActionComponent
-              //     field: "Actions", cellRenderer:  (params) =>{
-              //         const id = params.data.id;
-              //         return <CustomActionComponent id={id} />
-              //     }
-              // });
-
               const columns = Object.keys(items[0]).map(key => ({
                   field: key,
                   headerName: key.charAt(0).toUpperCase() + key.slice(1),
@@ -122,7 +115,6 @@ useEffect(() => {
               }));
 
               columns.unshift({
-                  // field: "Actions", cellRenderer: CustomActionComponent
                   field: "Actions", cellRenderer:  (params) =>{
                       const id = params.data.id;
                       return <CustomActionComponent id={id} />
@@ -146,7 +138,10 @@ useEffect(() => {
       controller.abort();
   };
 
-}, []);
+}, [paginationPageSize,axiosClientPrivate,currentPageIndex]);
+
+
+
 
     
 const handleEdit = async (id) => {
@@ -211,50 +206,73 @@ const handleUpdate = async (id)=> {
         }
         };
 
-    const pagination = true;
-    const paginationPageSize = 50;
-    // const paginationPageSize = 2;
-    const paginationPageSizeSelector = [50, 100, 200, 500];
+    // const pagination = true;
+
+    // const paginationPageSize = 50;
+    // const paginationPageSize = 10;
+    // const paginationPageSizeSelector = [50, 100, 200, 500];
     // const paginationPageSizeSelector = [2, 4, 8, 10];
+
+    // const paginationPageSizeSelector = useMemo(() => {
+    //   return [2, 4, 8, 10];
+    // }, []);
+
+
+    // const [paginationPageSize, setPaginationPageSize] = useState(2); // Default pagination page size
+
+    // Define custom page size options
+    // const pageSizeOptions = [2, 4, 8, 10];
 
 
     // useEffect(() => {
-    //     fetchData(0, paginationPageSizeSelector[0]); // Fetch initial data
+    //     fetchData(0, paginationPageSize); // Fetch initial data
     //   }, []); // Empty dependency array to fetch data only once
-    
-    //   const fetchData = async (startRow, endRow) => {
+    // useEffect(() => {
+    //   // const fetchData = async (startRow, paginationPageSize) => {
     //     // Make API call to fetch data based on startRow and endRow
     //     // Replace this with your actual API call
-    //     const response = await fetch(`your-api-endpoint?start_row=${startRow}&end_row=${endRow}`);
-    //     const jsonData = await response.json();
-    //     setRowData(jsonData);
+    //     // const response = await fetch(`your-api-endpoint?start_row=${startRow}&end_row=${endRow}`);
+    //     const controller = new AbortController();
+    //     const response = await axiosClientPrivate.get(`ohcs?page=${startRow}&size=${paginationPageSize}`, { signal: controller.signal });
+    //     const items = await response.data.content;
+    //     console.log(items);
+    //     setRowData(items);
+    //     if (items.length > 0) {
+    //                     const columns = Object.keys(items[0]).map(key => ({
+    //                         field: key,
+    //                         headerName: key.charAt(0).toUpperCase() + key.slice(1),
+    //                         filter: true,
+    //                         floatingFilter: true,
+    //                         sortable: true
+    //                     }));
+          
+    //                     columns.unshift({
+    //                         // field: "Actions", cellRenderer: CustomActionComponent
+    //                         field: "Actions", cellRenderer:  (params) =>{
+    //                             const id = params.data.id;
+    //                             return <CustomActionComponent id={id} />
+    //                         }
+    //                     });
+          
+    //                     setColDefs(columns);
+    //                 }
     //   };
     
+    // }, []);
+
     //   const onGridReady = (params) => {
     //     setGridApi(params.api);
-    //     setGridColumnApi(params.columnApi);
+    //     params.api.se
+    //     // setGridColumnApi(params.columnApi);
     //   };
     
-    //   const onPageSizeChanged = (newPageSize) => {
-    //     const startRow = 0;
-    //     const endRow = newPageSize;
-    //     fetchData(startRow, endRow);
+    // //   const onPageSizeChanged = (newPageSize) => {
+    // //     const startRow = 0;
+    // //     const endRow = newPageSize;
+    // //     fetchData(startRow, endRow);
     //   };
     
-
-
     
-
-
-
-
-    
-      
-
-
-        
-
-
 
     return (
         <>
@@ -275,9 +293,19 @@ const handleUpdate = async (id)=> {
                     rowData={rowData}
                     columnDefs={colDefs}
                     animateRows={true} // Optional: adds animation to row changes
-                    pagination={pagination}
+                    pagination={true}
                     paginationPageSize={paginationPageSize}
-                    paginationPageSizeSelector={paginationPageSizeSelector}
+                    paginationPageSizeSelector={pageSizeOptions}
+                    paginationTotalRowCount={paginationTotalRowCount}
+                    // domLayout='autoHeight'
+                    onGridReady={(params) => {
+                        params.api.paginationGoToPage(currentPageIndex);
+                    }}
+                    onPaginationChanged={(event) => {
+                    setPaginationPageSize(event.api.paginationGetPageSize());
+                    setCurrentPageIndex(0);
+                    // setCurrentPageIndex(event.api.paginationGetCurrentPage() + 1);
+                }}
                 />
             </Box>
 

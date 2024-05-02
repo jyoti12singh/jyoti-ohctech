@@ -1,8 +1,8 @@
 import Ohclogo from "./Ohclogo";
 import { FormControl, Stack, Box } from "@mui/material";
 import PropTypes from "prop-types";
-import Input from "./Input";
-import SingleSelect from "./SingleSelect";
+import Input from "../common/Input";
+import SingleSelect from "../common/SingleSelect";
 // import MultipleSelect from "./MultipleSelect";
 // // import TextArea from "./TextArea";
 // // import { useState } from "react";

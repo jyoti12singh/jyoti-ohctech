@@ -1,5 +1,5 @@
 import { Stack, Box } from "@mui/material";
-import Input from "./Input";
+import Input from "../common/Input";
 import PropTypes from "prop-types";
 
  const MenuForm = ({values,

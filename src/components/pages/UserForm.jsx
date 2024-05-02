@@ -6,8 +6,8 @@ import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import Typography from '@mui/material/Typography'
 import PropTypes from "prop-types";
-import Input from "./Input";
-import SingleSelect from "./SingleSelect";
+import Input from "../common/Input";
+import SingleSelect from "../common/SingleSelect";
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
