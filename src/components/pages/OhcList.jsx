@@ -4,7 +4,10 @@ import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
-import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import DownloadIcon from '@mui/icons-material/Download';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import OhcForm from './OhcForm';
@@ -12,6 +15,10 @@ import { ValidationForm } from './Validationform';
 import { Formik, useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ExcelJS from 'exceljs';
+// const ExcelJS = require('exceljs');
+import {jsPDF} from 'jspdf';
+
 // import { useMemo } from 'react';
 
 // test
@@ -42,6 +49,8 @@ const OhcList = ()=> {
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
     
     const [paginationTotalRowCount, setPaginationTotalRowCount] = useState(0);  // need to getallOhc
+   
+    const [data, setData] = useState([]);// I added
 
     const pageSizeOptions = [2, 4, 8, 10];
 
@@ -88,6 +97,7 @@ const OhcList = ()=> {
                  });
                 //  setRowData(prevRowData => [...prevRowData, values]);
                  setRowData(rowData => [...rowData, values]);
+                 console.log(values);
                  resetForm();
           } catch (error) {
             console.log(values);
@@ -147,8 +157,20 @@ useEffect(() => {
       controller.abort();
   };
 
+
+
+
 }, [paginationPageSize,axiosClientPrivate,currentPageIndex]);
 
+   // I did Modification.
+   fetch("https://dummyjson.com/products")
+   .then((res) => res.json())
+   .then(async(data)=>{
+       //console.log(data);
+       setData(data);
+   
+   })
+   
 
 
 
@@ -281,6 +303,88 @@ const handleUpdate = async (id)=> {
     // //     fetchData(startRow, endRow);
     //   };
     
+    const createHeaders = (keys) => {
+      const result = [];
+      for( let key of keys){
+          result.push({
+              id: key,
+              name: key,
+              prompt: key,
+          })
+      }
+      return result;
+  };
+  const exportpdf = async () => {
+      const headers = createHeaders([
+          "id",
+          "title",
+          "brand",
+          "price",
+          "rating",
+      ]);
+      const doc = new jsPDF({orientation: "landscape"});
+      const tableData = data?.products?.map((row)=>({
+          ...row,
+          id: row.id.toString(),
+          price: row.price.toString(),
+          rating: row.rating.toString(),
+      }))
+      doc.table(1,1,tableData,headers, {autoSize:true});
+      doc.save("Data.pdf");
+  };
+  // For Excel
+  const exportExcelfile = async () => {
+      const workbook = new ExcelJS.Workbook();
+      const sheet = workbook.addWorksheet('My Sheet');
+      sheet.columns = [
+          {
+              header: "Id",
+              key: 'id',
+          },
+          {
+              header: "Title",
+              key: 'title',
+          },
+          {
+              header: "Brand",
+              key: 'brand',
+          },
+          {
+              header: "Category",
+              key: 'category',
+          },
+          {
+              header: "Price",
+              key: 'price',
+          },
+          {
+              header: "Rating",
+              key: 'rating',
+          }
+      ];
+      data?.products?.map(product =>{
+          sheet.addRow({
+              id: product?.id,
+              title: product?.title,
+              brand: product?.brand,
+              category: product?.category,
+              price: product?.price,
+              rating: product?.rating
+          })
+      });
+      workbook.xlsx.writeBuffer().then(data => {
+          const blob = new Blob([data], {
+              type: "application/vnd.openxmlformats-officedocument.spreadsheet.sheet",
+          });
+          const url = window.URL.createObjectURL(blob);
+          const anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.download = 'download.xlsx';
+          anchor.click();
+          anchor.URL.revokeObjectURL(url);
+      })
+  }
+
     
 
     return (
@@ -294,12 +398,15 @@ const handleUpdate = async (id)=> {
                 <Stack sx={{ display: 'flex', flexDirection: 'row' }} marginY={1} paddingX={1}>
                     <ButtonGroup variant="contained" aria-label="Basic button group">
                         <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }}>Add New</Button>
-                        <Button variant="contained" color="success" endIcon={<ImportExportRoundedIcon />}>Export Data</Button>
+                        <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
+                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button>
                     </ButtonGroup>
 
                 </Stack>
                 <AgGridReact
-                    rowData={rowData}
+                   
+                    data={data} //I changed
+                    // rowData={rowData}
                     columnDefs={colDefs}
                     animateRows={true} // Optional: adds animation to row changes
                     pagination={true}
