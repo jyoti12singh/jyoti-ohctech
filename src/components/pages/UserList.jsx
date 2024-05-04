@@ -41,24 +41,24 @@ const UserList = () => {
   } = useFormik({
     initialValues: initialValues,
     validationSchema: userValidationForm,
-    // onSubmit: (values, action) => {
-    //   console.log(values);
-    //   action.resetForm();
-    // },
+    onSubmit: (values, action) => {
+      console.log(values);
+      action.resetForm();
+    },
 
-    onSubmit: async (values, {resetForm}) => {
-      try {
-           await axiosClientPrivate.post('/users', values);
-          toast.success("Saved Successfully!",{
-            position:"top-center"
-         });
-          setRowData(prevRowData => [...prevRowData, values]);
-          resetForm();
-        } catch (error) {
-          console.log(values);
-          console.error('Error:', error);
-        }
-      },
+    // onSubmit: async (values, {resetForm}) => {
+    //   try {
+    //        await axiosClientPrivate.post('/users', values);
+    //       toast.success("Saved Successfully!",{
+    //         position:"top-center"
+    //      });
+    //       setRowData(prevRowData => [...prevRowData, values]);
+    //       resetForm();
+    //     } catch (error) {
+    //       console.log(values);
+    //       console.error('Error:', error);
+    //     }
+    //   },
 
   });
 
@@ -232,7 +232,7 @@ const handleUpdate = async (id)=> {
         handleSubmit={handleSubmit}
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
-        title="Fill The Details To Add New User Role"
+        title="Add New User Role"
       >
         <UserForm
           values={values}

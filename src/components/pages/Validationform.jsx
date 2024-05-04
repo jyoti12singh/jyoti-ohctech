@@ -2,15 +2,15 @@ import * as Yup from 'yup';
 
   // validation for ohcform
 export const ValidationForm = Yup.object({
-  ohcName: Yup.string().min(2).max(25).required("Please enter Ohc Name"),
+  ohcName: Yup.string().min(2).max(25).required("Please enter Ohccc Name"),
   ohcDescription: Yup.string().min(2).max(25).required("Please enter Description"),
   ohcCode: Yup.string().min(2).max(25).required("Please enter OHC Code"),
   state: Yup.string().min(2).max(25).required("Please enter State Code"),
   pinCode: Yup.number().min(6).required("Please enter Pin Code"),
-  primaryPhone: Yup.number().required("Please enter Pin Code"),
-  primaryEmail: Yup.string().email().required("Please enter your email"),
-  iconText: Yup.string().required("Please enter your icon text"),
-  iconColor: Yup.string().required("Please enter your icon text"),
+    primaryPhone: Yup.number().required("Please enter Pin Code"),
+    primaryEmail: Yup.string().email().required("Please enter your email"),
+    iconText: Yup.string().required("Please enter your icon text"),
+    iconColor: Yup.string().required("Please enter your icon text"),
     // homeohc: Yup.string().required("Please enter home ohc"),
     ohcType: Yup.string().required("Please enter ohc type"),
     address: Yup.string().required("Please enter address"),
@@ -41,12 +41,53 @@ export const menuValidationForm = Yup.object({
 
 
 export const roleValidationForm = Yup.object({
-  roleName: Yup.string().required("Please enter Role Name"),
-  roleDescription: Yup.string().required("Please enter Role Description"),
-  roleHomePage : Yup.string().required("Please enter Role Home Page"),
-  roleCode : Yup.string().required("Please enter Role code"),
-  iconColor: Yup.string().required("Please enter Icon Colour"),
-  iconText: Yup.string().required("Please enterIcon Text"),
+  rolename: Yup.string().required("Please enter Role Name"),
+  roledes: Yup.string().required("Please enter Role Description"),
+  homepage : Yup.string().required("Please enter Role Home Page"),
+  rolecode : Yup.number().required("Please enter Role code"),
+  iconcolor: Yup.string().required("Please enter Icon Colour"),
+  icontext: Yup.string().required("Please enterIcon Text"),
 });
 
 
+export const MedTimeValidationForm = Yup.object({
+  MedicineTiming: Yup.string().min(2).max(25).required("Please enter medicine timing"),
+  timingDescription: Yup.string().min(2).max(25).required("Please enter Description"),
+});
+
+export const MedValidationForm = Yup.object({
+  MedicineFrequency: Yup.number().min(1).required("Please enter medicine frequency"),
+  MedicineDescription: Yup.string().min(2).max(25).required("Please enter medicine Description"),
+  calculatedCity: Yup.string().min(2).max(25).required("Please enter calculated city"),
+  displayOrder: Yup.number().min(1).max(25).required("Please enter display order"),
+  statusType: Yup.string().required("Please select Status Type"),
+  isDefault: Yup.string().required("Please select Default"),
+});
+
+
+export const AilValidationForm = Yup.object({
+  ailmentName: Yup.string().min(2).max(25).required("Please enter ailment Name"),
+  ailmentDescription: Yup.string().min(2).max(25).required("Please enter Description"),
+  ailmentCode: Yup.string().min(2).max(25).required("Please enter ailment code"),
+});
+
+export const AddDocValidationForm = Yup.object({
+  DoctorName: Yup.string().min(2).max(25).required("Please enter Doctor Name"),
+  statusType: Yup.string().min(2).max(25).required("Please enter Doctor Emp Code"),
+  DoctorDetails: Yup.string().min(2).max(25).required("Please enter Doctor Details"),
+});
+
+export const AilmentValidationForm = Yup.object({
+  ailmentName: Yup.string().min(2).max(25).required("Please enter ailment Name"),
+  ailmentDescription: Yup.string().min(2).max(25).required("Please enter Description"),
+  ailmentCode: Yup.string().min(2).max(25).required("Please enter ailment code"),
+  statusType: Yup.string().min(2).max(25).required("Please enter ailment Action"),
+});
+
+export const RefferalValidationForm = Yup.object({
+  RefferalPointName: Yup.string(2).min(1).required("Please enter refferal point name"),
+  Specialist: Yup.string().min(2).max(25).required("Please enter specialist name"),
+  HospitalName: Yup.string().min(2).max(25).required("Please enter hospital name"),
+  Address: Yup.string().min(2).max(25).required("Please enter address"),
+  ContactDetail: Yup.string().required("Please enter contact detail"),
+});

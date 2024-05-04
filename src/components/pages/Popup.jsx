@@ -15,7 +15,7 @@ const Popup = ({showupdate,setShowupdate,id,handleUpdate, title, children, openP
             <DialogTitle>
                 <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Typography variant='h6' component="div" sx={{ flexGrow: 1 }}>{title}</Typography>
-                    <Button color='error' endIcon={<CancelRoundedIcon />} onClick={() => { setShowupdate(false), setOpenPopup(false) }}>Close</Button>
+                    <Button color='error' endIcon={<CancelRoundedIcon />} onClick={() => {  setOpenPopup(false) }}>Close</Button>
                 </Box>
 
             </DialogTitle>

@@ -14,6 +14,12 @@ import UserList from "./components/pages/UserList";
 // import MenuForm from "./components/pages/MenuForm";
 import MenuList from "./components/pages/MenuList";
 import RoleList from "./components/pages/RoleList";
+import AddDocDetailList from "./components/pages/AddDocDetailList";
+import MedFreqList from "./components/pages/MedFreqList";
+import AilTimingList from "./components/pages/AilmentTimingList";
+import MedTimingList from "./components/pages/MedTimingList";
+import AilmentList from "./components/pages/AilmentList";
+import RefferalList from "./components/pages/RefferalList";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +32,7 @@ const router = createBrowserRouter([
     element: <PersistLogin />,
     children: [
       {
-        element: <ProtectedRoute />,
+        // element: <ProtectedRoute />,
         children: [
           {
             path: "/ohcSelection",
@@ -50,7 +56,7 @@ const router = createBrowserRouter([
         element: <PersistLogin />,
         children: [
           {
-            element: <ProtectedRoute />,
+            // element: <ProtectedRoute />,
             children: [
               {
                 path:'/adminHome',
@@ -59,6 +65,18 @@ const router = createBrowserRouter([
               {
                 path:'/ohcList',
                 element:<OhcList />
+              },
+              {
+                path:'/medFreqList',
+                element:<MedFreqList />
+              },
+              {
+                path:'/medTimingList',
+                element:<MedTimingList />
+              },
+              {
+                path:'/AilTimingList',
+                element:<AilTimingList/>
               },
               {
                 path:'/userList',
@@ -71,6 +89,18 @@ const router = createBrowserRouter([
               {
                 path:'/menuList',
                 element:<MenuList />
+              },
+              {
+                path:'/addDocdetailList',
+                element:<AddDocDetailList/>
+              },
+              {
+                path:'/ailmentList',
+                element:<AilmentList/>
+              },
+              {
+                path:'/refferalList',
+                element:<RefferalList/>
               }
             ],
           },
