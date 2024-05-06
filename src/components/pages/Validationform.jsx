@@ -91,3 +91,30 @@ export const RefferalValidationForm = Yup.object({
   Address: Yup.string().min(2).max(25).required("Please enter address"),
   ContactDetail: Yup.string().required("Please enter contact detail"),
 });
+
+export const EmployeeCadreValidationForm = Yup.object({
+  Employercadname: Yup.string().required("Please enter Employee Cadre Name"),
+  remark: Yup.string().required("Please enter Remarks"),
+  claimL : Yup.string().required("Please enter Claim Limit"),
+});
+export const empcontValidationForm = Yup.object({
+  Employername: Yup.string().required("Please enter Employee Name"),
+  code: Yup.string().required("Please enter Code"),
+  addressd : Yup.string().required("Please enter Address"),
+  contact : Yup.number().required("Please enter Contact Details"),
+  email: Yup.string().required("Please enter Emails"),
+  remark: Yup.string().required("Please enter Remarks of Employee"),
+});
+export const InjuryValidationForm = Yup.object({
+  Injury_Name: Yup.string().required("Please enter Injury part Name"),
+  Injury_Description: Yup.string().required("Please Injury part  Description"),
+  Injury_Code: Yup.string().required("Please enter Injury part code"),
+  
+});
+export const InjuryClassValidationForm = Yup.object({
+  Injury_Name: Yup.string().required("Please enter Injury  Name"),
+  Injury_Description: Yup.string().required("Please Injury   Description"),
+  Injury_Code: Yup.string().required("Please enter Injury  code"),
+  
+});
+
