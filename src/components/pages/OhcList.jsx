@@ -17,7 +17,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ExcelJS from 'exceljs';
 // const ExcelJS = require('exceljs');
-import {jsPDF} from 'jspdf';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 // import { useMemo } from 'react';
 
@@ -44,13 +45,13 @@ const OhcList = ()=> {
 
     const [openPopup, setOpenPopup] = useState(false);
 
-    const [paginationPageSize, setPaginationPageSize] = useState(2);
+    const [paginationPageSize, setPaginationPageSize] = useState(10);
     
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
     
     const [paginationTotalRowCount, setPaginationTotalRowCount] = useState(0);  // need to getallOhc
    
-    const [data, setData] = useState([]);// I added
+    // const [data, setData] = useState([]);// I added
 
     const pageSizeOptions = [2, 4, 8, 10];
 
@@ -122,6 +123,7 @@ useEffect(() => {
           const response = await axiosClientPrivate.get(`ohcs?page=${currentPageIndex}&size=${paginationPageSize}`, { signal: controller.signal });
           const items = response.data.content;
                 console.log("fetch");
+                // console.log(items);
                 setRowData(items);
                 setPaginationTotalRowCount(items.length);
           if (items.length > 0) {
@@ -162,14 +164,13 @@ useEffect(() => {
 
 }, [paginationPageSize,axiosClientPrivate,currentPageIndex]);
 
-   // I did Modification.
-   fetch("https://dummyjson.com/products")
-   .then((res) => res.json())
-   .then(async(data)=>{
-       //console.log(data);
-       setData(data);
-   
-   })
+  //  // I did Modification.
+  //  fetch("https://dummyjson.com/products")
+  //  .then((res) => res.json())
+  //  .then(async(data)=>{
+  //      console.log(data);
+  //      setData(data);
+  //  })
    
 
 
@@ -303,75 +304,213 @@ const handleUpdate = async (id)=> {
     // //     fetchData(startRow, endRow);
     //   };
     
-    const createHeaders = (keys) => {
-      const result = [];
-      for( let key of keys){
-          result.push({
-              id: key,
-              name: key,
-              prompt: key,
-          })
-      }
-      return result;
-  };
+  //   const createHeaders = (keys) => {
+  //     const result = [];
+  //     for( let key of keys){
+  //         result.push({
+  //             id: key,
+  //             name: key,
+  //             prompt: key,
+  //         })
+  //     }
+  //     return result;
+  // };
   const exportpdf = async () => {
-      const headers = createHeaders([
-          "id",
-          "title",
-          "brand",
-          "price",
-          "rating",
+      // const headers = createHeaders([
+      //     "id",
+      //     "ohcName",
+      //     // "ohcCode",
+      //     // "OhcDescription",
+      //     // "Address",
+      //     // "State",
+      //     // "Fax",
+      //     // "PrimaryPhone",
+      //     // "PrimaryEmail",
+      //     // "PinCode",
+      //     // "OhcType",
+      //     // "IconColor",
+      //     // "IconText",
+      //     // "OhcCategory",
+      // ]);
+      // const doc = new jsPDF({orientation: "landscape"});
+      // console.log(rowData[0].id);
+      // const tableData = rowData.map((row)=>(
+      //     console.log(row.id),
+      //   {
+           
+        // console.log(row.id),
+          // ...row,
+          // id: row.id,
+          // ohcName: row.ohcName,
+          // ohcCode: row.ohcCode.toString(),
+          // ohcDescription: row.ohcDescription.toString(),
+          // address: row.address.toString(),
+          // state: row.state.toString(),
+          // fax: row.fax.toString(),
+          // primaryPhone: row.primaryPhone.toString(),
+          // primaryEmail: row.primaryEmail.toString(),
+          // pinCode: row.pinCode.toString(),
+          // ohcType: row.ohcType.toString(),
+          // iconColor: row.iconColor.toString(),
+          // iconText: row.iconText.toString(),
+          // OhcCategory: row.ohcCategory.toString(),
+      // }))
+      // const tableData = {
+      //     id : rowData[0].id,
+      //     ohcName : rowData[0].ohcName,
+      // }
+      // doc.table(1,1,tableData,headers, {autoSize:true});
+      const doc = new jsPDF();
+      const header = [['Id', 'OhcName',"ohcCode","OhcDescription","Address","State","Fax","PrimaryPhone","PrimaryEmail","PinCode","OhcType","IconColor","IconText","OhcCategory"]];
+      const tableData = rowData.map(item => [
+        item.id,
+        item.ohcName,
+        item.ohcCode,
+        item.ohcDescription,
+        item.state,
+        item.fax,
+        item.primaryPhone,
+        item.primaryEmail,
+        item.ohcType,
+        item.iconColor,
+        item.iconText,
+        item.OhcCategory,
+        
       ]);
-      const doc = new jsPDF({orientation: "landscape"});
-      const tableData = data?.products?.map((row)=>({
-          ...row,
-          id: row.id.toString(),
-          price: row.price.toString(),
-          rating: row.rating.toString(),
-      }))
-      doc.table(1,1,tableData,headers, {autoSize:true});
-      doc.save("Data.pdf");
+      doc.autoTable({
+        head: header,
+        body: tableData,
+        startY: 20, // Start Y position for the table
+        theme: 'grid', // Optional theme for the table
+        margin: { top: 30 }, // Optional margin from top
+        styles: { fontSize: 5 },
+        columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
+    });
+      doc.save("OhcList.pdf");
   };
+
+
   // For Excel
   const exportExcelfile = async () => {
       const workbook = new ExcelJS.Workbook();
       const sheet = workbook.addWorksheet('My Sheet');
+      // sheet.columns = [
+      //     {
+      //         header: "Id",
+      //         key: 'id',
+      //     },
+      //     {
+      //         header: "OhcName",
+      //         key: 'ohcName',
+      //     },
+      //     {
+      //         header: "OhcCode",
+      //         key: 'ohcCode',
+      //     },
+      //     {
+      //         header: "OhcDescription",
+      //         key: 'ohcDescription',
+      //     },
+      //     {
+      //       header : "Address",
+      //       key : "address",
+      //     },
+      //     {
+      //         header: "State",
+      //         key: 'state',
+      //     },
+      //     {
+      //         header: "Fax",
+      //         key: 'fax',
+      //     },
+      //     {
+      //       header: "PrimaryPhone",
+      //       key: 'primaryPhone',
+      //   },
+      //   {
+      //       header: "PrimaryEmail",
+      //       key: 'primaryEmail',
+      //   },
+      //   {
+      //       header : "PinCode",
+      //       key : "pinCode",
+      //   },
+      //   {
+      //       header: "OhcType",
+      //       key: 'ohcType',
+      //   },
+      //   {
+      //       header: "IconColor",
+      //       key: 'iconColor',
+      //   },
+      //   {
+      //     header: "IconText",
+      //     key: 'iconText',
+      // },
+      // {
+      //     header: "OhcCategory",
+      //     key: 'OhcCategory',
+      // }
+      // ];
+
+      const headerStyle = {
+        // font: { bold: true, size: 12 },
+        alignment: { horizontal: 'center' }
+        
+    };
+
+    sheet.getRow(1).font = { bold: true };
+      
+      const columnWidths = {
+        id: 10,
+        ohcName: 20,
+        ohcCode: 15,
+        ohcDescription: 25,
+        state: 15,
+        fax: 15,
+        primaryPhone: 15,
+        primaryEmail: 26,
+        pinCode: 10,
+        ohcType: 15,
+        iconColor: 15,
+        iconText: 15,
+        OhcCategory: 15
+    };
+
       sheet.columns = [
-          {
-              header: "Id",
-              key: 'id',
-          },
-          {
-              header: "Title",
-              key: 'title',
-          },
-          {
-              header: "Brand",
-              key: 'brand',
-          },
-          {
-              header: "Category",
-              key: 'category',
-          },
-          {
-              header: "Price",
-              key: 'price',
-          },
-          {
-              header: "Rating",
-              key: 'rating',
-          }
-      ];
-      data?.products?.map(product =>{
+        { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
+        { header: "OhcName", key: 'ohcName', width: columnWidths.ohcName, style: headerStyle },
+        { header: "OhcCode", key: 'ohcCode', width: columnWidths.ohcCode, style: headerStyle },
+        { header: "OhcDescription", key: 'ohcDescription', width: columnWidths.ohcDescription, style: headerStyle },
+        { header: "Address", key: "address", width: columnWidths.address, style: headerStyle },
+        { header: "State", key: 'state', width: columnWidths.state, style: headerStyle },
+        { header: "Fax", key: 'fax', width: columnWidths.fax, style: headerStyle },
+        { header: "PrimaryPhone", key: 'primaryPhone', width: columnWidths.primaryPhone, style: headerStyle },
+        { header: "PrimaryEmail", key: 'primaryEmail', width: columnWidths.primaryEmail, style: headerStyle },
+        { header: "PinCode", key: "pinCode", width: columnWidths.pinCode, style: headerStyle },
+        { header: "OhcType", key: 'ohcType', width: columnWidths.ohcType, style: headerStyle },
+        { header: "IconColor", key: 'iconColor', width: columnWidths.iconColor, style: headerStyle },
+        { header: "IconText", key: 'iconText', width: columnWidths.iconText, style: headerStyle },
+        { header: "OhcCategory", key: 'OhcCategory', width: columnWidths.OhcCategory, style: headerStyle }
+    ];
+
+      rowData.map(product =>{
           sheet.addRow({
-              id: product?.id,
-              title: product?.title,
-              brand: product?.brand,
-              category: product?.category,
-              price: product?.price,
-              rating: product?.rating
+              id: product.id,
+              ohcName: product.ohcName,
+              ohcCode: product.ohcCode,
+              ohcDescription: product.ohcDescription,
+              state: product.state,
+              fax: product.fax,
+              primaryPhone: product.primaryPhone,
+              primaryEmail: product.primaryEmail,
+              ohcType: product.ohcType,
+              iconColor: product.iconColor,
+              iconText: product.iconText,
+              OhcCategory: product.OhcCategory,
           })
       });
+
       workbook.xlsx.writeBuffer().then(data => {
           const blob = new Blob([data], {
               type: "application/vnd.openxmlformats-officedocument.spreadsheet.sheet",
@@ -381,7 +520,7 @@ const handleUpdate = async (id)=> {
           anchor.href = url;
           anchor.download = 'download.xlsx';
           anchor.click();
-          anchor.URL.revokeObjectURL(url);
+          // anchor.URL.revokeObjectURL(url);
       })
   }
 
@@ -405,8 +544,8 @@ const handleUpdate = async (id)=> {
                 </Stack>
                 <AgGridReact
                    
-                    data={data} //I changed
-                    // rowData={rowData}
+                    // data={data} //I changed
+                    rowData={rowData}
                     columnDefs={colDefs}
                     animateRows={true} // Optional: adds animation to row changes
                     pagination={true}
@@ -419,7 +558,7 @@ const handleUpdate = async (id)=> {
                     }}
                     onPaginationChanged={(event) => {
                     setPaginationPageSize(event.api.paginationGetPageSize());
-                    setCurrentPageIndex(0);
+                    // setCurrentPageIndex(0);
                     // setCurrentPageIndex(event.api.paginationGetCurrentPage() + 1);
                 }}
                 />

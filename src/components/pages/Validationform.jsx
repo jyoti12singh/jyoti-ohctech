@@ -118,3 +118,50 @@ export const InjuryClassValidationForm = Yup.object({
   
 });
 
+export const designationForm = Yup.object({
+  DesignationName: Yup.string().min(2).max(25).required("Please enter Designation Name"),
+  DesignationDespt: Yup.string().min(2).max(25).required("Please enter Designation Description"),
+  DesignationCode: Yup.string().min(2).max(25).required("Please enter DesignationCode"),
+  DesignationCollar: Yup.string().required("Please enter Designation Collar"),
+    
+});
+
+
+export const bussinessForm = Yup.object({
+  BussinessName: Yup.string().min(2).max(25).required("Please enter Bussiness Unit Name"),
+  BUHEADName: Yup.string().min(2).max(25).required("Please enter Bussiness Unit Head Name"),
+  BUHeadEmail:Yup.string().email().required("Please enter Bussiness Unit Head Email"),
+     
+});
+
+export const departmentForm = Yup.object({
+  BussinessUnit: Yup.string().min(2).max(25).required("Please enter Bussiness Unit "),
+  DeptName: Yup.string().min(2).max(25).required("Please enter Department Name"),
+  DeptHeadName: Yup.string().min(2).max(25).required("Please enter Department Head Email"),
+  DeptHeadEmail: Yup.string().email().required("Please enter Department Head Email"),
+     
+});
+
+export const injuryForm = Yup.object({
+  InjuryName: Yup.string().min(2).max(25).required("Please enter Injury Name"),
+  injurydiscri: Yup.string().min(2).max(25).required("Please enter Injury Discription"),
+  injurycode: Yup.string().min(2).max(25).required("Please enter Bussiness Injury Code"),
+     
+});
+
+export const sectionForm = Yup.object({
+  BussinessUnit: Yup.string().min(2).max(25).required("Please enter Bussiness Unit"),
+  DeptName: Yup.string().min(2).max(25).required("Please enter Department Name"),
+  SectionName: Yup.string().min(2).max(25).required("Please enter Section Name"),
+  SectionHead: Yup.string().min(2).max(25).required("Please enter Section Head"),
+  Email: Yup.string().email().required("Please enter Section Email"),
+     
+});
+
+export const complaintForm = Yup.object({
+  complaint: Yup.string().min(2).max(25).required("Please enter Complaint"),
+   details: Yup.string().min(2).max(25).required("Please enter Complaint Details"),
+   active: Yup.string().required("Please Select deafult"),
+  
+     
+});
