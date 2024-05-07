@@ -10,23 +10,40 @@ import Popup from './Popup';
 import BussinessForm from './BussinessForm';
 import { bussinessForm } from './Validationform';
 import { useFormik } from "formik";
-import { WidthFull } from '@mui/icons-material';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import DownloadIcon from '@mui/icons-material/Download';
+import ExcelJS from 'exceljs';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const BussinessList = () => {
+
+
+    const [rowData, setRowData] = useState([]);
+
+    const [colDefs, setColDefs] = useState([]);
+
+    const [openPopup, setOpenPopup] = useState(false);
+
+    const axiosClientPrivate = useAxiosPrivate();
+
+    const [id,setId] = useState(1);
+
+    const [showupdate,setShowupdate] = useState(false);
 
     const initialValues = {
        
 
-        BussinessName: "",
-        BUHEADName: "",
-        BUHeadEmail: ""
-     
-    
+        buName: "",
+        buHeadName: "",
+        buEmail: "",
+        lastModified: "",
+        modifiedBy: ""
       };
 
-      const axiosClientPrivate = useAxiosPrivate();
-    
+
       const {
         values,
         touched,
@@ -39,43 +56,90 @@ const BussinessList = () => {
       } = useFormik({
         initialValues: initialValues,
         validationSchema: bussinessForm,
-        onSubmit: (values, action) => {
-            console.log(values);
-            action.resetForm();
-          },
-        // onSubmit: async (values, {resetForm}) => {
-        // try {
-        //     const response = await axiosClientPrivate.post('/ohcs', values);
-        //     console.log('Response:', response.data);
-        //     resetForm();
-        //   } catch (error) {
+        // onSubmit: (values, action) => {
         //     console.log(values);
-        //     console.error('Error:', error);
-        //   }
-        // },
+        //     action.resetForm();
+        //   },
+        onSubmit: async (values, {resetForm}) => {
+        try {
+            const response = await axiosClientPrivate.post('/business-units', values);
+            toast.success("Saved Successfully!",{
+                position:"top-center"
+             }); 
+                   // getting id(key,value) of last index
+                const id = rowData[rowData.length-1].buId;
+                const obj = {
+                    buId : id+1,
+                    ...values
+                }
+             console.log(obj);
+             setRowData(rowData => [...rowData, obj]);
+            console.log('Response:', response.data);
+            resetForm();
+          } catch (error) {
+            console.log(values);
+            console.error('Error:', error);
+          }
+        },
       });
 
-    const handleDeleteRow = async (id) => {
-        alert(id)
+
+
+      const handleEdit = async (id) => {
+        alert(id);
         try {
-            await axiosClientPrivate.delete(`/ohcs/${id}`);
-
-            const newData = rowData.filter(row => row.id !== id);
-            setRowData(newData);
+          const response = await axiosClientPrivate.get(`/business-units/${id}`);
+            console.log(response.data);
+            setFieldValue("buEmail",response.data.buEmail);
+            setFieldValue("buHeadName",response.data.buHeadName);
+            setFieldValue("buId",response.data.buId);
+            setFieldValue("buName",response.data.buName);
+            setFieldValue("lastModified", response.data.lastModified);
+            setFieldValue("modifiedBy", response.data.modifiedBy);
+          setId(id);
+          setShowupdate(true);
+          setOpenPopup(true);
         } catch (error) {
-            console.error('Error deleting row:', error);
+          console.error('Error fetching item for edit:', error);
         }
-    };
+      };
 
-    const [rowData, setRowData] = useState([]);
+      const handleUpdate = async (id)=> {
+        alert(id);
+        const update = values;
+        try{
+             console.log(values);
+             await axiosClientPrivate.put(`/business-units/${id}`,update);
+             toast.success("Updated Successfully!",{
+                position:"top-center",
+                autoClose: 3000,
+             });
+             resetForm();
+             setRowData(rowData => [...rowData,values]);
+        }
+        catch(err){
+            console.log(values);
+            console.log(err);
+        }
+      }
 
-    const [colDefs, setColDefs] = useState([]);
 
-    const [openPopup, setOpenPopup] = useState(false);
+     // to delete a row
+     const handleDeleteRow = async (id) => {
+        alert(id)
+       if(window.confirm('Are you sure you want to delete this data?')){
+       try {
+           await axiosClientPrivate.delete(`/business-units/${id}`);
+           setRowData(prevData => prevData.filter(row => row.buId !== id));
+       } catch (error) {
+           console.error('Error deleting row:', error);
+       }
+   }
+   };
 
     const CustomActionComponent = (props) => {
           
-        return <> <Button onClick={() => console.log(props.data)}> <EditNoteRoundedIcon /></Button>
+        return <> <Button onClick={() =>  handleEdit(props.id)}> <EditNoteRoundedIcon /></Button>
             <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
     };
 
@@ -88,10 +152,10 @@ const BussinessList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('ohcs', { signal: controller.signal });
+                const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
                 const items = response.data;
-                    
-                
+                    // console.log(items);
+                setRowData(items);
                 if (items.length > 0) {
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
@@ -101,10 +165,9 @@ const BussinessList = () => {
                         sortable: true
                     }));
 
-                    columns.push({
-      
+                    columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.id;
+                            const id = params.data.buId;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -112,7 +175,7 @@ const BussinessList = () => {
                     setColDefs(columns);
                 }
 
-                setRowData(items);
+                
 
             } catch (err) {
                 console.error("Failed to fetch data: ", err);
@@ -128,8 +191,187 @@ const BussinessList = () => {
 
     }, []);
 
+
+     
+
+    const exportpdf = async () => {
+        // const headers = createHeaders([
+        //     "id",
+        //     "ohcName",
+        //     // "ohcCode",
+        //     // "OhcDescription",
+        //     // "Address",
+        //     // "State",
+        //     // "Fax",
+        //     // "PrimaryPhone",
+        //     // "PrimaryEmail",
+        //     // "PinCode",
+        //     // "OhcType",
+        //     // "IconColor",
+        //     // "IconText",
+        //     // "OhcCategory",
+        // ]);
+        // const doc = new jsPDF({orientation: "landscape"});
+        // console.log(rowData[0].id);
+        // const tableData = rowData.map((row)=>(
+        //     console.log(row.id),
+        //   {
+             
+          // console.log(row.id),
+            // ...row,
+            // id: row.id,
+            // ohcName: row.ohcName,
+            // ohcCode: row.ohcCode.toString(),
+            // ohcDescription: row.ohcDescription.toString(),
+            // address: row.address.toString(),
+            // state: row.state.toString(),
+            // fax: row.fax.toString(),
+            // primaryPhone: row.primaryPhone.toString(),
+            // primaryEmail: row.primaryEmail.toString(),
+            // pinCode: row.pinCode.toString(),
+            // ohcType: row.ohcType.toString(),
+            // iconColor: row.iconColor.toString(),
+            // iconText: row.iconText.toString(),
+            // OhcCategory: row.ohcCategory.toString(),
+        // }))
+        // const tableData = {
+        //     id : rowData[0].id,
+        //     ohcName : rowData[0].ohcName,
+        // }
+        // doc.table(1,1,tableData,headers, {autoSize:true});
+        const doc = new jsPDF();
+        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const tableData = rowData.map(item => [
+          item.buId,
+          item.buName,
+          item.buHeadName,
+          item.buEmail,
+          
+        ]);
+        doc.autoTable({
+          head: header,
+          body: tableData,
+          startY: 20, // Start Y position for the table
+          theme: 'grid', // Optional theme for the table
+          margin: { top: 30 }, // Optional margin from top
+          styles: { fontSize: 5 },
+          columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
+      });
+        doc.save("BussinessList.pdf");
+    };
+
+
+    const exportExcelfile = async () => {
+        const workbook = new ExcelJS.Workbook();
+        const sheet = workbook.addWorksheet('My Sheet');
+        // sheet.columns = [
+        //     {
+        //         header: "Id",
+        //         key: 'id',
+        //     },
+        //     {
+        //         header: "OhcName",
+        //         key: 'ohcName',
+        //     },
+        //     {
+        //         header: "OhcCode",
+        //         key: 'ohcCode',
+        //     },
+        //     {
+        //         header: "OhcDescription",
+        //         key: 'ohcDescription',
+        //     },
+        //     {
+        //       header : "Address",
+        //       key : "address",
+        //     },
+        //     {
+        //         header: "State",
+        //         key: 'state',
+        //     },
+        //     {
+        //         header: "Fax",
+        //         key: 'fax',
+        //     },
+        //     {
+        //       header: "PrimaryPhone",
+        //       key: 'primaryPhone',
+        //   },
+        //   {
+        //       header: "PrimaryEmail",
+        //       key: 'primaryEmail',
+        //   },
+        //   {
+        //       header : "PinCode",
+        //       key : "pinCode",
+        //   },
+        //   {
+        //       header: "OhcType",
+        //       key: 'ohcType',
+        //   },
+        //   {
+        //       header: "IconColor",
+        //       key: 'iconColor',
+        //   },
+        //   {
+        //     header: "IconText",
+        //     key: 'iconText',
+        // },
+        // {
+        //     header: "OhcCategory",
+        //     key: 'OhcCategory',
+        // }
+        // ];
+  
+        const headerStyle = {
+          // font: { bold: true, size: 12 },
+          alignment: { horizontal: 'center' }
+          
+      };
+  
+      sheet.getRow(1).font = { bold: true };
+        
+        const columnWidths = {
+            Id: 10,
+            buName: 20,
+            buHeadName: 15,
+            buEmail: 25,
+      };
+  
+        sheet.columns = [
+          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
+          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
+          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
+          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          
+      ];
+  
+        rowData.map(product =>{
+            sheet.addRow({
+                buId: product.buId,
+                buName: product.buName,
+                buHeadName: product.buHeadName,
+                buEmail: product.buEmail,
+            })
+        });
+  
+        workbook.xlsx.writeBuffer().then(data => {
+            const blob = new Blob([data], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheet.sheet",
+            });
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = 'download.xlsx';
+            anchor.click();
+            // anchor.URL.revokeObjectURL(url);
+        })
+    }
+   
+
     return (
         <>
+        <ToastContainer />
             <Box
                 className="ag-theme-quartz" 
                 style={{ height: 500 }}
@@ -138,7 +380,8 @@ const BussinessList = () => {
                 <Stack sx={{ display: 'flex', flexDirection: 'row' }} marginY={1} paddingX={1}>
                     <ButtonGroup variant="contained" aria-label="Basic button group">
                         <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }}>Add New</Button>
-                        <Button variant="contained" color="success" endIcon={<ImportExportRoundedIcon />}>Export Data</Button>
+                        <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
+                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button>
                     </ButtonGroup>
 
                 </Stack>
@@ -152,7 +395,7 @@ const BussinessList = () => {
                 />
             </Box>
 
-            <Popup resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Bussiness Unit ">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Bussiness Unit ">
 
                 <BussinessForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 

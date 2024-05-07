@@ -1,13 +1,7 @@
-import Ohclogo from "./Ohclogo";
-import { FormControl, Grid, TextField } from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
-import SingleSelect from "../common/SingleSelect";
-import MultipleSelect from "../common/MultipleSelect";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useBUHeadEmail } from "react";
-import MultiCheckbox from "./MultiCheckbox";
+
 
 const BussinessForm = ({
   values,
@@ -15,7 +9,7 @@ const BussinessForm = ({
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
   BussinessForm.propTypes = {
@@ -40,15 +34,15 @@ const BussinessForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Bussiness Name"
-                    name="BussinessName"
+                    name="buName"
                     type="text"
                     size="large"
-                    value={values.BussinessName}
+                    value={values.buName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.BussinessName && touched.BussinessName ? (
-                        <span style={{ color: "red" }}>{errors.BussinessName}</span>
+                      errors.buName && touched.buName ? (
+                        <span style={{ color: "red" }}>{errors.buName}</span>
                       ) : null
                     }
                   />
@@ -56,16 +50,16 @@ const BussinessForm = ({
                 <Grid item xs={12} container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label=" Bussiness head name"
-                    name="BUHEADName"
+                    name="buHeadName"
                     type="text"
                     size="large"
-                    value={values.BUHEADName}
+                    value={values.buHeadName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.BUHEADName && touched.BUHEADName ? (
+                      errors.buHeadName && touched.buHeadName ? (
                         <span style={{ color: "red" }}>
-                          {errors.BUHEADName}
+                          {errors.buHeadName}
                         </span>
                       ) : null
                     }
@@ -75,15 +69,15 @@ const BussinessForm = ({
                 <Grid item xs={12} container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Bussiness Email"
-                    name="BUHeadEmail"
+                    name="buEmail"
                     type="text"
                     size="large"
-                    value={values.BUHeadEmail}
+                    value={values.buEmail}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.BUHeadEmail && touched.BUHeadEmail ? (
-                        <span style={{ color: "red" }}>{errors.BUHeadEmail}</span>
+                      errors.buEmail && touched.buEmail ? (
+                        <span style={{ color: "red" }}>{errors.buEmail}</span>
                       ) : null
                     }
                   />
