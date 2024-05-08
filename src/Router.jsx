@@ -15,7 +15,7 @@ import UserList from "./components/pages/UserList";
 import MenuList from "./components/pages/MenuList";
 import RoleList from "./components/pages/RoleList";
 import BussinessList from "./components/pages/BussinessList";
-
+import DepartmentList from "./components/pages/DepartmentList";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -76,6 +76,10 @@ const router = createBrowserRouter([
               {
                 path :'/BussinessList',
                 element: <BussinessList />
+              },
+              {
+                path : '/departmentList',
+                element : <DepartmentList />
               }
             ],
           },

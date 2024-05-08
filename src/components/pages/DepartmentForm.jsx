@@ -40,16 +40,16 @@ const DepartmentForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter the Business Unit"
-                    name="BussinessUnit"
+                    name="buId"
                     type="text"
                     size="large"
-                    value={values.BussinessUnit}
+                    value={values.buId}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.BussinessUnit && touched.BussinessUnit ? (
+                      errors.buId && touched.buId ? (
                         <span style={{ color: "red" }}>
-                          {errors.BussinessUnit}
+                          {errors.buId}
                         </span>
                       ) : null
                     }
@@ -58,16 +58,16 @@ const DepartmentForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter the Department Name"
-                    name="DeptName"
+                    name="departmentName"
                     type="text"
                     size="large"
-                    value={values.DeptName}
+                    value={values.departmentName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.DeptName && touched.DeptName ? (
+                      errors.departmentName && touched.departmentName ? (
                         <span style={{ color: "red" }}>
-                          {errors.DeptName}
+                          {errors.departmentName}
                         </span>
                       ) : null
                     }
@@ -77,15 +77,15 @@ const DepartmentForm = ({
         <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter the Department Head Name"
-                    name="DeptHeadName"
+                    name="departmentHeadName"
                     type="text"
                     size="large"
-                    value={values.DeptHeadName}
+                    value={values.departmentHeadName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.DeptHeadName && touched.DeptHeadName ? (
-                        <span style={{ color: "red" }}>{errors.DeptHeadName}</span>
+                      errors.departmentHeadName && touched.departmentHeadName ? (
+                        <span style={{ color: "red" }}>{errors.departmentHeadName}</span>
                       ) : null
                     }
                   />
@@ -93,15 +93,15 @@ const DepartmentForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter the DeptHead Email "
-                    name="DeptHeadEmail"
+                    name="departmentEmail"
                     type="text"
                     size="large"
-                    value={values.DeptHeadEmail}
+                    value={values.departmentEmail}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.DeptHeadEmail && touched.DeptHeadEmail ? (
-                        <span style={{ color: "red" }}>{errors.DeptHeadEmail}</span>
+                      errors.departmentEmail && touched.departmentEmail ? (
+                        <span style={{ color: "red" }}>{errors.departmentEmail}</span>
                       ) : null
                     }
                   />
