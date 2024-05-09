@@ -128,17 +128,17 @@ export const designationForm = Yup.object({
 
 
 export const bussinessForm = Yup.object({
-  BussinessName: Yup.string().min(2).max(25).required("Please enter Bussiness Unit Name"),
-  BUHEADName: Yup.string().min(2).max(25).required("Please enter Bussiness Unit Head Name"),
-  BUHeadEmail:Yup.string().email().required("Please enter Bussiness Unit Head Email"),
+  buName: Yup.string().min(2).max(25).required("Please enter Bussiness Unit Name"),
+  buHeadName: Yup.string().min(2).max(25).required("Please enter Bussiness Unit Head Name"),
+  buEmail:Yup.string().email().required("Please enter Bussiness Unit Head Email"),
      
 });
 
 export const departmentForm = Yup.object({
-  BussinessUnit: Yup.string().min(2).max(25).required("Please enter Bussiness Unit "),
-  DeptName: Yup.string().min(2).max(25).required("Please enter Department Name"),
-  DeptHeadName: Yup.string().min(2).max(25).required("Please enter Department Head Email"),
-  DeptHeadEmail: Yup.string().email().required("Please enter Department Head Email"),
+  buId: Yup.string().min(2).max(25).required("Please enter Bussiness Unit "),
+  departmentName: Yup.string().min(2).max(25).required("Please enter Department Name"),
+  departmentHeadName: Yup.string().min(2).max(25).required("Please enter Department Head Email"),
+  departmentEmail: Yup.string().email().required("Please enter Department Head Email"),
      
 });
 
@@ -164,4 +164,13 @@ export const complaintForm = Yup.object({
    active: Yup.string().required("Please Select deafult"),
   
      
+});
+export const opdmaster = Yup.object({
+  DiagnosisName: Yup.string().required("Please enter Diagnosis Name"),
+  ChronicIllness: Yup.string().required("Please enter Chronic Illness"),
+});
+
+export const bodysystemForm = Yup.object({
+  DiagnosisName: Yup.string().required("Please enter Diagnosis Name"),
+   BodySystem: Yup.string().required("Please enter Body System"),
 });
