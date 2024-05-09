@@ -4,13 +4,13 @@ import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
-import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import DepartmentForm from './DepartmentForm';
-// import { departmentForm } from './Validationform';
+import { departmentForm } from './Validationform';
 import { useFormik } from "formik";
-import { WidthFull } from '@mui/icons-material';
+// import { WidthFull } from '@mui/icons-material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ExcelJS from 'exceljs';
@@ -61,7 +61,7 @@ const DepartmentList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: departmentForm,
+        validationSchema: departmentForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //      action.resetForm();

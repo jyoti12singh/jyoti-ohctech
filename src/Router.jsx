@@ -16,6 +16,7 @@ import MenuList from "./components/pages/MenuList";
 import RoleList from "./components/pages/RoleList";
 import BussinessList from "./components/pages/BussinessList";
 import DepartmentList from "./components/pages/DepartmentList";
+import DesignationList from "./components/pages/DesignationList";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
               {
                 path : '/departmentList',
                 element : <DepartmentList />
+              },
+              {
+                path : '/DesignationList',
+                element : <DesignationList />
               }
             ],
           },

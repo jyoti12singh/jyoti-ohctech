@@ -4,7 +4,7 @@ import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
-import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import BussinessForm from './BussinessForm';
@@ -153,7 +153,7 @@ const BussinessList = () => {
         const getAllOhc = async () => {
             try {
                 const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
-                const items = response.data;
+                const items = response.data.content;
                     // console.log(items);
                 setRowData(items);
                 if (items.length > 0) {

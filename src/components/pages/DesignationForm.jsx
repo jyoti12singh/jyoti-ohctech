@@ -35,15 +35,15 @@ const DesignationForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter the Designation Name"
-                    name="DesignationName"
+                    name="designationName"
                     type="text"
                     size="large"
-                    value={values.DesignationName}
+                    value={values.designationName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.DesignationName && touched.DesignationName ? (
-                        <span style={{ color: "red" }}>{errors.DesignationName}</span>
+                      errors.designationName && touched.designationName ? (
+                        <span style={{ color: "red" }}>{errors.designationName}</span>
                       ) : null
                     }
                   />
@@ -51,16 +51,16 @@ const DesignationForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter the Designation Description"
-                    name="DesignationDespt"
+                    name="designationDesc"
                     type="text"
                     size="large"
-                    value={values.DesignationDespt}
+                    value={values.designationDesc}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.DesignationDespt && touched.DesignationDespt ? (
+                      errors.designationDesc && touched.designationDesc ? (
                         <span style={{ color: "red" }}>
-                          {errors.DesignationDespt}
+                          {errors.designationDesc}
                         </span>
                       ) : null
                     }
@@ -71,15 +71,15 @@ const DesignationForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter the Designation Code"
-                    name="DesignationCode"
+                    name="designationCode"
                     type="text"
                     size="large"
-                    value={values.DesignationCode}
+                    value={values.designationCode}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.DesignationCode && touched.DesignationCode ? (
-                        <span style={{ color: "red" }}>{errors.DesignationCode}</span>
+                      errors.designationCode && touched.designationCode ? (
+                        <span style={{ color: "red" }}>{errors.designationCode}</span>
                       ) : null
                     }
                   />
@@ -87,15 +87,15 @@ const DesignationForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label=" Enter the Designation Collar "
-                    name="DesignationCollar"
+                    name="designationCollar"
                     type="text"
                     size="large"
-                    value={values.DesignationCollar}
+                    value={values.designationCollar}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.DesignationCollar && touched.DesignationCollar ? (
-                        <span style={{ color: "red" }}>{errors.DesignationCollar}</span>
+                      errors.designationCollar && touched.designationCollar ? (
+                        <span style={{ color: "red" }}>{errors.designationCollar}</span>
                       ) : null
                     }
                   />

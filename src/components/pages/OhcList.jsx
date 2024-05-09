@@ -120,10 +120,11 @@ useEffect(() => {
 
   const getAllOhc = async () => {
       try {
-          const response = await axiosClientPrivate.get(`ohcs?page=${currentPageIndex}&size=${paginationPageSize}`, { signal: controller.signal });
+          const response = await axiosClientPrivate.get(`http://localhost:8080/ohcs?page=${currentPageIndex}&size=${paginationPageSize}`, { signal: controller.signal });
+             console.log(response)
           const items = response.data.content;
                 console.log("fetch");
-                // console.log(items);
+                console.log(items);
                 setRowData(items);
                 setPaginationTotalRowCount(items.length);
           if (items.length > 0) {
@@ -148,6 +149,7 @@ useEffect(() => {
           // setRowData(items);
 
       } catch (err) {
+
           console.error("Failed to fetch data: ", err);
           setRowData([]);
       }

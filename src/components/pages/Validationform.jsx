@@ -119,10 +119,10 @@ export const InjuryClassValidationForm = Yup.object({
 });
 
 export const designationForm = Yup.object({
-  DesignationName: Yup.string().min(2).max(25).required("Please enter Designation Name"),
-  DesignationDespt: Yup.string().min(2).max(25).required("Please enter Designation Description"),
-  DesignationCode: Yup.string().min(2).max(25).required("Please enter DesignationCode"),
-  DesignationCollar: Yup.string().required("Please enter Designation Collar"),
+  designationName: Yup.string().min(2).max(25).required("Please enter Designation Name"),
+  designationDesc: Yup.string().min(2).max(25).required("Please enter Designation Description"),
+  designationCode: Yup.string().min(2).max(25).required("Please enter DesignationCode"),
+  designationCollar: Yup.string().required("Please enter Designation Collar"),
     
 });
 
