@@ -17,6 +17,8 @@ import RoleList from "./components/pages/RoleList";
 import BussinessList from "./components/pages/BussinessList";
 import DepartmentList from "./components/pages/DepartmentList";
 import DesignationList from "./components/pages/DesignationList";
+import SectionList from "./components/pages/SectionList";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -85,6 +87,10 @@ const router = createBrowserRouter([
               {
                 path : '/DesignationList',
                 element : <DesignationList />
+              },
+              {
+                  path : '/SectionList',
+                  element : <SectionList/ >
               }
             ],
           },

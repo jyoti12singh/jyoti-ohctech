@@ -150,11 +150,11 @@ export const injuryForm = Yup.object({
 });
 
 export const sectionForm = Yup.object({
-  BussinessUnit: Yup.string().min(2).max(25).required("Please enter Bussiness Unit"),
-  DeptName: Yup.string().min(2).max(25).required("Please enter Department Name"),
-  SectionName: Yup.string().min(2).max(25).required("Please enter Section Name"),
-  SectionHead: Yup.string().min(2).max(25).required("Please enter Section Head"),
-  Email: Yup.string().email().required("Please enter Section Email"),
+  buId: Yup.string().min(2).max(25).required("Please enter Bussiness Unit"),
+  deptId: Yup.string().min(2).max(25).required("Please enter Department Name"),
+  sectionName: Yup.string().min(2).max(25).required("Please enter Section Name"),
+  sectionHeadName: Yup.string().min(2).max(25).required("Please enter Section Head"),
+  sectionHeadEmail: Yup.string().email().required("Please enter Section Email"),
      
 });
 
