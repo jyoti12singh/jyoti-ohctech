@@ -93,9 +93,9 @@ export const RefferalValidationForm = Yup.object({
 });
 
 export const EmployeeCadreValidationForm = Yup.object({
-  Employercadname: Yup.string().required("Please enter Employee Cadre Name"),
-  remark: Yup.string().required("Please enter Remarks"),
-  claimL : Yup.string().required("Please enter Claim Limit"),
+  empCadre: Yup.string().required("Please enter Employee Cadre Name"),
+  remarks: Yup.string().required("Please enter Remarks"),
+  medicalClaimLimit : Yup.number().required("Please enter Claim Limit"),
 });
 export const empcontValidationForm = Yup.object({
   Employername: Yup.string().required("Please enter Employee Name"),
@@ -174,3 +174,11 @@ export const bodysystemForm = Yup.object({
   DiagnosisName: Yup.string().required("Please enter Diagnosis Name"),
    BodySystem: Yup.string().required("Please enter Body System"),
 });
+
+
+// export const InjuryClassValidationForm = Yup.object({
+//   Injury_Name: Yup.string().required("Please enter Injury  Name"),
+//   Injury_Description: Yup.string().required("Please Injury   Description"),
+//   Injury_Code: Yup.string().required("Please enter Injury  code"),
+  
+// });

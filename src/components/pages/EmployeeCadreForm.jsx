@@ -42,32 +42,32 @@ import PropTypes from "prop-types";
     <Stack direction="column" spacing={1}>
         <Input 
         label="Enter Employee Cadre name"
-        name="Employercadname"
+        name="empCadre"
         type="text"
         size="large"
-        value={values.Employercadname}
+        value={values.empCadre}
      onChange={handleChange}
      onBlur={handleBlur}
      helperText={
-         errors.Employercadname && touched.Employercadname ? (
+         errors.empCadre && touched.empCadre ? (
            <span style={{ color: "red" }}>
-             {errors.Employercadname}
+             {errors.empCadre}
            </span>
          ) : null
        }
         />
         <Input 
         label="Enter Remarks"
-        name="remark"
+        name="remarks"
         type="text"
         size="large"
-        value={values.remark}
+        value={values.remarks}
      onChange={handleChange}
      onBlur={handleBlur}
      helperText={
-         errors.remark && touched.remark ? (
+         errors.remarks && touched.remarks ? (
            <span style={{ color: "red" }}>
-             {errors.remark}
+             {errors.remarks}
            </span>
          ) : null
        }
@@ -76,16 +76,16 @@ import PropTypes from "prop-types";
     <Stack direction="column" spacing={1}>
         <Input 
         label="Enter Medical Claim Limit"
-        name="claimL"
-        type="text"
+        name="medicalClaimLimit"
+        type="number"
         size="large"
-        value={values.claimL}
+        value={values.medicalClaimLimit}
      onChange={handleChange}
      onBlur={handleBlur}
      helperText={
-         errors.claimL && touched.claimL ? (
+         errors.medicalClaimLimit && touched.medicalClaimLimit ? (
            <span style={{ color: "red" }}>
-             {errors.claimL}
+             {errors.medicalClaimLimit}
            </span>
          ) : null
        }

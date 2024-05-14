@@ -18,6 +18,7 @@ import BussinessList from "./components/pages/BussinessList";
 import DepartmentList from "./components/pages/DepartmentList";
 import DesignationList from "./components/pages/DesignationList";
 import SectionList from "./components/pages/SectionList";
+import EmployeeCadreList from './components/pages/EmployeeCadreList'
 
 const router = createBrowserRouter([
   {
@@ -91,6 +92,10 @@ const router = createBrowserRouter([
               {
                   path : '/SectionList',
                   element : <SectionList/ >
+              },
+              {
+                path : '/EmployeeCadreList',
+                element : <EmployeeCadreList />
               }
             ],
           },
