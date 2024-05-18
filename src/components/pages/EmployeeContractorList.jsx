@@ -7,19 +7,21 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import SectionForm from './SectionForm';
-import { sectionForm } from './Validationform';
+import EmployeeContractorForm from './EmployeeContractorForm';
+// import { empcontValidationForm } from './Validationform';
 import { useFormik } from "formik";
-// import { WidthFull } from '@mui/icons-material';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import axios from 'axios';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from "prop-types";
 
-const SectionList = () => {
+
+const EmployeeContractorList = () => {
 
     const [rowData, setRowData] = useState([]);
 
@@ -34,17 +36,18 @@ const SectionList = () => {
     const [showupdate,setShowupdate] = useState(false);
 
     const initialValues = {
-       
+      
+  
+        employerContractorName: "",
+        employerContractorCode: "",
+        employerContractorAddress : "",
+        employerContractorContact :"",
+        employerContractorEmail: "",
+        employerContractorDesc:""
 
-        buId: "",
-        deptId: "",
-        sectionName: "",
-        sectionHeadName: "",
-        sectionHeadEmail:""
-    
       };
 
-    
+     
     
       const {
         values,
@@ -57,54 +60,55 @@ const SectionList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: sectionForm,
+        // validationSchema: empcontValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
-        //     action.resetForm();
-        //   },
-          onSubmit: async (values, {resetForm}) => {
-             console.log(values);
-            try {
-                const response = await axiosClientPrivate.post('/sections', values);
-                toast.success("Saved Successfully!",{
-                    position:"top-center"
-                 }); 
-                       // getting id(key,value) of last index
-                    const id = rowData[rowData.length-1].buId;
-                    const obj = {
-                        buId : id+1,
-                        ...values
-                    }
-                 console.log(obj);
-                 setRowData(rowData => [...rowData, obj]);
-                console.log('Response:', response.data);
-                resetForm();
-              } catch (error) {
-                console.log(values);
-                console.error('Error:', error);
-              }
-            },
+        //   action.resetForm();
+        //  },
+        onSubmit: async (values, {resetForm}) => {
+        try {
+            const response = await axiosClientPrivate.post('/employer-contractors', values);
+            toast.success("Saved Successfully!",{
+                position:"top-center"
+             }); 
+                   // getting id(key,value) of last index
+                const id = rowData[rowData.length-1].id;
+                const obj = {
+                    id : id+1,
+                    ...values
+                }
+             console.log(obj);
+             setRowData(rowData => [...rowData, obj]);
+            console.log('Response:', response.data);
+            resetForm();
+          } catch (error) {
+            console.log(values);
+            console.error('Error:', error);
+          }
+        },
       });
+      
 
-   // to delete a row
-   const handleDeleteRow = async (id) => {
-    alert(id)
-   if(window.confirm('Are you sure you want to delete this data?')){
-   try {
-       await axiosClientPrivate.delete(`/sections/${id}`);
-       setRowData(prevData => prevData.filter(row => row.id !== id));
-   } catch (error) {
-       console.error('Error deleting row:', error);
-   }
-}
-};
-
+    const handleDeleteRow = async (id) => {
+        alert(id)
+       if(window.confirm('Are you sure you want to delete this data?')){
+       try {
+           await axiosClientPrivate.delete(`/employer-contractors/${id}`);
+           setRowData(prevData => prevData.filter(row => row.id !== id));
+       } catch (error) {
+           console.error('Error deleting row:', error);
+       }
+    }
+    };
     
 
-    const CustomActionComponent = (props) => {
-          
-        return <> <Button onClick={() =>  handleEdit(props.id)}> <EditNoteRoundedIcon /></Button>
-            <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
+    const CustomActionComponent = ({id}) => {
+        CustomActionComponent.propTypes = {
+            id: PropTypes.number.isRequired,
+          };
+        return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
+           <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+
     };
 
     const pagination = true;
@@ -116,10 +120,9 @@ const SectionList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get(`http://localhost:8080/sections?page=${0}&size=${3}`, { signal: controller.signal });
+                const response = await axiosClientPrivate.get('http://localhost:8080/employer-contractors?page=0&size=3', { signal: controller.signal });
                 const items = response.data.content;
-                    console.log(items);
-                    console.log(response.data);
+                    // console.log(items);
                 
                 if (items.length > 0) {
                    const  columns = Object.keys(items[0]).map(key => ({
@@ -136,6 +139,7 @@ const SectionList = () => {
                             return <CustomActionComponent id={id} />
                         }
                     });
+    
 
                     setColDefs(columns);
                 }
@@ -159,14 +163,15 @@ const SectionList = () => {
     const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/sections/${id}`);
+          const response = await axiosClientPrivate.get(`/employer-contractors/${id}`);
             console.log(response.data);
             setFieldValue("id",response.data.id);
-            setFieldValue("buId",response.data.businessUnit.id);
-            setFieldValue("deptId",response.data.department.id);
-            setFieldValue("sectionName",response.data.sectionName);
-            setFieldValue("sectionHeadName",response.data.sectionHeadName);
-            setFieldValue("sectionHeadEmail",response.data.sectionHeadName);
+            setFieldValue("employerContractorName",response.data.employerContractorName);
+            setFieldValue("employerContractorCode",response.data.employerContractorCode);
+            setFieldValue("employerContractorAddress",response.data.employerContractorAddress);
+            setFieldValue("employerContractorContact",response.data.employerContractorContact);
+            setFieldValue("employerContractorEmail",response.data.employerContractorEmail);
+            setFieldValue("employerContractorDesc",response.data.employerContractorDesc);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
             setId(id);
@@ -177,14 +182,13 @@ const SectionList = () => {
         }
       };
 
-
       const handleUpdate = async (id)=> {
         alert(id);
         console.log(values);
         const update = values;
         try{
             //  console.log(values);
-             await axiosClientPrivate.put(`/sections/${id}`,update);
+             await axiosClientPrivate.put(`/employer-contractors/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -198,17 +202,17 @@ const SectionList = () => {
         }
       }
 
-
     const exportpdf = async () => {
         
         const doc = new jsPDF();
-        const header = [["Bussiness Unit","Department Id",'Section Name',"Section Head","Section Head Email"]];
+        const header = [["Employer/Contractor","Code",'Address',"Contact","Email","Remarks"]];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.deptId,
-          item.sectionName,
-          item.sectionHeadName,
-          item.sectionHeadEmail,
+          item.employerContractorName,
+          item.employerContractorCode,
+          item.employerContractorAddress,
+          item.employerContractorContact,
+          item.employerContractorEmail,
+          item.employerContractorDesc,
           
         ]);
         doc.autoTable({
@@ -220,9 +224,8 @@ const SectionList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("BussinessList.pdf");
+        doc.save("EmployeeContractorList.pdf");
     };
-
 
     const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
@@ -238,29 +241,32 @@ const SectionList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            buId: 20,
-            deptId: 20,
-            sectionName: 15,
-            sectionHeadName: 25,
-               sectionHeadEmail : 25
+            employerContractorName: 20,
+            employerContractorCode: 20,
+            employerContractorAddress: 15,
+            employerContractorContact: 25,
+               employerContractorEmail : 25,
+               employerContractorDesc : 25
         };
   
         sheet.columns = [
-          { header: "Bussiness Unit", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "Department Id", key: 'deptId', width: columnWidths.deptId, style: headerStyle },
-          { header: "Section Name", key: 'sectionName', width: columnWidths.sectionName, style: headerStyle },
-          { header: "Section Head", key: 'sectionHeadName', width: columnWidths.sectionHeadName, style: headerStyle },
-          { header: "Section Head Email", key: 'sectionHeadEmail', width: columnWidths.sectionHeadEmail, style: headerStyle },
+          { header: "Employer/Contractor", key: 'employerContractorName', width: columnWidths.employerContractorName, style: headerStyle },
+          { header: "Code", key: 'employerContractorCode', width: columnWidths.employerContractorCode, style: headerStyle },
+          { header: "Address", key: 'employerContractorAddress', width: columnWidths.employerContractorAddress, style: headerStyle },
+          { header: "Contact", key: 'employerContractorContact', width: columnWidths.employerContractorContact, style: headerStyle },
+          { header: "Email", key: 'employerContractorEmail', width: columnWidths.employerContractorEmail, style: headerStyle },
+          { header: "Remarks", key: 'employerContractorDesc', width: columnWidths.employerContractorDesc, style: headerStyle },
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
-                deptId: product.deptId,
-                sectionName: product.sectionName,
-                sectionHeadName: product.sectionHeadName,
-                sectionHeadEmail: product.sectionHeadEmail,
+                employerContractorName: product.employerContractorName,
+                employerContractorCode: product.employerContractorCode,
+                employerContractorAddress: product.employerContractorAddress,
+                employerContractorContact: product.employerContractorContact,
+                employerContractorEmail: product.employerContractorEmail,
+                employerContractorDesc: product.employerContractorDesc,
             })
         });
   
@@ -271,7 +277,7 @@ const SectionList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'EmployeeContractorList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -281,8 +287,8 @@ const SectionList = () => {
         <>
         <ToastContainer />
             <Box
-                className="ag-theme-quartz" 
-                style={{ height: 500 }}
+                className="ag-theme-quartz" // applying the grid theme
+                style={{ height: 500 }} // adjust width as necessary
             >
 
                 <Stack sx={{ display: 'flex', flexDirection: 'row' }} marginY={1} paddingX={1}>
@@ -290,26 +296,26 @@ const SectionList = () => {
                         <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }}>Add New</Button>
                         <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
                         <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button>
-                    </ButtonGroup>
+                        </ButtonGroup>
 
                 </Stack>
                 <AgGridReact
                     rowData={rowData}
                     columnDefs={colDefs}
-                    animateRows={true} 
+                    animateRows={true} // Optional: adds animation to row changes
                     pagination={pagination}
                     paginationPageSize={paginationPageSize}
                     paginationPageSizeSelector={paginationPageSizeSelector}
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Section ">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Employer/Contractor Name">
 
-                <SectionForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <EmployeeContractorForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default SectionList;
+export default EmployeeContractorList;

@@ -1,22 +1,16 @@
-import Ohclogo from "./Ohclogo";
-import { FormControl, Grid, TextField } from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useState } from "react";
-import MultiCheckbox from "./MultiCheckbox";
-
-const Newform = ({
+const EmployeeContractorForm = ({
   values,
   touched,
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
-  Newform.propTypes = {
+  EmployeeContractorForm.propTypes = {
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -37,15 +31,15 @@ const Newform = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter employer"
-                    name="Employername"
+                    name="employerContractorName"
                     type="text"
                     size="large"
-                    value={values. Employername}
+                    value={values. employerContractorName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors. Employername && touched. Employername ? (
-                        <span style={{ color: "red" }}>{errors. Employername}</span>
+                      errors. employerContractorName && touched. employerContractorName ? (
+                        <span style={{ color: "red" }}>{errors. employerContractorName}</span>
                       ) : null
                     }
                   />
@@ -53,16 +47,16 @@ const Newform = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter Contractor code"
-                    name="code"
+                    name="employerContractorCode"
                     type="text"
                     size="large"
-                    value={values.code}
+                    value={values.employerContractorCode}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.code && touched.code ? (
+                      errors.employerContractorCode && touched.employerContractorCode ? (
                         <span style={{ color: "red" }}>
-                          {errors.code}
+                          {errors.employerContractorCode}
                         </span>
                       ) : null
                     }
@@ -71,15 +65,15 @@ const Newform = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter Address Detail"
-                    name="addressd"
+                    name="employerContractorAddress"
                     type="text"
                     size="large"
-                    value={values. addressd}
+                    value={values. employerContractorAddress}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors. addressd && touched. addressd ? (
-                        <span style={{ color: "red" }}>{errors. addressd}</span>
+                      errors. employerContractorAddress && touched. employerContractorAddress ? (
+                        <span style={{ color: "red" }}>{errors. employerContractorAddress}</span>
                       ) : null
                     }
                   />
@@ -87,15 +81,15 @@ const Newform = ({
                 <Grid item xs={12} container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter Contact Details"
-                    name="contact"
+                    name="employerContractorContact"
                     type="text"
                     size="large"
-                    value={values.contact}
+                    value={values.employerContractorContact}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.contact && touched.contact? (
-                        <span style={{ color: "red" }}>{errors.contact}</span>
+                      errors.employerContractorContact && touched.employerContractorContact? (
+                        <span style={{ color: "red" }}>{errors.employerContractorContact}</span>
                       ) : null
                     }
                   />
@@ -103,15 +97,15 @@ const Newform = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter Email Details"
-                    name="email"
+                    name="employerContractorEmail"
                     type="text"
                     size="large"
-                    value={values.email}
+                    value={values.employerContractorEmail}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.email && touched.email ? (
-                        <span style={{ color: "red" }}>{errors.email}</span>
+                      errors.employerContractorEmail && touched.employerContractorEmail ? (
+                        <span style={{ color: "red" }}>{errors.employerContractorEmail}</span>
                       ) : null
                     }
                   />
@@ -119,15 +113,15 @@ const Newform = ({
                 <Grid item xs={12} container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter Remarks "
-                    name="remark"
+                    name="employerContractorDesc"
                     type="text"
                     size="large"
-                    value={values.remark}
+                    value={values.employerContractorDesc}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.remark && touched.remark ? (
-                        <span style={{ color: "red" }}>{errors.remark}</span>
+                      errors.employerContractorDesc && touched.employerContractorDesc ? (
+                        <span style={{ color: "red" }}>{errors.employerContractorDesc}</span>
                       ) : null
                     }
                   />
@@ -142,7 +136,7 @@ const Newform = ({
   );
 };
 
-export default Newform;
+export default EmployeeContractorForm;
 
 // import Ohclogo from "./Ohclogo";
 // import { FormControl, Stack, Box, TextField } from "@mui/material";

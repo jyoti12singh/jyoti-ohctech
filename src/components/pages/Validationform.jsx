@@ -51,7 +51,7 @@ export const roleValidationForm = Yup.object({
 
 
 export const MedTimeValidationForm = Yup.object({
-  MedicineTiming: Yup.string().min(2).max(25).required("Please enter medicine timing"),
+  medicineTiming: Yup.string().min(2).max(25).required("Please enter medicine timing"),
   timingDescription: Yup.string().min(2).max(25).required("Please enter Description"),
 });
 
@@ -98,12 +98,12 @@ export const EmployeeCadreValidationForm = Yup.object({
   medicalClaimLimit : Yup.number().required("Please enter Claim Limit"),
 });
 export const empcontValidationForm = Yup.object({
-  Employername: Yup.string().required("Please enter Employee Name"),
-  code: Yup.string().required("Please enter Code"),
-  addressd : Yup.string().required("Please enter Address"),
-  contact : Yup.number().required("Please enter Contact Details"),
-  email: Yup.string().required("Please enter Emails"),
-  remark: Yup.string().required("Please enter Remarks of Employee"),
+  employerContractorName: Yup.string().required("Please enter Employee Name"),
+  employerContractorCode: Yup.string().required("Please enter Code"),
+  employerContractorAddress : Yup.string().required("Please enter Address"),
+  employerContractorContact : Yup.number().required("Please enter Contact Details"),
+  employerContractorEmail: Yup.string().required("Please enter Emails"),
+  employerContractorDesc: Yup.string().required("Please enter Remarks of Employee"),
 });
 export const InjuryValidationForm = Yup.object({
   Injury_Name: Yup.string().required("Please enter Injury part Name"),

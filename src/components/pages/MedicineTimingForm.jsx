@@ -10,7 +10,7 @@ const MedicineTimingForm = ({
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
     MedicineTimingForm.propTypes = {
@@ -24,8 +24,8 @@ const MedicineTimingForm = ({
   };
 
 
-  const statusSelect = ["Active", "Not Active"];
-  const isDefault = ["Yes", "No"];
+  // const statusSelect = ["Active", "Not Active"];
+  // const isDefault = ["Yes", "No"];
 
 
 
@@ -62,15 +62,15 @@ const MedicineTimingForm = ({
           <Stack direction="row" spacing={2}>
             <Input
               label="Enter Medicine Timing"
-              name="MedicineTiming"
-              type="time"
+              name="medicineTiming"
+              type="text"
               size="large"
-              value={values.MedicineTiming}
+              value={values.medicineTiming}
               onChange={handleChange}
               onBlur={handleBlur}
               helperText={
-                errors.MedicineTiming && touched.MedicineTiming ? (
-                  <span style={{ color: "red" }}>{errors.MedicineTiming}</span>
+                errors.medicineTiming && touched.medicineTiming ? (
+                  <span style={{ color: "red" }}>{errors.medicineTiming}</span>
                 ) : null
               }
             />
