@@ -160,8 +160,8 @@ export const sectionForm = Yup.object({
 
 export const complaintForm = Yup.object({
   complaint: Yup.string().min(2).max(25).required("Please enter Complaint"),
-   details: Yup.string().min(2).max(25).required("Please enter Complaint Details"),
-   active: Yup.string().required("Please Select deafult"),
+  complaintDesc: Yup.string().min(2).max(25).required("Please enter Complaint Details"),
+  isActive: Yup.string().required("Please Select deafult"),
   
      
 });

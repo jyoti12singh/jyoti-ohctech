@@ -21,6 +21,8 @@ import SectionList from "./components/pages/SectionList";
 import EmployeeCadreList from './components/pages/EmployeeCadreList'
 import EmployeeContractorList from "./components/pages/EmployeeContractorList";
 import MedTimingList from "./components/pages/MedTimingList";
+import ComplaintList from "./components/pages/ComplaintList";
+
 
 const router = createBrowserRouter([
   {
@@ -106,7 +108,11 @@ const router = createBrowserRouter([
               {
                 path : "/MedTimingList",
                 element : <MedTimingList />
-              }
+              },
+              {
+                path : "/ComplaintList",
+                element : <ComplaintList />
+              },
             ],
           },
         ],

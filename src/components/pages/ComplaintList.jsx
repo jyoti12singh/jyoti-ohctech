@@ -4,25 +4,42 @@ import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
-import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import ComplaintForm from './ComplaintForm';
 import { complaintForm } from './Validationform';
 import { useFormik } from "formik";
 // import axios from 'axios';
+import PropTypes from "prop-types";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import DownloadIcon from '@mui/icons-material/Download';
+import ExcelJS from 'exceljs';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const ComplaintList = () => {
 
-    const initialValues = {
-        complaint: "",
-        details: "",
-        active: ""
-    
+    const [rowData, setRowData] = useState([]);
 
+    const [colDefs, setColDefs] = useState([]);
+
+    const [openPopup, setOpenPopup] = useState(false);
+
+    const axiosClientPrivate = useAxiosPrivate();
+
+    const [id,setId] = useState(1);
+
+    const [showupdate,setShowupdate] = useState(false);
+
+    const initialValues = {
+        complaint : "",
+        complaintDesc: "",
+        isActive: ""
       };
 
-      const axiosClientPrivate = useAxiosPrivate();
     
       const {
         values,
@@ -36,51 +53,57 @@ const ComplaintList = () => {
       } = useFormik({
         initialValues: initialValues,
         validationSchema: complaintForm,
-        onSubmit: (values, action) => {
-            console.log(values);
-            action.resetForm();
-          },
-        // onSubmit: async (values, {resetForm}) => {
-        // try {
-        //     const response = await axiosClientPrivate.post('/ohcs', values);
-        //     console.log('Response:', response.data);
-        //     resetForm();
-        //   } catch (error) {
+        // onSubmit: (values, action) => {
         //     console.log(values);
-        //     console.error('Error:', error);
-        //   }
-        // },
+        //     action.resetForm();
+        //   },
+        onSubmit: async (values, {resetForm}) => {
+            console.log(values);
+           try {
+               const response = await axiosClientPrivate.post('/complaints', values);
+               toast.success("Saved Successfully!",{
+                   position:"top-center"
+                }); 
+                      // getting id(key,value) of last index
+                   const id = rowData[rowData.length-1].id;
+                   const obj = {
+                       id : id+1,
+                       ...values
+                   }
+                console.log(obj);
+                setRowData(rowData => [...rowData, obj]);
+               console.log('Response:', response.data);
+               resetForm();
+             } catch (error) {
+               console.log(values);
+               console.error('Error:', error);
+             }
+           },
       });
 
 
-    // const handleDelete = (id)=>{
-    //         // alert("Delete item!")
-    //         alert(id);
-    // } 
 
-    const handleDeleteRow = async (id) => {
-        alert(id)
-        try {
-            await axiosClientPrivate.delete(`/ohcs/${id}`);
+    // to delete a row
+   const handleDeleteRow = async (id) => {
+    alert(id)
+   if(window.confirm('Are you sure you want to delete this data?')){
+   try {
+       await axiosClientPrivate.delete(`/complaints/${id}`);
+       setRowData(prevData => prevData.filter(row => row.id !== id));
+   } catch (error) {
+       console.error('Error deleting row:', error);
+   }
+}
+};
 
-            // Update the grid data by filtering out the deleted row
-            const newData = rowData.filter(row => row.id !== id);
-            setRowData(newData);
-        } catch (error) {
-            console.error('Error deleting row:', error);
-        }
-    };
 
-    const [rowData, setRowData] = useState([]);
-
-    const [colDefs, setColDefs] = useState([]);
-
-    const [openPopup, setOpenPopup] = useState(false);
-
-    const CustomActionComponent = (props) => {
-          
-        return <> <Button onClick={() => console.log(props.data)}> <EditNoteRoundedIcon /></Button>
-            <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
+    const CustomActionComponent = ({id}) => {
+        CustomActionComponent.propTypes = {
+            id: PropTypes.number.isRequired,
+          };
+        return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
+           <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+    
     };
 
     const pagination = true;
@@ -92,8 +115,8 @@ const ComplaintList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('ohcs', { signal: controller.signal });
-                const items = response.data;
+                const response = await axiosClientPrivate.get('http://localhost:8080/complaints?page=0&size=3', { signal: controller.signal });
+                const items = response.data.content;
                     // console.log(items);
                 
                 if (items.length > 0) {
@@ -105,8 +128,7 @@ const ComplaintList = () => {
                         sortable: true
                     }));
 
-                    columns.push({
-                        // field: "Actions", cellRenderer: CustomActionComponent
+                    columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
                             const id = params.data.id;
                             return <CustomActionComponent id={id} />
@@ -132,8 +154,124 @@ const ComplaintList = () => {
 
     }, []);
 
+    const handleEdit = async (id) => {
+        alert(id);
+        try {
+          const response = await axiosClientPrivate.get(`/complaints/${id}`);
+            console.log(response.data);
+            setFieldValue("id",response.data.id);
+            setFieldValue("complaint",response.data.complaint);
+            setFieldValue("complaintDesc",response.data.complaintDesc);
+            setFieldValue("isActive",response.data.isActive);
+            setFieldValue("lastModified", response.data.lastModified);
+            setFieldValue("modifiedBy", response.data.modifiedBy);
+            setId(id);
+            setShowupdate(true);
+            setOpenPopup(true);
+        } catch (error) {
+          console.error('Error fetching item for edit:', error);
+        }
+      };
+
+      const handleUpdate = async (id)=> {
+        alert(id);
+        console.log(values);
+        const update = values;
+        try{
+            //  console.log(values);
+             await axiosClientPrivate.put(`/complaints/${id}`,update);
+             toast.success("Updated Successfully!",{
+                position:"top-center",
+                autoClose: 3000,
+             });
+             resetForm();
+            //  setRowData(rowData => [...rowData,values]);
+        }
+        catch(err){
+            console.log("after:- ",values);
+            console.log(err);
+        }
+      }
+
+      const exportpdf = async () => {
+        
+        const doc = new jsPDF();
+        const header = [["Id","Complaint",'Complaint in Details',"Is Active"]];
+        const tableData = rowData.map(item => [
+          item.id,
+          item.complaint,
+          item.complaintDesc,
+          item.isActive,
+          
+          
+        ]);
+        doc.autoTable({
+          head: header,
+          body: tableData,
+          startY: 20, // Start Y position for the table
+          theme: 'grid', // Optional theme for the table
+          margin: { top: 30 }, // Optional margin from top
+          styles: { fontSize: 5 },
+          columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
+      });
+        doc.save("ComplaintList.pdf");
+    };
+
+
+    const exportExcelfile = async () => {
+        const workbook = new ExcelJS.Workbook();
+        const sheet = workbook.addWorksheet('My Sheet');
+        
+  
+        const headerStyle = {
+          // font: { bold: true, size: 12 },
+          alignment: { horizontal: 'center' }
+          
+      };
+  
+      sheet.getRow(1).font = { bold: true };
+        
+        const columnWidths = {
+            id: 20,
+            complaint: 20,
+            complaintDesc: 25,
+            isActive: 25,
+        };
+  
+        sheet.columns = [
+          { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
+          { header: "Complaint", key: 'complaint', width: columnWidths.complaint, style: headerStyle },
+          { header: "Complaint in Details", key: 'complaintDesc', width: columnWidths.complaintDesc, style: headerStyle },
+          { header: "Is Active", key: 'isActive', width: columnWidths.isActive, style: headerStyle },
+          
+      ];
+  
+        rowData.map(product =>{
+            sheet.addRow({
+                id: product.id,
+                complaint: product.complaint,
+                complaintDesc: product.complaintDesc,
+                isActive: product.isActive,
+            })
+        });
+  
+        workbook.xlsx.writeBuffer().then(data => {
+            const blob = new Blob([data], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheet.sheet",
+            });
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = 'ComplaintList.xlsx';
+            anchor.click();
+            // anchor.URL.revokeObjectURL(url);
+        })
+    }
+
+
     return (
         <>
+        <ToastContainer />
             <Box
                 className="ag-theme-quartz" // applying the grid theme
                 style={{ height: 500 }} // adjust width as necessary
@@ -142,8 +280,8 @@ const ComplaintList = () => {
                 <Stack sx={{ display: 'flex', flexDirection: 'row' }} marginY={1} paddingX={1}>
                     <ButtonGroup variant="contained" aria-label="Basic button group">
                         <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }}>Add New</Button>
-                        <Button variant="contained" color="success" endIcon={<ImportExportRoundedIcon />}>Export Data</Button>
-                    </ButtonGroup>
+                        <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
+                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button>                    </ButtonGroup>
 
                 </Stack>
                 <AgGridReact
@@ -156,7 +294,7 @@ const ComplaintList = () => {
                 />
             </Box>
 
-            <Popup resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Add Complaint">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Add Complaint">
 
                 <ComplaintForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
