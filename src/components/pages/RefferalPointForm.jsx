@@ -1,25 +1,25 @@
-import Ohclogo from "./Ohclogo";
-import { FormControl, Grid, TextField } from "@mui/material";
+// import Ohclogo from "./Ohclogo";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
-import SingleSelect from "../common/SingleSelect"
-import MultipleSelect from "../common/MultipleSelect";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useState } from "react";
-import MultiCheckbox from "./MultiCheckbox";
+// import SingleSelect from "../common/SingleSelect"
+// import MultipleSelect from "../common/MultipleSelect";
+// import { InputLabel, MenuItem, Select } from "@mui/material";
+// import Autocomplete from "@mui/material/Autocomplete";
+// import { useState } from "react";
+// import MultiCheckbox from "./MultiCheckbox";
 
 
-const RefferalForm = ({
+const RefferalPointForm = ({
   values,
   touched,
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
-    RefferalForm.propTypes = {
+  RefferalPointForm.propTypes = {
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -30,8 +30,7 @@ const RefferalForm = ({
   };
 
 
-  const Medselect = ["Active", "Not Active"];
-  const isDefault = ["Yes", "No"];
+
 
 
 
@@ -45,15 +44,15 @@ const RefferalForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter Refferal Point Name"
-                    name="RefferalPointName"
+                    name="referralPointName"
                     type="text"
                     size="large"
-                    value={values.RefferalPointName}
+                    value={values.referralPointName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.RefferalPointName && touched.RefferalPointName? (
-                        <span style={{ color: "red" }}>{errors.RefferalPointName}</span>
+                      errors.referralPointName && touched.referralPointName? (
+                        <span style={{ color: "red" }}>{errors.referralPointName}</span>
                       ) : null
                     }
                   />
@@ -61,16 +60,16 @@ const RefferalForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter Specialist"
-                    name="Specialist"
+                    name="city"
                     type="text"
                     size="large"
-                    value={values.Specialist}
+                    value={values.city}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.Specialist && touched.Specialist? (
+                      errors.city && touched.city? (
                         <span style={{ color: "red" }}>
-                          {errors.Specialist}
+                          {errors.city}
                         </span>
                       ) : null
                     }
@@ -79,15 +78,15 @@ const RefferalForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter the Hospital Name"
-                    name="HospitalName"
+                    name="hospitalName"
                     type="text"
                     size="large"
-                    value={values.HospitalName}
+                    value={values.hospitalName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.HospitalName && touched.HospitalName ? (
-                        <span style={{ color: "red" }}>{errors.HospitalName}</span>
+                      errors.hospitalName && touched.hospitalName ? (
+                        <span style={{ color: "red" }}>{errors.hospitalName}</span>
                       ) : null
                     }
                   />
@@ -95,15 +94,15 @@ const RefferalForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter the Address"
-                    name="Address"
+                    name="address"
                     type="text"
                     size="large"
-                    value={values.Address}
+                    value={values.address}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.Address && touched.Address ? (
-                        <span style={{ color: "red" }}>{errors.Address}</span>
+                      errors.address && touched.address ? (
+                        <span style={{ color: "red" }}>{errors.address}</span>
                       ) : null
                     }
                   />
@@ -112,15 +111,15 @@ const RefferalForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter Contact Detail"
-                    name="ContactDetail"
+                    name="contactDetail"
                     type="text"
                     size="large"
-                    value={values.ContactDetail}
+                    value={values.contactDetail}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.ContactDetail && touched.ContactDetail ? (
-                        <span style={{ color: "red" }}>{errors.ContactDetail}</span>
+                      errors.contactDetail && touched.contactDetail ? (
+                        <span style={{ color: "red" }}>{errors.contactDetail}</span>
                       ) : null
                     }
                   />
@@ -138,4 +137,4 @@ const RefferalForm = ({
 };
 
 
-export default RefferalForm;
+export default RefferalPointForm;

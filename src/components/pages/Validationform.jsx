@@ -85,11 +85,11 @@ export const AilmentValidationForm = Yup.object({
 });
 
 export const RefferalValidationForm = Yup.object({
-  RefferalPointName: Yup.string(2).min(1).required("Please enter refferal point name"),
-  Specialist: Yup.string().min(2).max(25).required("Please enter specialist name"),
-  HospitalName: Yup.string().min(2).max(25).required("Please enter hospital name"),
-  Address: Yup.string().min(2).max(25).required("Please enter address"),
-  ContactDetail: Yup.string().required("Please enter contact detail"),
+  referralPointName: Yup.string(2).min(1).required("Please enter refferal point name"),
+  city: Yup.string().min(2).max(25).required("Please enter specialist name"),
+  hospitalName: Yup.string().min(2).max(25).required("Please enter hospital name"),
+  address: Yup.string().min(2).max(25).required("Please enter address"),
+  contactDetail: Yup.string().required("Please enter contact detail"),
 });
 
 export const EmployeeCadreValidationForm = Yup.object({
