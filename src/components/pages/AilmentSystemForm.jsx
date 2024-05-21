@@ -2,20 +2,20 @@
 import { FormControl, Stack, Box } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
-import SingleSelect from "../common/SingleSelect"
-import MultipleSelect from "../common/MultipleSelect";
+// import SingleSelect from "../common/SingleSelect"
+// import MultipleSelect from "../common/MultipleSelect";
 
 
-const AilmentTimingForm = ({
+const AilmentSystemForm = ({
   values,
   touched,
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
-  AilmentTimingForm.propTypes = {
+  AilmentSystemForm.propTypes = {
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -26,8 +26,8 @@ const AilmentTimingForm = ({
   };
 
 
-  const statusSelect = ["Active", "Not Active"];
-  const isDefault = ["Yes", "No"];
+  // const statusSelect = ["Active", "Not Active"];
+  // const isDefault = ["Yes", "No"];
 
 
 
@@ -64,15 +64,15 @@ const AilmentTimingForm = ({
           <Stack direction="row" spacing={1}>
             <Input
               label="Enter ailment Name"
-              name="ailmentName"
+              name="ailmentSysName"
               type="text"
               size="large"
-              value={values.ailmentName}
+              value={values.ailmentSysName}
               onChange={handleChange}
               onBlur={handleBlur}
               helperText={
-                errors.ailmentName && touched.ailmentName ? (
-                  <span style={{ color: "red" }}>{errors.ailmentName}</span>
+                errors.ailmentSysName && touched.ailmentSysName ? (
+                  <span style={{ color: "red" }}>{errors.ailmentSysName}</span>
                 ) : null
               }
             />    
@@ -82,15 +82,15 @@ const AilmentTimingForm = ({
           <Stack direction="row" spacing={2}>
             <Input
               label="Enter Ailment Description"
-              name="ailmentDescription"
+              name="ailmentSysDesc"
               type="text"
               size="large"
-              value={values.ailmentDescription}
+              value={values.ailmentSysDesc}
               onChange={handleChange}
               onBlur={handleBlur}
               helperText={
-                errors.ailmentDescription && touched.ailmentDescription ? (
-                  <span style={{ color: "red" }}>{errors.ailmentDescription}</span>
+                errors.ailmentSysDesc && touched.ailmentSysDesc ? (
+                  <span style={{ color: "red" }}>{errors.ailmentSysDesc}</span>
                 ) : null
               }
             />   
@@ -100,15 +100,15 @@ const AilmentTimingForm = ({
           <Stack direction="row" spacing={2}>
             <Input
               label="Enter Ailment Code"
-              name="ailmentCode"
+              name="ailmentSysCode"
               type="text"
               size="large"
-              value={values.ailmentCode}
+              value={values.ailmentSysCode}
               onChange={handleChange}
               onBlur={handleBlur}
               helperText={
-                errors.ailmentCode && touched.ailmentCode ? (
-                  <span style={{ color: "red" }}>{errors.ailmentCode}</span>
+                errors.ailmentSysCode && touched.ailmentSysCode ? (
+                  <span style={{ color: "red" }}>{errors.ailmentSysCode}</span>
                 ) : null
               }
             /> 
@@ -120,4 +120,4 @@ const AilmentTimingForm = ({
   );
 };
 
-export default AilmentTimingForm;
+export default AilmentSystemForm;

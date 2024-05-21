@@ -23,6 +23,7 @@ import EmployeeContractorList from "./components/pages/EmployeeContractorList";
 import MedTimingList from "./components/pages/MedTimingList";
 import ComplaintList from "./components/pages/ComplaintList";
 import RefferalPointList from "./components/pages/RefferalPointList";
+import AilmentSystemList from "./components/pages/AilmentSystemList";
 
 const router = createBrowserRouter([
   {
@@ -116,6 +117,10 @@ const router = createBrowserRouter([
               {
                 path : "/RefferalPointList",
                 element : <RefferalPointList />
+              },
+              {
+                path : "/AilmentSystemList",
+                element : <AilmentSystemList />
               }
             ],
           },
