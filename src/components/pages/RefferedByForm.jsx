@@ -45,15 +45,15 @@ const RefferedByForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Reffered By"
-                    name="RefferedBy"
+                    name="referredBy"
                     type="text"
                     size="large"
-                    value={values.RefferedBy}
+                    value={values.referredBy}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.RefferedBy && touched.RefferedBy? (
-                        <span style={{ color: "red" }}>{errors.RefferedBy}</span>
+                      errors.referredBy && touched.referredBy? (
+                        <span style={{ color: "red" }}>{errors.referredBy}</span>
                       ) : null
                     }
                   />
@@ -61,16 +61,16 @@ const RefferedByForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter Description"
-                    name="Description"
+                    name="description"
                     type="text"
                     size="large"
-                    value={values.Description}
+                    value={values.description}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.Description && touched.Description? (
+                      errors.description && touched.description? (
                         <span style={{ color: "red" }}>
-                          {errors.Description}
+                          {errors.description}
                         </span>
                       ) : null
                     }
@@ -79,15 +79,15 @@ const RefferedByForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter Remarks"
-                    name="Remarks"
+                    name="remarks"
                     type="text"
                     size="large"
-                    value={values.Remarks}
+                    value={values.remarks}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.Remarks && touched.Remarks ? (
-                        <span style={{ color: "red" }}>{errors.Remarks}</span>
+                      errors.remarks && touched.remarks ? (
+                        <span style={{ color: "red" }}>{errors.remarks}</span>
                       ) : null
                     }
                   />

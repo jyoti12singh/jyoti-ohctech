@@ -175,10 +175,9 @@ export const bodysystemForm = Yup.object({
    BodySystem: Yup.string().required("Please enter Body System"),
 });
 
-
-// export const InjuryClassValidationForm = Yup.object({
-//   Injury_Name: Yup.string().required("Please enter Injury  Name"),
-//   Injury_Description: Yup.string().required("Please Injury   Description"),
-//   Injury_Code: Yup.string().required("Please enter Injury  code"),
-  
-// });
+// RefferalBy form
+export const RefferedByValidationForm = Yup.object({
+  referredBy: Yup.string().required("Please enter Reffered By"),
+  description: Yup.string().required("Please Enter Description"),
+  remarks: Yup.string().required("Please Enter Remarks"),
+});
