@@ -79,9 +79,9 @@ export const AddDocValidationForm = Yup.object({
 
 export const AilmentValidationForm = Yup.object({
   ailmentName: Yup.string().min(2).max(25).required("Please enter ailment Name"),
-  ailmentDescription: Yup.string().min(2).max(25).required("Please enter Description"),
+  ailmentDesc: Yup.string().min(2).max(25).required("Please enter Description"),
   ailmentCode: Yup.string().min(2).max(25).required("Please enter ailment code"),
-  statusType: Yup.string().min(2).max(25).required("Please enter ailment Action"),
+  isActive: Yup.string().min(2).max(25).required("Please enter ailment Action"),
 });
 
 export const RefferalValidationForm = Yup.object({
