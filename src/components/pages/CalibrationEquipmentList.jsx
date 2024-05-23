@@ -21,7 +21,7 @@ import 'jspdf-autotable';
 const CalibrationEquipmentList = () => {
 
 
-    const [rowData, setRowData] = useState([]);
+    const [rowData, setRowData] =useState([]);
 
     const [colDefs, setColDefs] = useState([]);
 
