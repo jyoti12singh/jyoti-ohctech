@@ -67,7 +67,7 @@ const BusinessReportList = () => {
             const newData = rowData.filter(row => row.id !== id);
             setRowData(newData);
         } catch (error) {
-            console.error('Error deleting row:', error);
+            console.error('Error deleting row:',error);
         }
     };
 

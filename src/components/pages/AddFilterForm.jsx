@@ -77,7 +77,7 @@ const AddFilterForm = ({
                     }
                 />
                 </Grid>
-                <Grid item   container spacing={1} justifyContent="center" alignItems="center">
+                <Grid item  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                   // sx={{ width: "150px" }}
                   label="Enter Filter Code"

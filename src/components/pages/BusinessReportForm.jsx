@@ -8,7 +8,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useState } from "react";
 import MultiCheckbox from "./MultiCheckbox";
 
-const BusinessReportForm = ({
+const BusinessReportForm =({
   values,
   touched,
   handleBlur,

@@ -17,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const AddFilterList = () => {
 
   const [id,setId] = useState();
-  const [showupdate,setShowupdate] = useState(false);
+  const [showupdate,setShowupdate] =useState(false);
 
   const initialValues = {
     filterName: "",

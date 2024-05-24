@@ -165,7 +165,7 @@ const handleUpdate = async (id)=> {
        await axiosClientPrivate.put(`/ohcs/${id}`,update);
        toast.success("Updated Successfully!",{
           position:"top-center",
-          autoClose: 3000,
+          autoClose:3000,
        });
        resetForm();
   }
