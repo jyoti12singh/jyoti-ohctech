@@ -5,18 +5,29 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import ImportExportRoundedIcon from "@mui/icons-material/ImportExportRounded";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
-import  {menuValidationForm}  from './Validationform';
+// import  {menuValidationForm}  from './Validationform';
 import Popup from "./Popup";
 import MenuForm from './MenuForm';
 import { useFormik } from "formik";
 import { useState,useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from "prop-types";
+
+
 const MenuList = () => {
 
-    const [id,setId] = useState(1);
-    const [showupdate,setShowupdate] = useState(false);
-    const [rowData, setRowData] = useState([]);
+  const [rowData, setRowData] = useState([]);
+
+  const [colDefs, setColDefs] = useState([]);
+
+  const [openPopup, setOpenPopup] = useState(false);
+
+  const axiosClientPrivate = useAxiosPrivate();
+
+  const [id,setId] = useState(1);
+
+  const [showupdate,setShowupdate] = useState(false);
 
   const initialValues = {
     // Id: "",
@@ -48,42 +59,39 @@ const MenuList = () => {
     // },
 
     onSubmit: async (values, {resetForm}) => {
-      try {
-           await axiosClientPrivate.post('/menus', values);
-          toast.success("Saved Successfully!",{
-            position:"top-center"
-         });
-          // setRowData(prevRowData => [...prevRowData, values]);
-          setRowData(rowData => [...rowData, values]);
-          resetForm();
-        } catch (error) {
-          console.log(values);
-          console.error('Error:', error);
-        }
-      },
+      console.log(values);
+     try {
+         const response = await axiosClientPrivate.post('/menus', values);
+         toast.success("Saved Successfully!",{
+             position:"top-center"
+          }); 
+                // getting id(key,value) of last index
+             const id = rowData[rowData.length-1].Id;
+             const obj = {
+              Id : id+1,
+                 ...values
+             }
+          console.log(obj);
+          setRowData(rowData => [...rowData, obj]);
+         console.log('Response:', response.data);
+         resetForm();
+       } catch (error) {
+         console.log(values);
+         console.error('Error:', error);
+       }
+     },
 
   });
 
 
-  // to delete a row
-  // const handleDeleteRow = async (id) => {
-  //   alert(id)
-  // if(window.confirm('Are you sure you want to delete this data?')){
-  // try {
-  //     await axiosClientPrivate.delete(`/menus/${id}`);
-  //     setRowData(prevData => prevData.filter(row => row.id !== id));
-  // } catch (error) {
-  //     console.error('Error deleting row:', error);
-  // }
-  // }
-  // };
 
   const handleEdit = async (id) => {
     alert(id);
     try {
         // console.log(rowData);
       const response = await axiosClientPrivate.get(`/menus/${id}`);
-        // console.log(response.data);
+        console.log(response.data);
+        setFieldValue("Id",response.data.Id);
         setFieldValue("menuName",response.data.menuName);
         setFieldValue("menuUrl",response.data.menuUrl);
         setFieldValue("menuDescription",response.data.menuDescription);
@@ -103,20 +111,27 @@ const MenuList = () => {
 
   
 
+  // to delete a row
+  const handleDeleteRow = async (id) => {
+    alert(id)
+   if(window.confirm('Are you sure you want to delete this data?')){
+   try {
+       await axiosClientPrivate.delete(`/menus/${id}`);
+       setRowData(prevData => prevData.filter(row => row.id !== id));
+   } catch (error) {
+       console.error('Error deleting row:', error);
+   }
+  }
+  };
 
-
-  const axiosClientPrivate = useAxiosPrivate();
-
-  const [colDefs, setColDefs] = useState([]);
-
-  const [openPopup, setOpenPopup] = useState(false);
-
-  // const updateData = [];
   
-  const CustomActionComponent = (props) => {
-    return <> <Button onClick={() =>  handleEdit(props.id)}> <EditNoteRoundedIcon /></Button>
-        <Button color="error"  ><DeleteSweepRoundedIcon /></Button> </>
-        // onClick={()=>handleDeleteRow(props.id)}
+  const CustomActionComponent = ({id}) => {
+    CustomActionComponent.propTypes = {
+        id: PropTypes.number.isRequired,
+      };
+    return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
+       <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+
 };
 
 const pagination = true;
@@ -129,7 +144,8 @@ useEffect(() => {
     const getAllOhc = async () => {
         try {
             const response = await axiosClientPrivate.get('/menus', { signal: controller.signal });
-            const items = response.data;
+            const items = response.data.content;
+            console.log(items);
             setRowData(items);
             console.log('rowData', items);
             if (items.length > 0) {
@@ -173,41 +189,12 @@ useEffect(() => {
 
 
 
-// const handleEdit = (id)=> {
-//   alert(id);
-//   console.log(rowData);
-//   const uniqueId = id;
-//   const index = rowData.findIndex(obj => obj.Id === uniqueId);
 
-// // Check if the index is valid
-// if (index !== -1) {
-//     // Access the object at the specified index
-//     const selectedMenu = rowData[index];
-
-//     // Set field values using setFieldValue
-//     setFieldValue("Id", selectedMenu.Id);
-//     setFieldValue("menuName", selectedMenu.menuName);
-//     setFieldValue("menuUrl", selectedMenu.menuUrl);
-//     setFieldValue("menuDescription", selectedMenu.menuDescription);
-//     setFieldValue("displaySequence", selectedMenu.displaySequence);
-//     setFieldValue("childMenus", selectedMenu.childMenus);
-//     setFieldValue("iconText", selectedMenu.iconText);
-//     setFieldValue("modifiedBy", selectedMenu.modifiedBy);
-//     setFieldValue("parentMenu", selectedMenu.parentMenu);
-//     setId(id);
-//     setShowupdate(true);
-//     setOpenPopup(true);
-
-// } else {
-//     // Handle case where the object with the unique ID is not found
-//     console.log("Object with unique ID not found.");
-// }
-// }
 
 
 
 const handleUpdate = async (id)=> {
-// alert(id);
+alert(id);
 const update = values;
 try{
      console.log(values);
@@ -219,6 +206,7 @@ try{
      resetForm();
 }
 catch(err){
+     console.log("check",update);
     console.log(err);
 }
 }
@@ -227,6 +215,7 @@ catch(err){
 
   return (
     <>
+    <ToastContainer />
       <Box
         className="ag-theme-quartz" // applying the grid theme
         style={{ height: 500 }} // adjust width as necessary

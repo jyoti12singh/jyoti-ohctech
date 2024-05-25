@@ -56,6 +56,24 @@ import PropTypes from "prop-types";
          ) : null
        }
         />
+
+        <Input 
+        label="Icon Text"
+        name="iconText"
+        type="text"
+        size="large"
+        value={values.iconText}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      helperText={
+         errors.iconText && touched.iconText ? (
+           <span style={{ color: "red" }}>
+             {errors.iconText}
+           </span>
+         ) : null
+       }
+        />
+      
     </Stack>
     <Stack direction="row" spacing={2}>
         <Input 

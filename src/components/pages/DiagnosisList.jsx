@@ -24,7 +24,7 @@ import { useFormik } from "formik";
 
 const DiagnosisList = () => {
 
-    const [rowData, setRowData] = useState([]);
+        const [rowData, setRowData] = useState([]);
 
         const [colDefs, setColDefs] = useState([]);
     

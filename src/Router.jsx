@@ -26,6 +26,9 @@ import RefferalPointList from "./components/pages/RefferalPointList";
 import AilmentSystemList from "./components/pages/AilmentSystemList";
 import DiagnosisList from "./components/pages/DiagnosisList";
 import RefferedByList from "./components/pages/RefferedByList";
+import AbnormalityList from "./components/pages/AbnormalityList";
+import AddDocDetailList from "./components/pages/AddDocDetailList";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -72,15 +75,15 @@ const router = createBrowserRouter([
                 element:<OhcList />
               },
               {
-                path:'/userList',
+                path:'/UserList',
                 element: <UserList />
               },
               {
-                path:'/roleList',
+                path:'/RoleList',
                 element:<RoleList />
               },
               {
-                path:'/menuList',
+                path:'/MenuList',
                 element:<MenuList />
               },
               {
@@ -88,7 +91,7 @@ const router = createBrowserRouter([
                 element: <BussinessList />
               },
               {
-                path : '/departmentList',
+                path : '/DepartmentList',
                 element : <DepartmentList />
               },
               {
@@ -130,6 +133,14 @@ const router = createBrowserRouter([
               {
                 path : "/RefferedByList",
                 element : <RefferedByList />
+              },
+              {
+                path  : "/AbnormalityList",
+                element : <AbnormalityList />
+              },
+              {
+                path : "/AddDocDetailList",
+                element : <AddDocDetailList />
               }
             ],
           },

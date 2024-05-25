@@ -16,6 +16,8 @@ import useAxiosPrivate from "../../utils/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import { useSessionStorage } from "../../utils/useSessionStorage";
 import { useEffect, useState } from "react";
+// import BuildRoundedIcon from '@mui/icons-material/BuildRounded';
+// import Icon from "@mui/material";
 
 const ListMenu = ({ handleClick, openItem }) => {
   //  cosnt [data,setData] = useState([]);
@@ -45,7 +47,7 @@ const ListMenu = ({ handleClick, openItem }) => {
             signal: controller.signal,
           }
         );
-           // console.log(response.data);
+           console.log(response.data);
         //   setData(JSON.stringify(response.data)); string
         setData(response.data);
       } catch (err) {
@@ -81,7 +83,7 @@ const ListMenu = ({ handleClick, openItem }) => {
           >
             <ListItemButton  onClick={() => handleItemClick(index)}>
               <ListItemIcon>
-                <SendIcon />
+               
               </ListItemIcon>
               <ListItemText primary={menu.menuName} />
              { /*{openItem === 0 ? <ExpandLess /> : <ExpandMore />}*/}
@@ -95,7 +97,7 @@ const ListMenu = ({ handleClick, openItem }) => {
                     {/*<ListItemIcon>
                           <StarBorder />
                          </ListItemIcon>*/}
-                    <Link to="/ohcList">
+                    <Link to={`${childmenu.menuUrl}`}>
                       <ListItemText primary={childmenu.name} />
                     </Link>
                   </ListItemButton>

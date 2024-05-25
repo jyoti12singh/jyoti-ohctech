@@ -107,9 +107,10 @@ useEffect(() => {
 
     const getAllOhc = async () => {
         try {
-            const response = await axiosClientPrivate.get(`http://localhost:8080/emp-cadres?page=1&size=50`, { signal: controller.signal });
+            const response = await axiosClientPrivate.get(`http://localhost:8080/emp-cadres?page=1&size=5`, { signal: controller.signal });
+            console.log("before",response.data);
             const items = response.data.content;
-              console.log(items);
+              console.log("after",items);
             if (items.length > 0) {
                 const columns = Object.keys(items[0]).map(key => ({
                     field: key,

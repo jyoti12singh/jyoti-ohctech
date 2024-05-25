@@ -4,11 +4,11 @@ import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
-import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import AbnormalityForm from "./AbnormalityForm"
-import { AbnormValidationForm } from './Validationform';
+// import { AbnormValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,6 +17,8 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import PropTypes from "prop-types";
+
 
 const AbnormalityList = () => {
 
@@ -34,13 +36,11 @@ const AbnormalityList = () => {
     const [showupdate,setShowupdate] = useState(false);
 
     const initialValues = {
-       
-
-        AbnormalityName: "",
-        WellnessPrograms: [],
+        abnormalityName : "",
+        wellnessProgram: "",
       };
 
-
+    
       const {
         values,
         touched,
@@ -52,92 +52,58 @@ const AbnormalityList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: AbnormValidationForm,
+        // validationSchema: RefferedByValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
         //   },
         onSubmit: async (values, {resetForm}) => {
-        try {
-            const response = await axiosClientPrivate.post('/business-units', values);
-            toast.success("Saved Successfully!",{
-                position:"top-center"
-             }); 
-                   // getting id(key,value) of last index
-                const id = rowData[rowData.length-1].buId;
-                const obj = {
-                    buId : id+1,
-                    ...values
-                }
-             console.log(obj);
-             setRowData(rowData => [...rowData, obj]);
-            console.log('Response:', response.data);
-            resetForm();
-          } catch (error) {
             console.log(values);
-            console.error('Error:', error);
-          }
-        },
+           try {
+               const response = await axiosClientPrivate.post('/abnormalities', values);
+               toast.success("Saved Successfully!",{
+                   position:"top-center"
+                }); 
+                      // getting id(key,value) of last index
+                   const id = rowData[rowData.length-1].id;
+                   const obj = {
+                       id : id+1,
+                       ...values
+                   }
+                console.log(obj);
+                setRowData(rowData => [...rowData, obj]);
+               console.log('Response:', response.data);
+               resetForm();
+             } catch (error) {
+               console.log(values);
+               console.error('Error:', error);
+             }
+           },
       });
 
 
 
-      const handleEdit = async (id) => {
-        alert(id);
-        try {
-          const response = await axiosClientPrivate.get(`/business-units/${id}`);
-            console.log(response.data);
-            setFieldValue("buEmail",response.data.buEmail);
-            setFieldValue("buHeadName",response.data.buHeadName);
-            setFieldValue("buId",response.data.buId);
-            setFieldValue("buName",response.data.buName);
-            setFieldValue("lastModified", response.data.lastModified);
-            setFieldValue("modifiedBy", response.data.modifiedBy);
-          setId(id);
-          setShowupdate(true);
-          setOpenPopup(true);
-        } catch (error) {
-          console.error('Error fetching item for edit:', error);
-        }
-      };
-
-      const handleUpdate = async (id)=> {
-        alert(id);
-        const update = values;
-        try{
-             console.log(values);
-             await axiosClientPrivate.put(`/business-units/${id}`,update);
-             toast.success("Updated Successfully!",{
-                position:"top-center",
-                autoClose: 3000,
-             });
-             resetForm();
-             setRowData(rowData => [...rowData,values]);
-        }
-        catch(err){
-            console.log(values);
-            console.log(err);
-        }
-      }
-
-
-     // to delete a row
-     const handleDeleteRow = async (id) => {
-        alert(id)
-       if(window.confirm('Are you sure you want to delete this data?')){
-       try {
-           await axiosClientPrivate.delete(`/business-units/${id}`);
-           setRowData(prevData => prevData.filter(row => row.buId !== id));
-       } catch (error) {
-           console.error('Error deleting row:', error);
-       }
+    // to delete a row
+   const handleDeleteRow = async (id) => {
+    alert(id)
+   if(window.confirm('Are you sure you want to delete this data?')){
+   try {
+       await axiosClientPrivate.delete(`/abnormalities/${id}`);
+       setRowData(prevData => prevData.filter(row => row.id !== id));
+   } catch (error) {
+       console.error('Error deleting row:', error);
    }
-   };
+  }
+  };
 
-    const CustomActionComponent = (props) => {
-          
-        return <> <Button onClick={() =>  handleEdit(props.id)}> <EditNoteRoundedIcon /></Button>
-            <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
+
+    const CustomActionComponent = ({id}) => {
+        CustomActionComponent.propTypes = {
+            id: PropTypes.number.isRequired,
+          };
+        return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
+           <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+    
     };
 
     const pagination = true;
@@ -149,10 +115,10 @@ const AbnormalityList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
-                const items = response.data;
+                const response = await axiosClientPrivate.get('http://localhost:8080/abnormalities?page=0&size=5', { signal: controller.signal });
+                const items = response.data.content;
                     // console.log(items);
-                setRowData(items);
+                
                 if (items.length > 0) {
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
@@ -164,7 +130,7 @@ const AbnormalityList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.id;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -172,7 +138,7 @@ const AbnormalityList = () => {
                     setColDefs(columns);
                 }
 
-                
+                setRowData(items);
 
             } catch (err) {
                 console.error("Failed to fetch data: ", err);
@@ -188,62 +154,53 @@ const AbnormalityList = () => {
 
     }, []);
 
+    const handleEdit = async (id) => {
+        alert(id);
+        try {
+          const response = await axiosClientPrivate.get(`/abnormalities/${id}`);
+            console.log(response.data);
+            setFieldValue("id",response.data.id);
+            setFieldValue("abnormalityName",response.data.abnormalityName);
+            setFieldValue("wellnessProgram",response.data.wellnessProgram);
+            setFieldValue("lastModified", response.data.lastModified);
+            setFieldValue("modifiedBy", response.data.modifiedBy);
+            setId(id);
+            setShowupdate(true);
+            setOpenPopup(true);
+        } catch (error) {
 
-     
+          console.error('Error fetching item for edit:', error);
+        }
+      };
 
-    const exportpdf = async () => {
-        // const headers = createHeaders([
-        //     "id",
-        //     "ohcName",
-        //     // "ohcCode",
-        //     // "OhcDescription",
-        //     // "Address",
-        //     // "State",
-        //     // "Fax",
-        //     // "PrimaryPhone",
-        //     // "PrimaryEmail",
-        //     // "PinCode",
-        //     // "OhcType",
-        //     // "IconColor",
-        //     // "IconText",
-        //     // "OhcCategory",
-        // ]);
-        // const doc = new jsPDF({orientation: "landscape"});
-        // console.log(rowData[0].id);
-        // const tableData = rowData.map((row)=>(
-        //     console.log(row.id),
-        //   {
-             
-          // console.log(row.id),
-            // ...row,
-            // id: row.id,
-            // ohcName: row.ohcName,
-            // ohcCode: row.ohcCode.toString(),
-            // ohcDescription: row.ohcDescription.toString(),
-            // address: row.address.toString(),
-            // state: row.state.toString(),
-            // fax: row.fax.toString(),
-            // primaryPhone: row.primaryPhone.toString(),
-            // primaryEmail: row.primaryEmail.toString(),
-            // pinCode: row.pinCode.toString(),
-            // ohcType: row.ohcType.toString(),
-            // iconColor: row.iconColor.toString(),
-            // iconText: row.iconText.toString(),
-            // OhcCategory: row.ohcCategory.toString(),
-        // }))
-        // const tableData = {
-        //     id : rowData[0].id,
-        //     ohcName : rowData[0].ohcName,
-        // }
-        // doc.table(1,1,tableData,headers, {autoSize:true});
+      const handleUpdate = async (id)=> {
+        alert(id);
+        console.log(values);
+        const update = values;
+        try{
+            //  console.log(values);
+             await axiosClientPrivate.put(`/abnormalities/${id}`,update);
+             toast.success("Updated Successfully!",{
+                position:"top-center",
+                autoClose: 3000,
+             });
+             resetForm();
+            //  setRowData(rowData => [...rowData,values]);
+        }
+        catch(err){
+            console.log("after:- ",values);
+            console.log(err);
+        }
+      }
+
+      const exportpdf = async () => {
+        
         const doc = new jsPDF();
-        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const header = [["Id","Parameter value Name",'Wellness Progarms']];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.buName,
-          item.buHeadName,
-          item.buEmail,
-          
+          item.id,
+          item.abnormalityName,
+          item.wellnessProgram,
         ]);
         doc.autoTable({
           head: header,
@@ -254,71 +211,14 @@ const AbnormalityList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("BussinessList.pdf");
+        doc.save("AddDocDetailList.pdf");
     };
 
 
     const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-        // sheet.columns = [
-        //     {
-        //         header: "Id",
-        //         key: 'id',
-        //     },
-        //     {
-        //         header: "OhcName",
-        //         key: 'ohcName',
-        //     },
-        //     {
-        //         header: "OhcCode",
-        //         key: 'ohcCode',
-        //     },
-        //     {
-        //         header: "OhcDescription",
-        //         key: 'ohcDescription',
-        //     },
-        //     {
-        //       header : "Address",
-        //       key : "address",
-        //     },
-        //     {
-        //         header: "State",
-        //         key: 'state',
-        //     },
-        //     {
-        //         header: "Fax",
-        //         key: 'fax',
-        //     },
-        //     {
-        //       header: "PrimaryPhone",
-        //       key: 'primaryPhone',
-        //   },
-        //   {
-        //       header: "PrimaryEmail",
-        //       key: 'primaryEmail',
-        //   },
-        //   {
-        //       header : "PinCode",
-        //       key : "pinCode",
-        //   },
-        //   {
-        //       header: "OhcType",
-        //       key: 'ohcType',
-        //   },
-        //   {
-        //       header: "IconColor",
-        //       key: 'iconColor',
-        //   },
-        //   {
-        //     header: "IconText",
-        //     key: 'iconText',
-        // },
-        // {
-        //     header: "OhcCategory",
-        //     key: 'OhcCategory',
-        // }
-        // ];
+        
   
         const headerStyle = {
           // font: { bold: true, size: 12 },
@@ -329,26 +229,25 @@ const AbnormalityList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            Id: 10,
-            buName: 20,
-            buHeadName: 15,
-            buEmail: 25,
-      };
+            id: 20,
+            ailmentName: 25,
+            ailmentDesc: 25,
+            ailmentCode: 25,
+        };
   
         sheet.columns = [
-          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
-          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
-          
+          { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
+          { header: "Doctor", key: 'ailmentName', width: columnWidths.ailmentName, style: headerStyle },
+          { header: "Doctor Emp Code", key: 'ailmentDesc', width: columnWidths.ailmentDesc, style: headerStyle },
+          { header: "Doctor Details", key: 'ailmentCode', width: columnWidths.ailmentCode, style: headerStyle },
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
-                buName: product.buName,
-                buHeadName: product.buHeadName,
-                buEmail: product.buEmail,
+                id: product.id,
+                doctorName: product.doctorName,
+                doctorEmpId: product.doctorEmpId,
+                doctorDesc: product.doctorDesc,
             })
         });
   
@@ -359,12 +258,11 @@ const AbnormalityList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'AddDocDetailList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
     }
-   
 
     return (
         <>

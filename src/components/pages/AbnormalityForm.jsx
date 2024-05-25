@@ -1,11 +1,8 @@
-import Ohclogo from "./Ohclogo";
-import { FormControl, Grid, TextField, Autocomplete } from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
+// import MultipleSelect from "../common/MultipleSelect";
 import SingleSelect from "../common/SingleSelect"
-import MultipleSelect from "../common/MultipleSelect";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import { useState } from "react";
 
 
 const AbnormalityForm = ({
@@ -14,7 +11,7 @@ const AbnormalityForm = ({
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
     AbnormalityForm.propTypes = {
@@ -54,39 +51,60 @@ const AbnormalityForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter the Abnormality name"
-                    name="AbnormalityName"
+                    name="abnormalityName"
                     type="text"
                     size="large"
-                    value={values.AbnormalityName}
+                    value={values.abnormalityName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.AbnormalityName && touched.AbnormalityName? (
-                        <span style={{ color: "red" }}>{errors.AbnormalityName}</span>
+                      errors.abnormalityName && touched.abnormalityName? (
+                        <span style={{ color: "red" }}>{errors.abnormalityName}</span>
                       ) : null
                     }
                   />
                 </Grid>
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
               
-            
-            <MultipleSelect
+                <SingleSelect
+                arr={multiselect}
+                label="Wellness Programs"
+                name="wellnessProgram"
+                value={values.wellnessProgram}
+                onChange={(event, newValue) => {
+                  const syntheticEvent = {
+                    target: {
+                      name: "wellnessProgram",
+                      value: newValue,
+                    },
+                  };
+                  handleChange(syntheticEvent);
+                }}
+                onBlur={handleBlur}
+                type="text"
+                helperText={
+                  errors.wellnessProgram && touched.wellnessProgram ? (
+                    <span style={{ color: "red" }}>{errors.wellnessProgram}</span>
+                  ) : null
+                }
+              />
+            {/*<MultipleSelect
               arr={multiselect}
               label="Wellness Programs"
-              name="WellnessPrograms"
-              value={values.WellnessPrograms}
+              name="wellnessProgram"
+              value={values.wellnessProgram}
               // onChange={handleChange}
               onChange={(event, newValue) => {
                 const syntheticEvent = {
                   target: {
-                    name: 'WellnessPrograms',
+                    name: 'wellnessProgram',
                     value: newValue,
                   },
                 };
                 handleChange(syntheticEvent);
               }}
               onBlur={handleBlur}
-            />
+            />*/}
 
             {/* <Autocomplete
             // disablePortal
