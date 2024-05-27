@@ -18,6 +18,8 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import ConfigForm from './ConfigForm';
+import PropTypes from "prop-types";
+
 
 const ConfigList = () => {
 
@@ -82,7 +84,7 @@ const ConfigList = () => {
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(/business-units/${id});
+          const response = await axiosClientPrivate.get(`/business-units/${id}`);
             console.log(response.data);
             setFieldValue("buEmail",response.data.buEmail);
             setFieldValue("buHeadName",response.data.buHeadName);
@@ -103,7 +105,7 @@ const ConfigList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(/business-units/${id},update);
+             await axiosClientPrivate.put(`/business-units/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -123,7 +125,7 @@ const ConfigList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(/business-units/${id});
+           await axiosClientPrivate.delete(`/business-units/${id}`);
            setRowData(prevData => prevData.filter(row => row.buId !== id));
        } catch (error) {
            console.error('Error deleting row:', error);

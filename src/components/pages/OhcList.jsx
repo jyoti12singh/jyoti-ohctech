@@ -19,6 +19,7 @@ import ExcelJS from 'exceljs';
 // const ExcelJS = require('exceljs');
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import PropTypes from "prop-types";
 
 // import { useMemo } from 'react';
 
@@ -107,10 +108,14 @@ const OhcList = ()=> {
         },
       });
 
-  const CustomActionComponent = (props) => {
-    return <> <Button  onClick={() =>  handleEdit(props.id)}> <EditNoteRoundedIcon /></Button>
-        <Button color="error" onClick={()=>handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
-  };
+      const CustomActionComponent = ({id}) => {
+        CustomActionComponent.propTypes = {
+            id: PropTypes.number.isRequired,
+          };
+        return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
+           <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+    
+    };
 
 
 // to fetch data

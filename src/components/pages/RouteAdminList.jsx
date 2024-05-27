@@ -13,6 +13,8 @@ import { useFormik } from "formik";
 import { useState,useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from "prop-types";
+
 
 const RouteAdminList = () => {
 
@@ -80,9 +82,13 @@ const handleDeleteRow = async (id) => {
 
 
   
-  const CustomActionComponent = (props) => {
-    return <> <Button  onClick={() =>  handleEdit(props.id) }> <EditNoteRoundedIcon /></Button>
-    <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
+const CustomActionComponent = ({id}) => {
+  CustomActionComponent.propTypes = {
+      id: PropTypes.number.isRequired,
+    };
+  return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
+     <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+
 };
 
 const pagination = true;
@@ -180,6 +186,7 @@ const handleUpdate = async (id)=> {
 
   return (
     <>
+    <ToastContainer />
       <Box
         className="ag-theme-quartz" // applying the grid theme
         style={{ height: 500 }} // adjust width as necessary

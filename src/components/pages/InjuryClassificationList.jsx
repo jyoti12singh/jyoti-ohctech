@@ -11,6 +11,8 @@ import InjuryClassificationForm from './InjuryClassificationForm';
 import { injuryForm } from './Validationform';
 import { useFormik } from "formik";
 // import axios from 'axios';
+import PropTypes from "prop-types";
+
 
 const InjuryClassificationList = () => {
 
@@ -77,10 +79,13 @@ const InjuryClassificationList = () => {
 
     const [openPopup, setOpenPopup] = useState(false);
 
-    const CustomActionComponent = (props) => {
-          
-        return <> <Button onClick={() => console.log(props.data)}> <EditNoteRoundedIcon /></Button>
-            <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
+    const CustomActionComponent = ({id}) => {
+        CustomActionComponent.propTypes = {
+            id: PropTypes.number.isRequired,
+          };
+        return <div> <Button > <EditNoteRoundedIcon /></Button>
+           <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+    
     };
 
     const pagination = true;

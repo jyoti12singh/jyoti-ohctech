@@ -9,14 +9,15 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import Popup from './Popup';
 //import RefferedByForm from './RefferedByForm';
 //import { AbnormValidationForm } from './Validationform';
-import { DiagnosisValidationForm } from './Validationform';
+// import { DiagnosisValidationForm } from './Validationform';
 import { DeviceValidationForm } from './Validationform';
 import { useFormik } from "formik";
 //import AbnormalityForm from './AbnormalityForm';
 //import DiagnosisForm from './AbnormalityForm';
-import DiagnosisForm from './DiagnosisForm';
 import DeviceForm from './DeviceForm';
 // import axios from 'axios';
+import PropTypes from "prop-types";
+
 
 const DeviceList = () => {
 
@@ -83,10 +84,13 @@ const DeviceList = () => {
 
     const [openPopup, setOpenPopup] = useState(false);
 
-    const CustomActionComponent = (props) => {
-          
-        return <> <Button onClick={() => console.log(props.data)}> <EditNoteRoundedIcon /></Button>
-            <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
+    const CustomActionComponent = ({id}) => {
+        CustomActionComponent.propTypes = {
+            id: PropTypes.number.isRequired,
+          };
+        return <div> <Button  > <EditNoteRoundedIcon /></Button>
+           <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+    
     };
 
     const pagination = true;

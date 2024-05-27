@@ -10,7 +10,8 @@ import Popup from './Popup';
 import MedicalForm from './MedicalForm';
 import { medicalform } from './Validationform';
 import { useFormik } from "formik";
-import { WidthFull } from '@mui/icons-material';
+// import { WidthFull } from '@mui/icons-material';
+import PropTypes from "prop-types";
 
 
 const MedicalList = () => {
@@ -70,10 +71,13 @@ const MedicalList = () => {
 
     const [openPopup, setOpenPopup] = useState(false);
 
-    const CustomActionComponent = (props) => {
-          
-        return <> <Button onClick={() => console.log(props.data)}> <EditNoteRoundedIcon /></Button>
-            <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
+    const CustomActionComponent = ({id}) => {
+        CustomActionComponent.propTypes = {
+            id: PropTypes.number.isRequired,
+          };
+        return <div> <Button  > <EditNoteRoundedIcon /></Button>
+           <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+    
     };
 
     const pagination = true;
