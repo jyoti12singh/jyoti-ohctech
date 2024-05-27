@@ -1,13 +1,8 @@
-import Ohclogo from "./Ohclogo";
-import { FormControl, Grid, TextField } from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
-import Input from "../common/Input";
 import SingleSelect from "../common/SingleSelect";
-import MultipleSelect from "../common/MultipleSelect";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useState } from "react";
-import MultiCheckbox from "./MultiCheckbox";
+import { useState,useEffect } from "react";
+import useAxiosPrivate from '../../utils/useAxiosPrivate';
 
 const DiagnosisBSMForm = ({
   values,
@@ -15,7 +10,7 @@ const DiagnosisBSMForm = ({
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
     DiagnosisBSMForm.propTypes = {
@@ -27,9 +22,70 @@ const DiagnosisBSMForm = ({
     setFieldValue: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
   };
+  const axiosClientPrivate = useAxiosPrivate();
+  const [diagnosis,setDiagnosis]  = useState([]);
+  const [bodySystem,setBodySystem] = useState([]);
+  const diagnosisMap = new Map();
 
-  const DiagnosisName = ["#BOTH BONES LEFT FOREARM", "......"];
-  const bodysystem = ["......", "........", "......."];
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const getAllOhc = async () => {
+        try {
+            const response = await axiosClientPrivate.get('http://localhost:8080/ailment-systems', { signal: controller.signal });
+            const items = response.data.content;
+                console.log(items);
+
+                const ailment = items.map((item)=>{
+                  return item.ailmentSysName;
+                });
+                setBodySystem(ailment);
+                // console.log(ailment);
+
+        } catch (err) {
+            console.error("Failed to fetch data: ", err);
+        }
+    };
+
+    getAllOhc();
+
+    return () => {
+        controller.abort();
+    };
+
+}, []);
+
+
+useEffect(() => {
+  const controller = new AbortController();
+
+  const getAllOhc = async () => {
+      try {
+          const response = await axiosClientPrivate.get('http://localhost:8080/ailments', { signal: controller.signal });
+          const items = response.data.content;
+            // console.log(items);
+            const diagnosisArr = items.map((item)=>{
+              return item.ailmentName;
+            });
+            setDiagnosis(diagnosisArr);
+            
+          
+          }
+   catch (err) {
+          console.error("Failed to fetch data: ", err);
+      }
+  };
+
+  getAllOhc();
+
+  return () => {
+      controller.abort();
+  };
+
+}, []);
+
+
+
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
@@ -42,7 +98,7 @@ const DiagnosisBSMForm = ({
 
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <SingleSelect
-                    arr={DiagnosisName}
+                    arr={diagnosis}
                     label="Diagnosis Name"
                     name="DiagnosisName"
                     value={values.DiagnosisName}
@@ -68,7 +124,7 @@ const DiagnosisBSMForm = ({
                
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <SingleSelect
-                    arr={bodysystem}
+                    arr={bodySystem}
                     label="Slect Body System"
                     name="BodySystem"
                     value={values.BodySystem}

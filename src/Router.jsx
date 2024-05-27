@@ -28,6 +28,7 @@ import DiagnosisList from "./components/pages/DiagnosisList";
 import RefferedByList from "./components/pages/RefferedByList";
 import AbnormalityList from "./components/pages/AbnormalityList";
 import AddDocDetailList from "./components/pages/AddDocDetailList";
+import DiagnosisBSMList from "./components/pages/DiagnosisBSMList";
 
 const router = createBrowserRouter([
   {
@@ -141,6 +142,10 @@ const router = createBrowserRouter([
               {
                 path : "/AddDocDetailList",
                 element : <AddDocDetailList />
+              },
+              {
+                path : "/DiagnosisBSMList",
+                element : <DiagnosisBSMList/>
               }
             ],
           },
