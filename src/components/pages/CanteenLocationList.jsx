@@ -81,7 +81,6 @@ const CanteenLocationList = () => {
       });
 
 
-
       const handleEdit = async (id) => {
         alert(id);
         try {

@@ -21,7 +21,6 @@ import PropTypes from "prop-types";
 
 const JobProfileList = () => {
 
-
     const [rowData, setRowData] = useState([]);
 
     const [colDefs, setColDefs] = useState([]);

@@ -143,7 +143,6 @@ const QuestionaireForm = ({
                     }
                   />
                 </Grid>
-
        
                 <Grid item xs={12} sm={6} container spacing={1} justifyContent="center" alignItems="center">
                   <Input

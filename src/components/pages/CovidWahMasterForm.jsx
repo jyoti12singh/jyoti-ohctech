@@ -81,7 +81,7 @@ const CovidWahMasterForm = ({
                       const syntheticEvent = {
                         target: {
                           name: "type",
-                          value: newValue,
+                          value:newValue,
                         },
                       };
                       handleChange(syntheticEvent);

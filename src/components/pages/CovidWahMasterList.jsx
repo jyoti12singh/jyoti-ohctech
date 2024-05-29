@@ -42,7 +42,6 @@ const CovidWahMasterList = () => {
           
       };
 
-
       const {
         values,
         touched,

@@ -71,7 +71,7 @@ const JobProfileForm = ({
                     }
                   />
                 </Grid>
-              
+            
               </Grid>
             </FormControl>
           </Grid>
