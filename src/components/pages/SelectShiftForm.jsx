@@ -1,10 +1,6 @@
-import Ohclogo from "./Ohclogo";
 import { FormControl, Grid} from "@mui/material";
 import PropTypes from "prop-types";
-import Input from "../common/Input";
-import SingleSelect from "../common/SingleSelect"
-import { InputLabel, MenuItem, Select } from "@mui/material";
-
+import SingleSelect from "../common/SingleSelect";
 
 
 const SelectShiftForm = ({
@@ -26,8 +22,6 @@ const SelectShiftForm = ({
     handleSubmit: PropTypes.func.isRequired,
   };
 
-
-//   const Medselect = ["Active", "Not Active"];
      const shift = ["A", "B", "C"];
 
 

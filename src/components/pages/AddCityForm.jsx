@@ -1,4 +1,3 @@
-import Ohclogo from "./Ohclogo";
 import { FormControl, Grid} from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
@@ -24,13 +23,6 @@ const AddCityForm = ({
     setFieldValue: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
   };
-
-
-
-
-//   const Medselect = ["Active", "Not Active"];
-//   const isDefault = ["Yes", "No"];
-
 
 
   return (
