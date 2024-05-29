@@ -95,7 +95,7 @@ const CovidWahMasterForm = ({
                     }
                   />
                 </Grid>
-                <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
+                <Grid item xs={12} container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label=" Sequence"
                     name="seq"

@@ -18,9 +18,7 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
-
 const JobProfileList = () => {
-
     const [rowData, setRowData] = useState([]);
 
     const [colDefs, setColDefs] = useState([]);
