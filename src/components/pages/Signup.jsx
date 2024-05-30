@@ -1,5 +1,4 @@
-import React from "react";
-import ohcimg from "../../../public/ohc.jpg";
+import ohcimg from "../../../public/welcomeg.jpg";
 import { InputAdornment, Stack } from "@mui/material";
 import Container from "@mui/material/Container";
 import { IconButton } from "@mui/material";
@@ -16,17 +15,31 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Link } from "@mui/material";
 import { useState } from "react";
-export default function Signup() {
+import { useAuth } from "../security/AuthContext";
+import { useNavigate } from "react-router-dom";
+
+
+const Login = ()=> {
+
+  const authContext = useAuth();
+
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [loginData, setLoginData] = useState({
     username: "",
     password: "",
     signedin: false,
   });
+
   const togglePasswordVisibility = () => {
     setShowPassword((prevShow) => !prevShow);
   };
+
+
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prevData) => ({
@@ -34,6 +47,7 @@ export default function Signup() {
       [name]: value,
     }));
   };
+
   const EndAdorment = ({ showPassword, setShowPassword }) => {
     return (
       <InputAdornment position="end">
@@ -47,9 +61,20 @@ export default function Signup() {
       </InputAdornment>
     );
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(loginData);
+
+    setIsLoading(true);
+
+    const isLoggedIn = await authContext.login(loginData);
+
+    if (isLoggedIn) {
+      setIsLoading(false);
+      navigate("/ohcSelection");
+    } else {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -213,6 +238,8 @@ export default function Signup() {
           </Box>
         </Container>
       </Box>
-    </Stack>
-  );
-}
+   </Stack>
+);}
+
+
+export default Login;
