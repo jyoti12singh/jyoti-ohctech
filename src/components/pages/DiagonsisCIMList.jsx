@@ -23,6 +23,7 @@ const DiagnosisCIMList = () => {
       };
 
       const axiosClientPrivate = useAxiosPrivate();
+
     
       const {
         values,
@@ -44,6 +45,8 @@ const DiagnosisCIMList = () => {
         // try {
         //     const response = await axiosClientPrivate.post('/ohcs', values);
         //     console.log('Response:', response.data);
+        // setFetchTrigger(prev => prev+1);
+
         //     resetForm();
         //   } catch (error) {
         //     console.log(values);
@@ -65,7 +68,9 @@ const DiagnosisCIMList = () => {
 
             // Update the grid data by filtering out the deleted row
             const newData = rowData.filter(row => row.id !== id);
-            setRowData(newData);
+            // setRowData(newData);
+            setFetchTrigger(prev => prev+1);
+
         } catch (error) {
             console.error('Error deleting row:', error);
         }
@@ -76,6 +81,9 @@ const DiagnosisCIMList = () => {
     const [colDefs, setColDefs] = useState([]);
 
     const [openPopup, setOpenPopup] = useState(false);
+
+    const [fetchTrigger, setFetchTrigger] = useState(0);
+
 
     const CustomActionComponent = ({id}) => {
         CustomActionComponent.propTypes = {
@@ -133,7 +141,7 @@ const DiagnosisCIMList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [fetchTrigger]);
 
     return (
         <>

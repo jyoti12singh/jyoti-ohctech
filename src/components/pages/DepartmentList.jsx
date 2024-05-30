@@ -33,6 +33,8 @@ const DepartmentList = () => {
     const [id,setId] = useState(1);
 
     const [showupdate,setShowupdate] = useState(false);
+    const [fetchTrigger, setFetchTrigger] = useState(0);
+
 
     const initialValues = {
 
@@ -74,13 +76,15 @@ const DepartmentList = () => {
                     position:"top-center"
                  }); 
                        // getting id(key,value) of last index
-                    const id = rowData[rowData.length-1].id;
-                    const obj = {
-                        id : id+1,
-                        ...values
-                    }
-                 console.log(obj);
-                 setRowData(rowData => [...rowData, obj]);
+                //     const id = rowData[rowData.length-1].id;
+                //     const obj = {
+                //         id : id+1,
+                //         ...values
+                //     }
+                //  console.log(obj);
+                //  setRowData(rowData => [...rowData, obj]);
+                setFetchTrigger(prev => prev+1);
+
                 console.log('Response:', response.data);
                 resetForm();
               } catch (error) {
@@ -124,7 +128,9 @@ const DepartmentList = () => {
                 autoClose: 3000,
              });
              resetForm();
-             setRowData(rowData => [...rowData,values]);
+            //  setRowData(rowData => [...rowData,values]);
+            setFetchTrigger(prev => prev+1);
+
         }
         catch(err){
             console.log(values);
@@ -140,7 +146,9 @@ const DepartmentList = () => {
             await axiosClientPrivate.delete(`/departments/${id}`);
 
             const newData = rowData.filter(row => row.id !== id);
-            setRowData(newData);
+            // setRowData(newData);
+            setFetchTrigger(prev => prev+1);
+
         } catch (error) {
             console.error('Error deleting row:', error);
         }
@@ -203,7 +211,7 @@ const DepartmentList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [fetchTrigger]);
 
 
     const exportpdf = async () => {

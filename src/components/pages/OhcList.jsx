@@ -56,6 +56,9 @@ const OhcList = ()=> {
 
     const pageSizeOptions = [2, 4, 8, 10];
 
+    const [fetchTrigger, setFetchTrigger] = useState(0);
+
+
 
 
     let initialValues = {
@@ -98,7 +101,9 @@ const OhcList = ()=> {
                     position:"top-center"
                  });
                 //  setRowData(prevRowData => [...prevRowData, values]);
-                 setRowData(rowData => [...rowData, values]);
+                //  setRowData(rowData => [...rowData, values]);
+                setFetchTrigger(prev => prev+1);
+
                  console.log(values);
                  resetForm();
           } catch (error) {
@@ -169,7 +174,8 @@ useEffect(() => {
 
 
 
-}, [paginationPageSize,axiosClientPrivate,currentPageIndex]);
+// }, [paginationPageSize,axiosClientPrivate,currentPageIndex]);
+}, [fetchTrigger]);
 
   //  // I did Modification.
   //  fetch("https://dummyjson.com/products")
@@ -224,6 +230,8 @@ const handleUpdate = async (id)=> {
           autoClose: 3000,
        });
        resetForm();
+       setFetchTrigger(prev => prev+1);
+
   }
   catch(err){
       console.log(values);
@@ -238,7 +246,9 @@ const handleUpdate = async (id)=> {
             if(window.confirm('Are you sure you want to delete this data?')){
             try {
                 await axiosClientPrivate.delete(`/ohcs/${id}`);
-                setRowData(prevData => prevData.filter(row => row.id !== id));
+                // setRowData(prevData => prevData.filter(row => row.id !== id));
+                setFetchTrigger(prev => prev+1);
+
             } catch (error) {
                 console.error('Error deleting row:', error);
             }

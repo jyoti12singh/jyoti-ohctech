@@ -18,6 +18,8 @@ const RoleList = () => {
 
     const [id,setId] = useState(1);
     const [showupdate,setShowupdate] = useState(false);
+    const [fetchTrigger, setFetchTrigger] = useState(0);
+
 
   const initialValues = {
     id:"",
@@ -56,7 +58,9 @@ const RoleList = () => {
           toast.success("Saved Successfully!",{
             position:"top-center"
          });
-          setRowData(prevRowData => [...prevRowData, values]);
+          // setRowData(prevRowData => [...prevRowData, values]);
+          setFetchTrigger(prev => prev+1);
+
           resetForm();
         } catch (error) {
           console.log(values);
@@ -112,6 +116,8 @@ const RoleList = () => {
        });
         
          resetForm();
+         setFetchTrigger(prev => prev+1);
+
     }
     catch(err){
         console.log(err);
@@ -180,7 +186,9 @@ const RoleList = () => {
      if(window.confirm('Are you sure you want to delete this data?')){
      try {
          await axiosClientPrivate.delete(`/roles/${id}`);
-         setRowData(prevData => prevData.filter(row => row.id !== id));
+        //  setRowData(prevData => prevData.filter(row => row.id !== id));
+        setFetchTrigger(prev => prev+1);
+
      } catch (error) {
          console.error('Error deleting row:', error);
      }
@@ -245,7 +253,7 @@ useEffect(() => {
         controller.abort();
     };
 
-}, []);
+}, [fetchTrigger]);
 
   return (
     <>

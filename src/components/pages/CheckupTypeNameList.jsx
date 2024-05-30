@@ -7,8 +7,8 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import VaccineForm from './VaccineForm';
-import { VaccineValidationForm } from './Validationform';
+import CheckupTypeNameForm from './CheckupTypeNameForm';
+import { CheckupTypeNameValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,7 +20,7 @@ import 'jspdf-autotable';
 import PropTypes from "prop-types";
 
 
-const VaccineList = () => {
+const CheckupTypeNameList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -35,13 +35,18 @@ const VaccineList = () => {
 
     const [showupdate,setShowupdate] = useState(false);
 
-    const [fetchTrigger, setFetchTrigger] = useState(0);
-
-
     const initialValues = {
-        VaccineName:"",
-        CompanyName:"",
-        VaccineDesc:""
+       
+        CheckTypeName:"",
+        CheckTypeCode:"",
+        Duration:"",
+        Cost:"",
+        CheckFormSection:"",
+        SetStatus:"",
+        LabCheckup:"",
+        SectionChoiceAvailable:"",
+        ApplicableOhcs:"",
+        
       };
 
 
@@ -56,7 +61,7 @@ const VaccineList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: VaccineValidationForm,
+        validationSchema: CheckupTypeNameValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
@@ -68,15 +73,13 @@ const VaccineList = () => {
                 position:"top-center"
              }); 
                    // getting id(key,value) of last index
-            //     const id = rowData[rowData.length-1].buId;
-            //     const obj = {
-            //         buId : id+1,
-            //         ...values
-            //     }
-            //  console.log(obj);
-            //  setRowData(rowData => [...rowData, obj]);
-            setFetchTrigger(prev => prev+1);
-
+                const id = rowData[rowData.length-1].id;
+                const obj = {
+                    id : id+1,
+                    ...values
+                }
+             console.log(obj);
+             setRowData(rowData => [...rowData, obj]);
             console.log('Response:', response.data);
             resetForm();
           } catch (error) {
@@ -118,9 +121,7 @@ const VaccineList = () => {
                 autoClose: 3000,
              });
              resetForm();
-            // setRowData(rowData => [...rowData,values]);
-            setFetchTrigger(prev => prev+1);
-
+             //setRowData(rowData => [...rowData,values]);
         }
         catch(err){
             console.log(values);
@@ -135,9 +136,7 @@ const VaccineList = () => {
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
            await axiosClientPrivate.delete(`/business-units/${id}`);
-        //    setRowData(prevData => prevData.filter(row => row.buId !== id));
-        setFetchTrigger(prev => prev+1);
-
+           setRowData(prevData => prevData.filter(row => row.buId !== id));
        } catch (error) {
            console.error('Error deleting row:', error);
        }
@@ -199,7 +198,7 @@ const VaccineList = () => {
             controller.abort();
         };
 
-    }, [fetchTrigger]);
+    }, []);
 
 
      
@@ -267,7 +266,7 @@ const VaccineList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("BussinessList.pdf");
+        doc.save("CheckupTypeNameForm.pdf");
     };
 
 
@@ -405,13 +404,14 @@ const VaccineList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Vaccine Master">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Checkup Type Name">
 
-                <VaccineForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <CheckupTypeNameForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default VaccineList;
+
+export default CheckupTypeNameList;

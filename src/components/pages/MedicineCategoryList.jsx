@@ -20,6 +20,8 @@ const MedicineCategoryList = () => {
 
   const [id,setId] = useState();
   const [showupdate,setShowupdate] = useState(false);
+  const [fetchTrigger, setFetchTrigger] = useState(0);
+
 
   const initialValues = {
     categoryDescription: "",
@@ -74,7 +76,9 @@ const handleDeleteRow = async (id) => {
  if(window.confirm('Are you sure you want to delete this data?')){
  try {
      await axiosClientPrivate.delete(`/users/${id}`);
-     setRowData(prevData => prevData.filter(row => row.id !== id));
+    //  setRowData(prevData => prevData.filter(row => row.id !== id));
+    setFetchTrigger(prev => prev+1);
+
  } catch (error) {
      console.error('Error deleting row:', error);
  }
@@ -138,7 +142,7 @@ useEffect(() => {
         controller.abort();
     };
 
-}, []);
+}, [fetchTrigger]);
 
 
 const handleEdit = async (id) => {
@@ -173,6 +177,8 @@ const handleUpdate = async (id)=> {
           autoClose:3000,
        });
        resetForm();
+       setFetchTrigger(prev => prev+1);
+
   }
   catch(err){
       console.log(values);

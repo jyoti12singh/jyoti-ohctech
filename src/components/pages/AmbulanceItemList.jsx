@@ -7,8 +7,9 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import AmbulanceChecklistForm from './AmbulanceItemForm';
-import { ambulanceChecklistForm } from './Validationform';
+
+import CheckupTypeNameForm from './CheckupTypeNameForm';
+import { CheckupTypeNameValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,7 +20,8 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
 
-const AmbulanceItemList = () => {
+
+const CheckupTypeNameList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -36,11 +38,16 @@ const AmbulanceItemList = () => {
 
     const initialValues = {
        
-
-        issueto: "",
-        ohclocation: "",
-        itemcatagories: ""
-    
+        CheckTypeName:"",
+        CheckTypeCode:"",
+        Duration:"",
+        Cost:"",
+        CheckFormSection:"",
+        SetStatus:"",
+        LabCheckup:"",
+        SectionChoiceAvailable:"",
+        ApplicableOhcs:"",
+        
       };
 
 
@@ -55,32 +62,32 @@ const AmbulanceItemList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: ambulanceChecklistForm,
-        onSubmit: (values, action) => {
-            console.log(values);
-            action.resetForm();
-          },
-        // onSubmit: async (values, {resetForm}) => {
-        // try {
-        //     const response = await axiosClientPrivate.post('/business-units', values);
-        //     toast.success("Saved Successfully!",{
-        //         position:"top-center"
-        //      }); 
-        //            // getting id(key,value) of last index
-        //         const id = rowData[rowData.length-1].buId;
-        //         const obj = {
-        //             buId : id+1,
-        //             ...values
-        //         }
-        //      console.log(obj);
-        //      setRowData(rowData => [...rowData, obj]);
-        //     console.log('Response:', response.data);
-        //     resetForm();
-        //   } catch (error) {
+        validationSchema: CheckupTypeNameValidationForm,
+        // onSubmit: (values, action) => {
         //     console.log(values);
-        //     console.error('Error:', error);
-        //   }
-        // },
+        //     action.resetForm();
+        //   },
+        onSubmit: async (values, {resetForm}) => {
+        try {
+            const response = await axiosClientPrivate.post('/business-units', values);
+            toast.success("Saved Successfully!",{
+                position:"top-center"
+             }); 
+                   // getting id(key,value) of last index
+                const id = rowData[rowData.length-1].id;
+                const obj = {
+                    id : id+1,
+                    ...values
+                }
+             console.log(obj);
+             setRowData(rowData => [...rowData, obj]);
+            console.log('Response:', response.data);
+            resetForm();
+          } catch (error) {
+            console.log(values);
+            console.error('Error:', error);
+          }
+        },
       });
 
 
@@ -115,7 +122,7 @@ const AmbulanceItemList = () => {
                 autoClose: 3000,
              });
              resetForm();
-             setRowData(rowData => [...rowData,values]);
+             //setRowData(rowData => [...rowData,values]);
         }
         catch(err){
             console.log(values);
@@ -260,7 +267,7 @@ const AmbulanceItemList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("BussinessList.pdf");
+        doc.save("CheckupTypeNameForm.pdf");
     };
 
 
@@ -398,13 +405,14 @@ const AmbulanceItemList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Ambulance for Checklist ">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Checkup Type Name">
 
-                <AmbulanceChecklistForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <CheckupTypeNameForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default AmbulanceItemList;
+
+export default CheckupTypeNameList;

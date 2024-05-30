@@ -50,6 +50,8 @@ const DeviceList = () => {
         // onSubmit: async (values, {resetForm}) => {
         // try {
         //     const response = await axiosClientPrivate.post('/ohcs', values);
+        //setFetchTrigger(prev => prev+1);
+
         //     console.log('Response:', response.data);
         //     resetForm();
         //   } catch (error) {
@@ -72,7 +74,9 @@ const DeviceList = () => {
 
             // Update the grid data by filtering out the deleted row
             const newData = rowData.filter(row => row.id !== id);
-            setRowData(newData);
+            // setRowData(newData);
+            setFetchTrigger(prev => prev+1);
+
         } catch (error) {
             console.error('Error deleting row:', error);
         }
@@ -83,6 +87,10 @@ const DeviceList = () => {
     const [colDefs, setColDefs] = useState([]);
 
     const [openPopup, setOpenPopup] = useState(false);
+    const [fetchTrigger, setFetchTrigger] = useState(0);
+
+
+
 
     const CustomActionComponent = ({id}) => {
         CustomActionComponent.propTypes = {
@@ -140,7 +148,7 @@ const DeviceList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [fetchTrigger]);
 
     return (
         <>

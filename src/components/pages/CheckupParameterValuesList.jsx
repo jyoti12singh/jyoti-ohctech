@@ -7,8 +7,8 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import VaccineForm from './VaccineForm';
-import { VaccineValidationForm } from './Validationform';
+
+import { CheckupValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,9 +18,9 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+import CheckupParameterValuesForm from './CheckupParameterValuesForm';
 
-
-const VaccineList = () => {
+const CheckupParameterValuesList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -39,9 +39,10 @@ const VaccineList = () => {
 
 
     const initialValues = {
-        VaccineName:"",
-        CompanyName:"",
-        VaccineDesc:""
+       
+
+        ParameterValueName: "",
+        
       };
 
 
@@ -56,7 +57,7 @@ const VaccineList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: VaccineValidationForm,
+        validationSchema: CheckupValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
@@ -76,7 +77,6 @@ const VaccineList = () => {
             //  console.log(obj);
             //  setRowData(rowData => [...rowData, obj]);
             setFetchTrigger(prev => prev+1);
-
             console.log('Response:', response.data);
             resetForm();
           } catch (error) {
@@ -118,7 +118,7 @@ const VaccineList = () => {
                 autoClose: 3000,
              });
              resetForm();
-            // setRowData(rowData => [...rowData,values]);
+            //  setRowData(rowData => [...rowData,values]);
             setFetchTrigger(prev => prev+1);
 
         }
@@ -163,7 +163,7 @@ const VaccineList = () => {
         const getAllOhc = async () => {
             try {
                 const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
-                const items = response.data;
+                const items = response.data.content;
                     // console.log(items);
                 setRowData(items);
                 if (items.length > 0) {
@@ -405,13 +405,13 @@ const VaccineList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Vaccine Master">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Checkup Parameter Values ">
 
-                <VaccineForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <CheckupParameterValuesForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default VaccineList;
+export default CheckupParameterValuesList;
