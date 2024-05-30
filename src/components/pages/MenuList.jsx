@@ -29,6 +29,9 @@ const MenuList = () => {
 
   const [showupdate,setShowupdate] = useState(false);
 
+  const [fetchTrigger, setFetchTrigger] = useState(0);
+
+
   const initialValues = {
     // Id: "",
     menuName: "",
@@ -66,13 +69,15 @@ const MenuList = () => {
              position:"top-center"
           }); 
                 // getting id(key,value) of last index
-             const id = rowData[rowData.length-1].Id;
-             const obj = {
-              Id : id+1,
-                 ...values
-             }
-          console.log(obj);
-          setRowData(rowData => [...rowData, obj]);
+          //    const id = rowData[rowData.length-1].Id;
+          //    const obj = {
+          //     Id : id+1,
+          //        ...values
+          //    }
+          // console.log(obj);
+          // setRowData(rowData => [...rowData, obj]);
+          setFetchTrigger(prev => prev+1);
+
          console.log('Response:', response.data);
          resetForm();
        } catch (error) {
@@ -117,7 +122,9 @@ const MenuList = () => {
    if(window.confirm('Are you sure you want to delete this data?')){
    try {
        await axiosClientPrivate.delete(`/menus/${id}`);
-       setRowData(prevData => prevData.filter(row => row.id !== id));
+      //  setRowData(prevData => prevData.filter(row => row.id !== id));
+      setFetchTrigger(prev => prev+1);
+
    } catch (error) {
        console.error('Error deleting row:', error);
    }
@@ -185,7 +192,7 @@ useEffect(() => {
         controller.abort();
     };
 
-},[]);
+},[fetchTrigger]);
 
 
 
@@ -204,6 +211,8 @@ try{
       autoClose: 3000,
     });
      resetForm();
+     setFetchTrigger(prev => prev+1);
+
 }
 catch(err){
      console.log("check",update);

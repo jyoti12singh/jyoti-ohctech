@@ -33,6 +33,8 @@ const DisposalAgencyList = () => {
     const [id,setId] = useState(1);
     
     const [showupdate,setShowupdate] = useState(false);
+    const [fetchTrigger, setFetchTrigger] = useState(0);
+
 
     const initialValues = {
         agencyname: "",
@@ -65,13 +67,15 @@ const DisposalAgencyList = () => {
                 position:"top-center"
              }); 
                    // getting id(key,value) of last index
-                const id = rowData[rowData.length-1].buId;
-                const obj = {
-                    buId : id+1,
-                    ...values
-                }
-             console.log(obj);
-             setRowData(rowData => [...rowData, obj]);
+            //     const id = rowData[rowData.length-1].buId;
+            //     const obj = {
+            //         buId : id+1,
+            //         ...values
+            //     }
+            //  console.log(obj);
+            //  setRowData(rowData => [...rowData, obj]);
+            setFetchTrigger(prev => prev+1);
+
             console.log('Response:', response.data);
             resetForm();
           } catch (error) {
@@ -86,7 +90,7 @@ const DisposalAgencyList = () => {
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(/business-units/${id});
+          const response = await axiosClientPrivate.get(`/business-units/${id}`);
             console.log(response.data);
             setFieldValue("buEmail",response.data.buEmail);
             setFieldValue("buHeadName",response.data.buHeadName);
@@ -107,13 +111,15 @@ const DisposalAgencyList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(/business-units/${id},update);
+             await axiosClientPrivate.put(`/business-units/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
              });
              resetForm();
-             setRowData(rowData => [...rowData,values]);
+            //  setRowData(rowData => [...rowData,values]);
+            setFetchTrigger(prev => prev+1);
+
         }
         catch(err){
             console.log(values);
@@ -127,8 +133,10 @@ const DisposalAgencyList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(/business-units/${id});
-           setRowData(prevData => prevData.filter(row => row.buId !== id));
+           await axiosClientPrivate.delete(`/business-units/${id}`);
+        //    setRowData(prevData => prevData.filter(row => row.buId !== id));
+        setFetchTrigger(prev => prev+1);
+
        } catch (error) {
            console.error('Error deleting row:', error);
        }
@@ -191,7 +199,7 @@ const DisposalAgencyList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [fetchTrigger]);
 
 
      

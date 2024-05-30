@@ -66,7 +66,8 @@ const BusinessReportList = () => {
 
             // Update the grid data by filtering out the deleted row
             const newData = rowData.filter(row => row.id !== id);
-            setRowData(newData);
+            // setRowData(newData);
+            setFetchTrigger(prev => prev+1);
         } catch (error) {
             console.error('Error deleting row:',error);
         }
@@ -77,6 +78,9 @@ const BusinessReportList = () => {
     const [colDefs, setColDefs] = useState([]);
 
     const [openPopup, setOpenPopup] = useState(false);
+
+    const [fetchTrigger, setFetchTrigger] = useState(0);
+
 
     const CustomActionComponent = ({id}) => {
         CustomActionComponent.propTypes = {
@@ -134,7 +138,7 @@ const BusinessReportList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [fetchTrigger]);
 
     return (
         <>

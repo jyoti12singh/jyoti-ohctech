@@ -33,6 +33,7 @@ const CalibrationEquipmentList = () => {
     const [id,setId] = useState(1);
 
     const [showupdate,setShowupdate] = useState(false);
+    const [fetchTrigger, setFetchTrigger] = useState(0);
 
     const initialValues = {
        
@@ -77,6 +78,8 @@ const CalibrationEquipmentList = () => {
         //         }
         //      console.log(obj);
         //      setRowData(rowData => [...rowData, obj]);
+        // setFetchTrigger(prev => prev+1);
+
         //     console.log('Response:', response.data);
         //     resetForm();
         //   } catch (error) {
@@ -118,7 +121,9 @@ const CalibrationEquipmentList = () => {
                 autoClose: 3000,
              });
              resetForm();
-             setRowData(rowData => [...rowData,values]);
+            //  setRowData(rowData => [...rowData,values]);/
+            setFetchTrigger(prev => prev+1);
+
         }
         catch(err){
             console.log(values);
@@ -133,8 +138,9 @@ const CalibrationEquipmentList = () => {
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
            await axiosClientPrivate.delete(`/business-units/${id}`);
-           setRowData(prevData => prevData.filter(row => row.buId !== id));
-       } catch (error) {
+        //    setRowData(prevData => prevData.filter(row => row.buId !== id));
+        setFetchTrigger(prev => prev+1);
+    } catch (error) {
            console.error('Error deleting row:', error);
        }
    }
@@ -195,7 +201,7 @@ const CalibrationEquipmentList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [fetchTrigger]);
 
 
      
