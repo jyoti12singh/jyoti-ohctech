@@ -36,7 +36,11 @@ import PropTypes from 'prop-types';
      onBlur={onBlur}
      helperText={helperText}
      multiline
+<<<<<<< HEAD
     minRows={2}
+=======
+    minRows={1}
+>>>>>>> e8e000bcbc5040ace410c24b285eb2ef8599c7fe
     maxRows={Infinity}
     />
   )
