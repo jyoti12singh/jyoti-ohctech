@@ -1,10 +1,8 @@
-
 import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
 
-
-const InjuryClassificationForm = ({
+const InjuryPartForm = ({
   values,
   touched,
   handleBlur,
@@ -13,7 +11,8 @@ const InjuryClassificationForm = ({
   // setFieldValue,
   handleSubmit,
 }) => {
-  InjuryClassificationForm.propTypes = {
+
+  InjuryPartForm.propTypes = {
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -23,67 +22,65 @@ const InjuryClassificationForm = ({
     handleSubmit: PropTypes.func.isRequired,
   };
 
-
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit}>
-        <Grid container spacing={2} justifyContent="center" alignItems="center"  sx={{ width: 320 }} >
-        
+        <Grid container spacing={2}    justifyContent="center" alignItems="center" sx={{width:300}}>
+          
           <Grid item xs={12}  justifyContent="center" alignItems="center">
             <FormControl fullWidth>
-              <Grid container spacing={2} justifyContent="center" alignItems="center">
+              <Grid container spacing={2}  justifyContent="center" alignItems="center">
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
-                    label="Injury Name"
-                    name="injClassName"
+                    label="Enter Injury part Name"
+                    name="name"
                     type="text"
                     size="large"
-                    value={values.injClassName}
+                    value={values.name}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.injClassName && touched.injClassName ? (
-                        <span style={{ color: "red" }}>{errors.injClassName}</span>
+                      errors.name && touched.name? (
+                        <span style={{ color: "red" }}>{errors.name}</span>
                       ) : null
                     }
                   />
                 </Grid>
-                <Grid item xs={12} container spacing={1} justifyContent="center" alignItems="center">
+                <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
-                    label=" Injury Description"
-                    name="injClassDesc"
+                    label="Enter Injury part Description"
+                    name="description"
                     type="text"
                     size="large"
-                    value={values.injClassDesc}
+                    value={values.description}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.injClassDesc && touched.injClassDesc ? (
+                      errors.description && touched.description ? (
                         <span style={{ color: "red" }}>
-                          {errors.injClassDesc}
+                          {errors.description}
                         </span>
                       ) : null
                     }
                   />
                 </Grid>
-              
-                <Grid item xs={12} container spacing={1} justifyContent="center" alignItems="center">
+                <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
-                    label="Injury Code"
-                    name="injClassCode"
+                    label="Enter Injury part Code"
+                    name="code"
                     type="text"
                     size="large"
-                    value={values.injClassCode}
+                    value={values.code}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.injClassCode && touched.injClassCode ? (
-                        <span style={{ color: "red" }}>{errors.injClassCode}</span>
+                      errors.code && touched.code ? (
+                        <span style={{ color: "red" }}>{errors.code}</span>
                       ) : null
                     }
                   />
                 </Grid>
-            
+
               </Grid>
             </FormControl>
           </Grid>
@@ -93,6 +90,5 @@ const InjuryClassificationForm = ({
   );
 };
 
-export default InjuryClassificationForm;
+export default InjuryPartForm;
 
-  

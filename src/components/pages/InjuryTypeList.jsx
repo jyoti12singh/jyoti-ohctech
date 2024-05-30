@@ -7,10 +7,13 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import InjuryClassificationForm from './InjuryClassificationForm';
-import { InjuryClassValidationForm } from './Validationform';
+//import 
+//import { InjuryValidationForm} from './Validationform';
+import { InjuryTypeValidationForm } from './Validationform';
 import { useFormik } from "formik";
 // import axios from 'axios';
+//import InjuryForm from './InjuryForm';
+import InjuryTypeForm from './InjuryTypeForm';
 import PropTypes from "prop-types";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,7 +23,9 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
-const InjuryClassificationList = () => {
+
+
+const InjuryTypeList = () => {
 
     const [rowData, setRowData] = useState([]);
 
@@ -35,11 +40,11 @@ const InjuryClassificationList = () => {
     const [showupdate,setShowupdate] = useState(false);
 
     const [fetchTrigger, setFetchTrigger] = useState(0)
-
+    
     const initialValues = {
-        injClassName : "",
-        injClassDesc: "",
-        injClassCode: ""
+        injuryTypeName : "",
+        injuryTypeDesc: "",
+        injuryTypeCode: ""
       };
 
     
@@ -54,7 +59,7 @@ const InjuryClassificationList = () => {
         resetForm,
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: InjuryClassValidationForm,
+        validationSchema: InjuryTypeValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
@@ -62,18 +67,20 @@ const InjuryClassificationList = () => {
         onSubmit: async (values, {resetForm}) => {
             console.log(values);
            try {
-               const response = await axiosClientPrivate.post('/injury-classes', values);
+               const response = await axiosClientPrivate.post('/injury-types', values);
                toast.success("Saved Successfully!",{
                    position:"top-center"
                 }); 
+                
                       // getting id(key,value) of last index
-                //    const id = rowData[rowData.length-1].id;
-                //    const obj = {
-                //        id : id+1,
-                //        ...values
-                //    }
-                // console.log(obj);
-                // setRowData(rowData => [...rowData, obj]);
+            //        const id = rowData[rowData.length-1].id;
+            //        const obj = {
+            //            id : id+1,
+            //            ...values
+            //        }
+            //     console.log(obj);
+            //     setRowData(rowData => [...rowData, obj]);
+
                console.log('Response:', response.data);
                setFetchTrigger(prev => prev+1);
                resetForm();
@@ -91,10 +98,10 @@ const InjuryClassificationList = () => {
     alert(id)
    if(window.confirm('Are you sure you want to delete this data?')){
    try {
-       await axiosClientPrivate.delete(`/injury-classes/${id}`);
+       await axiosClientPrivate.delete(`/injury-types/${id}`);
        setFetchTrigger(prev => prev+1);
-       setFetchTrigger(prev => prev+1);
-    } catch (error) {
+    //    setRowData(prevData => prevData.filter(row => row.id !== id));
+   } catch (error) {
        console.error('Error deleting row:', error);
    }
 }
@@ -119,7 +126,7 @@ const InjuryClassificationList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('http://localhost:8080/injury-classes?page=0&size=20', { signal: controller.signal });
+                const response = await axiosClientPrivate.get('http://localhost:8080/injury-types?page=0&size=20', { signal: controller.signal });
                 const items = response.data.content;
                     // console.log(items);
                 
@@ -161,12 +168,12 @@ const InjuryClassificationList = () => {
     const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/injury-classes/${id}`);
+          const response = await axiosClientPrivate.get(`/injury-types/${id}`);
             console.log(response.data);
             setFieldValue("id",response.data.id);
-            setFieldValue("injClassName",response.data.injClassName);
-            setFieldValue("injClassDesc",response.data.injClassDesc);
-            setFieldValue("injClassCode",response.data.injClassCode);
+            setFieldValue("injuryTypeName",response.data.injuryTypeName);
+            setFieldValue("injuryTypeDesc",response.data.injuryTypeDesc);
+            setFieldValue("injuryTypeCode",response.data.injuryTypeCode);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
             setId(id);
@@ -183,7 +190,7 @@ const InjuryClassificationList = () => {
         const update = values;
         try{
             //  console.log(values);
-             await axiosClientPrivate.put(`/injury-classes/${id}`,update);
+             await axiosClientPrivate.put(`/injury-types/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -201,12 +208,12 @@ const InjuryClassificationList = () => {
       const exportpdf = async () => {
         
         const doc = new jsPDF();
-        const header = [["Id","Complaint",'Complaint in Details',"Is Active"]];
+        const header = [["Id","Injury Type",'Injury Type Desc',"Injury Type Desc"]];
         const tableData = rowData.map(item => [
           item.id,
-          item.injClassName,
-          item.injClassDesc,
-          item.injClassCode,
+          item.injuryTypeName,
+          item.injuryTypeDesc,
+          item.injuryTypeCode,
           
           
         ]);
@@ -219,7 +226,7 @@ const InjuryClassificationList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("InjuryClassificationList.pdf");
+        doc.save("InjuryTypeList.pdf");
     };
 
 
@@ -237,26 +244,26 @@ const InjuryClassificationList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            id: 20,
-            injClassName: 30,
-            injClassDesc: 30,
-            injClassCode: 30,
+            id: 10,
+            injuryTypeName: 20,
+            injuryTypeDesc: 20,
+            injuryTypeCode: 20,
         };
   
         sheet.columns = [
           { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
-          { header: "Injury Class Name", key: 'injClassName', width: columnWidths.injClassName, style: headerStyle },
-          { header: "Injury Class Desc", key: 'injClassDesc', width: columnWidths.injClassDesc, style: headerStyle },
-          { header: "Injury Class Code", key: 'injClassCode', width: columnWidths.injClassCode, style: headerStyle },
+          { header: "Injury Type", key: 'injuryTypeName', width: columnWidths.injuryTypeName, style: headerStyle },
+          { header: "Injury Type Desc", key: 'injuryTypeDesc', width: columnWidths.injuryTypeDesc, style: headerStyle },
+          { header: "Injury Type Code", key: 'injuryTypeCode', width: columnWidths.injuryTypeCode, style: headerStyle },
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
                 id: product.id,
-                injClassName: product.injClassName,
-                injClassDesc: product.injClassDesc,
-                injClassCode: product.injClassCode,
+                injuryTypeName: product.injuryTypeName,
+                injuryTypeDesc: product.injuryTypeDesc,
+                injuryTypeCode: product.injuryTypeCode,
             })
         });
   
@@ -267,12 +274,11 @@ const InjuryClassificationList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'InjuryClassificationList.xlsx';
+            anchor.download = 'InjuryTypeList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
     }
-
 
 
     return (
@@ -287,8 +293,7 @@ const InjuryClassificationList = () => {
                     <ButtonGroup variant="contained" aria-label="Basic button group">
                         <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }}>Add New</Button>
                         <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
-                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button>
-                    </ButtonGroup>
+                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button>                    </ButtonGroup>
 
                 </Stack>
                 <AgGridReact
@@ -301,13 +306,13 @@ const InjuryClassificationList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Injury Classification">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Injury">
 
-                <InjuryClassificationForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <InjuryTypeForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default InjuryClassificationList;
+export default InjuryTypeList;

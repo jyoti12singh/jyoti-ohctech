@@ -29,6 +29,10 @@ import RefferedByList from "./components/pages/RefferedByList";
 import AbnormalityList from "./components/pages/AbnormalityList";
 import AddDocDetailList from "./components/pages/AddDocDetailList";
 import DiagnosisBSMList from "./components/pages/DiagnosisBSMList";
+import TaskFrequencyList from "./components/pages/TaskFrequencyList";
+import InjuryClassificationList from "./components/pages/InjuryClassificationList";
+import InjuryPartList from "./components/pages/InjuryPartList";
+import InjuryTypeList from "./components/pages/InjuryTypeList";
 
 const router = createBrowserRouter([
   {
@@ -146,6 +150,22 @@ const router = createBrowserRouter([
               {
                 path : "/DiagnosisBSMList",
                 element : <DiagnosisBSMList/>
+              },
+              {
+                path : "/TaskFrequencyList",
+                element : <TaskFrequencyList />
+              },
+              {
+                path : "/InjuryClassificationList",
+                element : <InjuryClassificationList />
+              },
+              {
+                path : "/InjuryPartList",
+                element : <InjuryPartList />
+              },
+              {
+                path : "/InjuryTypeList",
+                element : <InjuryTypeList />
               }
             ],
           },

@@ -7,7 +7,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import AmbulanceChecklistForm from './AmbulanceChecklistForm';
+import AmbulanceChecklistForm from './AmbulanceItemForm';
 import { ambulanceChecklistForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
@@ -19,7 +19,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
 
-const AmbulanceChecklistList = () => {
+const AmbulanceItemList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -407,4 +407,4 @@ const AmbulanceChecklistList = () => {
     );
 };
 
-export default AmbulanceChecklistList;
+export default AmbulanceItemList;

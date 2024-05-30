@@ -1,13 +1,7 @@
 
-import { FormControl, Grid, TextField } from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
-import SingleSelect from "../common/SingleSelect"
-import MultipleSelect from "../common/MultipleSelect";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useState } from "react";
-import MultiCheckbox from "./MultiCheckbox";
 
 const TaskFrequencyForm = ({
   values,
@@ -15,7 +9,7 @@ const TaskFrequencyForm = ({
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
     TaskFrequencyForm.propTypes = {
@@ -40,15 +34,15 @@ const TaskFrequencyForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Frequency Name"
-                    name="frequencyname"
+                    name="frequencyName"
                     type="text"
                     size="large"
-                    value={values.frequencyname}
+                    value={values.frequencyName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.frequencyname && touched.frequencyname ? (
-                        <span style={{ color: "red" }}>{errors.frequencyname}</span>
+                      errors.frequencyName && touched.frequencyName ? (
+                        <span style={{ color: "red" }}>{errors.frequencyName}</span>
                       ) : null
                     }
                   />
@@ -56,16 +50,16 @@ const TaskFrequencyForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Frequency Code"
-                    name="frequencycode"
-                    type="number"
+                    name="frequencyCode"
+                    type="text"
                     size="large"
-                    value={values.frequencycode}
+                    value={values.frequencyCode}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.frequencycode && touched.frequencycode ? (
+                      errors.frequencyCode && touched.frequencyCode ? (
                         <span style={{ color: "red" }}>
-                          {errors.frequencycode}
+                          {errors.frequencyCode}
                         </span>
                       ) : null
                     }

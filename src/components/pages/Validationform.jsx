@@ -105,17 +105,18 @@ export const empcontValidationForm = Yup.object({
   employerContractorEmail: Yup.string().required("Please enter Emails"),
   employerContractorDesc: Yup.string().required("Please enter Remarks of Employee"),
 });
-export const InjuryValidationForm = Yup.object({
-  Injury_Name: Yup.string().required("Please enter Injury part Name"),
-  Injury_Description: Yup.string().required("Please Injury part  Description"),
-  Injury_Code: Yup.string().required("Please enter Injury part code"),
-  
-});
+
+// Ailment/Injury forms
+  export const InjuryTypeValidationForm = Yup.object({
+    injuryTypeName: Yup.string().required("Please enter Injury part Name"),
+    injuryTypeDesc: Yup.string().required("Please Injury part  Description"),
+    injuryTypeCode: Yup.string().required("Please enter Injury part code"),
+  });
+
 export const InjuryClassValidationForm = Yup.object({
-  Injury_Name: Yup.string().required("Please enter Injury  Name"),
-  Injury_Description: Yup.string().required("Please Injury   Description"),
-  Injury_Code: Yup.string().required("Please enter Injury  code"),
-  
+  injClassName: Yup.string().required("Please enter Injury  Name"),
+  injClassDesc: Yup.string().required("Please Injury   Description"),
+  injClassCode: Yup.string().required("Please enter Injury  code"),
 });
 
 export const designationForm = Yup.object({
@@ -142,10 +143,10 @@ export const departmentForm = Yup.object({
      
 });
 
-export const injuryForm = Yup.object({
-  InjuryName: Yup.string().min(2).max(25).required("Please enter Injury Name"),
-  injurydiscri: Yup.string().min(2).max(25).required("Please enter Injury Discription"),
-  injurycode: Yup.string().min(2).max(25).required("Please enter Bussiness Injury Code"),
+export const InjuryPartValidationForm = Yup.object({
+  name: Yup.string().min(2).max(25).required("Please enter Injury Name"),
+  description: Yup.string().min(2).max(25).required("Please enter Injury Discription"),
+  code: Yup.string().min(2).max(25).required("Please enter Bussiness Injury Code"),
      
 });
 
@@ -181,3 +182,7 @@ export const RefferedByValidationForm = Yup.object({
   description: Yup.string().required("Please Enter Description"),
   remarks: Yup.string().required("Please Enter Remarks"),
 });
+
+
+
+

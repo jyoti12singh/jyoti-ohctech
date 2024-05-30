@@ -9,7 +9,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useState } from "react";
 import MultiCheckbox from "./MultiCheckbox";
 
-const AmbulanceChecklistForm = ({
+const AmbulanceItemForm = ({
   values,
   touched,
   handleBlur,
@@ -130,5 +130,5 @@ const AmbulanceChecklistForm = ({
   );
 };
 
-export default AmbulanceChecklistForm;
+export default AmbulanceItemForm;
 

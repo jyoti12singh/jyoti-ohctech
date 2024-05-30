@@ -34,13 +34,30 @@ const DiagnosisBSMList = () => {
 
     const [showupdate,setShowupdate] = useState(false);
 
+    const [diagnosis,setDiagnosis]  = useState([{}]);
+
+    const [bodySystem,setBodySystem] = useState([{}]);
+
+    // const [diagnosisMap,setDiagnosisMap] = useState(new Map());
+    
+    // const [bodySystemMap, setBodySystemMap] = useState(new Map);
+
+
+
+
+    // diagnosisMap.forEach((value, key) => {
+    //     console.log(`${key}: ${value}`);
+    //   });
+
+    // console.log("map size",diagnosisMap.size);
+
     const initialValues = {
-        complaint : "",
-        complaintDesc: "",
-        isActive: ""
+        diagnosis : '',
+        system : '',
+        lastModified: "",
+        modifiedBy: ""
       };
 
-    
       const {
         values,
         touched,
@@ -54,11 +71,43 @@ const DiagnosisBSMList = () => {
         initialValues: initialValues,
         // validationSchema: complaintForm,
         // onSubmit: (values, action) => {
-        //     console.log(values);
+
+        //     const ailment = diagnosis.find(item => item.label === values.diagnosis);
+        //     const ailmentid = ailment ? ailment.value : null;
+              
+        //     const ailmentSystem = bodySystem.find(item => item.label === values.system);
+        //     const ailmentSystemid = ailmentSystem ? ailmentSystem.value : null;
+
+        //         const key1 = 'ailmentId';
+        //         const key2 = 'ailmentSystemId';
+        //         values[key1] = values.diagnosis;
+        //         values[key2] = values.system;
+        //         delete values.diagnosis;
+        //         delete values.system;
+
+        //         values.ailmentId = ailmentid;
+        //         values.ailmentSystemId = ailmentSystemid;
+        //     console.log("final value",values),
         //     action.resetForm();
         //   },
         onSubmit: async (values, {resetForm}) => {
-            console.log(values);
+            
+                const ailment = diagnosis.find(item => item.label === values.diagnosis);
+                const ailmentid = ailment ? ailment.value : null;
+                  
+                const ailmentSystem = bodySystem.find(item => item.label === values.system);
+                const ailmentSystemid = ailmentSystem ? ailmentSystem.value : null;
+    
+                    const key1 = 'ailmentId';
+                    const key2 = 'ailmentSystemId';
+                    values[key1] = values.diagnosis;
+                    values[key2] = values.system;
+                    delete values.diagnosis;
+                    delete values.system;
+    
+                    values.ailmentId = ailmentid;
+                    values.ailmentSystemId = ailmentSystemid;
+             
            try {
                const response = await axiosClientPrivate.post('/dignosys-wise-body-systems', values);
                toast.success("Saved Successfully!",{
@@ -66,21 +115,107 @@ const DiagnosisBSMList = () => {
                 }); 
                       // getting id(key,value) of last index
                    const id = rowData[rowData.length-1].id;
+                    
+                    console.log("new value",values);
+
+                    values.ailmentId = diagnosis.find(item => item.value == parseInt(values.ailmentId)).label;
+                    values.ailmentSystemId = bodySystem.find(item => item.value == parseInt(values.ailmentSystemId)).label;
+
+                    console.log("check value",values);
+
                    const obj = {
                        id : id+1,
                        ...values
                    }
-                console.log(obj);
+                // console.log(obj);
                 setRowData(rowData => [...rowData, obj]);
-               console.log('Response:', response.data);
-               resetForm();
+                console.log('Response:', response.data);
+                resetForm();
+
              } catch (error) {
-               console.log(values);
+            //    console.log(values);
                console.error('Error:', error);
              }
            },
       });
 
+// diagnosis and system 
+useEffect(() => {
+    const controller = new AbortController();
+
+    const getAllOhc = async () => {
+        try {
+            const response = await axiosClientPrivate.get('http://localhost:8080/ailment-systems', { signal: controller.signal });
+            const items = response.data.content;
+                // console.log(items);
+
+                // const newDiagnosisMap = new Map();
+                // items.forEach(item => newDiagnosisMap.set(item.ailmentSysName, item.id));
+                // setBodysystem(newDiagnosisMap);
+
+                // console.log(diagnosisMap.size);
+                // const ailment = items.map((item)=>{
+                //   // diagnosisMap.set(item.id,item.ailmentSysName);
+                //   return item.ailmentSysName;
+                // });
+
+                const ailment = items.map((item)=>{
+                  return {label : item.ailmentSysName,value : item.id};
+                });
+
+                
+                setBodySystem(ailment);
+                // console.log(ailment);
+
+        } catch (err) {
+            console.error("Failed to fetch data: ", err);
+        }
+    };
+
+    getAllOhc();
+
+    return () => {
+        controller.abort();
+    };
+
+}, []);
+
+useEffect(() => {
+    const controller = new AbortController();
+  
+    const getAllOhc = async () => {
+        try {
+            const response = await axiosClientPrivate.get('http://localhost:8080/ailments', { signal: controller.signal });
+            const items = response.data.content;
+            //   console.log(items);
+  
+  
+                  // const newDiagnosisMap = new Map();
+                  // items.forEach(item => newDiagnosisMap.set(item.ailmentName, item.id));
+                  // setDiagnosisMap(newDiagnosisMap);
+  
+  
+              const diagnosisArr = items.map((item)=>{
+                return {label : item.ailmentName,value : item.id};
+              });
+  
+            //   console.log("check diagnosis",diagnosisArr);
+              setDiagnosis(diagnosisArr);
+              
+            
+            }
+     catch (err) {
+            console.error("Failed to fetch data: ", err);
+        }
+    };
+  
+    getAllOhc();
+  
+    return () => {
+        controller.abort();
+    };
+  
+  }, []);
 
 
     // to delete a row
@@ -115,10 +250,54 @@ const DiagnosisBSMList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('http://localhost:8080/dignosys-wise-body-systems?page=0&size=3', { signal: controller.signal });
+                const response = await axiosClientPrivate.get('http://localhost:8080/dignosys-wise-body-systems?page=0&size=50', { signal: controller.signal });
                 const items = response.data.content;
-                    // console.log(items);
-                
+                      console.log(items);
+                        // can be solved using map also
+                        // const diagnosisMapCopy = new Map();
+                        // const bodySystemMapCopy = new Map();
+                    
+                        // diagnosis.forEach(item => {
+                        //     diagnosisMap.set( item.value , item.label);
+                        // });
+                    
+                        // bodySystem.forEach(item => {
+                        //     bodySystemMap.set(item.value, item.label);
+                        //     // console.log();
+                        // });
+
+                        // console.log('Diagnosis Map:', Array.from(diagnosisMap.entries()));
+                        // console.log('Body System Map:', Array.from(bodySystemMap.entries()));
+                    
+                        // setDiagnosisMap(diagnosisMap);
+                        // setBodySystemMap(bodySystemMap);
+
+                        // const updatedItems =  items.map(item => ({
+                        //   ...item,
+                        //   ailmentId: diagnosisMap.get(parseInt(item.ailmentId)) ,
+                        //   ailmentSystemId: bodySystemMap.get(parseInt(item.ailmentSystemId)),
+                        // //   console.log(item.ailmentId)
+                        // }));
+
+                        // this way also can be done
+                        if(diagnosis.length>0 && bodySystem.length>0){
+                            items.forEach(obj => {
+                                obj.ailmentId = diagnosis.find(item => item.value == parseInt(obj.ailmentId)).label;
+                                obj.ailmentSystemId = bodySystem.find(item => item.value == parseInt(obj.ailmentSystemId)).label;
+                                // let ailmentIdObj = diagnosis.find(item => item.value == parseInt(obj.ailmentId));
+                                // let ailmentSystemIdObj = bodySystem.find(item => item.value == parseInt(obj.ailmentSystemId));
+                                
+                                // obj.ailmentId = ailmentIdObj? ailmentIdObj.label : obj.ailmentId;
+                                // obj.ailmentSystemId = ailmentSystemIdObj? ailmentSystemIdObj.label : obj.ailmentSystemId;
+                              });
+                        }
+                        else{
+                            console.log("Not found!");
+                        }
+                        
+
+                        // console.log("itemmmm",items);
+                    
                 if (items.length > 0) {
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
@@ -140,8 +319,8 @@ const DiagnosisBSMList = () => {
 
                 setRowData(items);
 
-            } catch (err) {
-                console.error("Failed to fetch data: ", err);
+            } catch(err) {
+                console.error("Failed to fetch dataaaa: ", err);
                 setRowData([]);
             }
         };
@@ -152,19 +331,26 @@ const DiagnosisBSMList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [diagnosis,bodySystem,axiosClientPrivate]);
 
     const handleEdit = async (id) => {
         alert(id);
         try {
           const response = await axiosClientPrivate.get(`/dignosys-wise-body-systems/${id}`);
-            console.log(response.data);
-            setFieldValue("id",response.data.id);
-            setFieldValue("complaint",response.data.complaint);
-            setFieldValue("complaintDesc",response.data.complaintDesc);
-            setFieldValue("isActive",response.data.isActive);
+            console.log("before",response.data);
+
+            // setFieldValue("id",response.data.id);
+            values.id = response.data.id;
+            const updateDiagnosis = diagnosis.find(item => item.value == parseInt(response.data.ailmentId)).label;
+            const updateailmentSystem = bodySystem.find(item => item.value == parseInt(response.data.ailmentSystemId)).label;
+            // console.log("checkkkkk",updateDiagnosis,updateailmentSystem);
+            values.diagnosis = String(updateDiagnosis);
+            values.system = String(updateailmentSystem);
+            setFieldValue("diagnosis",String(updateDiagnosis));
+            setFieldValue("system",String(updateailmentSystem));
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
+            console.log(values);
             setId(id);
             setShowupdate(true);
             setOpenPopup(true);
@@ -175,7 +361,12 @@ const DiagnosisBSMList = () => {
 
       const handleUpdate = async (id)=> {
         alert(id);
-        console.log(values);
+        // console.log("final check",values);
+        values.ailmentId = diagnosis.find(item => item.label == String(values.diagnosis)).value;
+        values.ailmentSystemId = bodySystem.find(item => item.label == String(values.system)).value;
+        delete values.diagnosis;
+        delete values.system;
+        console.log("final check",values);
         const update = values;
         try{
             //  console.log(values);
@@ -188,7 +379,7 @@ const DiagnosisBSMList = () => {
             //  setRowData(rowData => [...rowData,values]);
         }
         catch(err){
-            console.log("after:- ",values);
+            // console.log("after:- ",values);
             console.log(err);
         }
       }
@@ -196,13 +387,11 @@ const DiagnosisBSMList = () => {
       const exportpdf = async () => {
         
         const doc = new jsPDF();
-        const header = [["Id","Complaint",'Complaint in Details',"Is Active"]];
+        const header = [["Id","Diagnosis Name",'BodySystem Name']];
         const tableData = rowData.map(item => [
           item.id,
-          item.complaint,
-          item.complaintDesc,
-          item.isActive,
-          
+          item.ailmentId,
+          item.ailmentSystemId,
           
         ]);
         doc.autoTable({
@@ -214,7 +403,7 @@ const DiagnosisBSMList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("ComplaintList.pdf");
+        doc.save("DiagnosisBSMList.pdf");
     };
 
 
@@ -232,26 +421,23 @@ const DiagnosisBSMList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            id: 20,
-            complaint: 20,
-            complaintDesc: 25,
-            isActive: 25,
+            id: 10,
+            ailmentId: 20,
+            ailmentSystemId: 25,
         };
   
         sheet.columns = [
           { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
-          { header: "Complaint", key: 'complaint', width: columnWidths.complaint, style: headerStyle },
-          { header: "Complaint in Details", key: 'complaintDesc', width: columnWidths.complaintDesc, style: headerStyle },
-          { header: "Is Active", key: 'isActive', width: columnWidths.isActive, style: headerStyle },
+          { header: "Diagnosis Name", key: 'ailmentId', width: columnWidths.ailmentId, style: headerStyle },
+          { header: "BodySystem Name", key: 'ailmentSystemId', width: columnWidths.ailmentSystemId, style: headerStyle },
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
                 id: product.id,
-                complaint: product.complaint,
-                complaintDesc: product.complaintDesc,
-                isActive: product.isActive,
+                ailmentId: product.ailmentId,
+                ailmentSystemId: product.ailmentSystemId,
             })
         });
   
@@ -262,7 +448,7 @@ const DiagnosisBSMList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'ComplaintList.xlsx';
+            anchor.download = 'DiagnosisBSMList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -295,7 +481,7 @@ const DiagnosisBSMList = () => {
 
             <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Diagnosis Body System Map">
 
-                <DiagnosisBSMForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <DiagnosisBSMForm diagnosis={diagnosis} bodySystem={bodySystem}  values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
