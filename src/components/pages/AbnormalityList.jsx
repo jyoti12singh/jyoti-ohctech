@@ -67,14 +67,7 @@ const AbnormalityList = () => {
                toast.success("Saved Successfully!",{
                    position:"top-center"
                 }); 
-                      // getting id(key,value) of last index
-                //    const id = rowData[rowData.length-1].id;
-                //    const obj = {
-                //        id : id+1,
-                //        ...values
-                //    }
-                // console.log(obj);
-                // setRowData(rowData => [...rowData, obj]);
+                      
             setFetchTrigger(prev => prev+1);
                console.log('Response:', response.data);
                resetForm();
