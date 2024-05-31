@@ -40,7 +40,7 @@ const ChronicIllnessForm = ({
       <form onSubmit={handleSubmit}>
         <Grid container spacing={0} justifyContent="center" alignItems="center"  >
         
-          <Grid itemxs={2} sm={10}  justifyContent="center" alignItems="center">
+          <Grid itemxs={2} sm={11}  justifyContent="center" alignItems="center">
             <FormControl Width={100*100}>
               <Grid container spacing={2} justifyContent="center" alignItems="center">
               <Grid item xs={12} sm={4} container spacing={1} justifyContent="center"  alignItems="center">
