@@ -7,8 +7,8 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import DiagnosisBSMForm from './DiagnosisBSMForm';
-// import { bodysystemForm } from './Validationform';
+import DiagnosisCIMForm from './DiagnosisCIMForm';
+// import { opdmaster } from './Validationform';
 import { useFormik } from "formik";
 // import axios from 'axios';
 import PropTypes from "prop-types";
@@ -20,7 +20,7 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
-const DiagnosisBSMList = () => {
+const DiagnosisCIMList = () => {
 
     const [rowData, setRowData] = useState([]);
 
@@ -36,7 +36,7 @@ const DiagnosisBSMList = () => {
 
     const [diagnosis,setDiagnosis]  = useState([{}]);
 
-    const [bodySystem,setBodySystem] = useState([{}]);
+    const [abnormility,setAbnormility] = useState([{}]);
 
     const [fetchTrigger, setFetchTrigger] = useState(0)
 
@@ -56,7 +56,7 @@ const DiagnosisBSMList = () => {
 
     const initialValues = {
         diagnosis : '',
-        system : '',
+        abnormality : '',
         lastModified: "",
         modifiedBy: ""
       };
@@ -73,73 +73,74 @@ const DiagnosisBSMList = () => {
       } = useFormik({
         initialValues: initialValues,
         // validationSchema: complaintForm,
-        // onSubmit: (values, action) => {
+        onSubmit: (values, action) => {
+                console.log("ppp",diagnosis,abnormility);
+            const ailment = diagnosis.find(item => item.label === values.diagnosis);
+            const ailmentid = ailment ? ailment.value : null;
+              console.log("gggg",ailmentid);
+            const abnormality = abnormility.find(item => item.label === values.abnormality);
+            const abnormalityid = abnormality ? abnormality.value : null;
+               console.log("gggg",abnormalityid);
 
-        //     const ailment = diagnosis.find(item => item.label === values.diagnosis);
-        //     const ailmentid = ailment ? ailment.value : null;
-              
-        //     const ailmentSystem = bodySystem.find(item => item.label === values.system);
-        //     const ailmentSystemid = ailmentSystem ? ailmentSystem.value : null;
+                const key1 = 'ailmentId';
+                const key2 = 'chronicId';
+                values[key1] = values.diagnosis;
+                values[key2] = values.abnormality;
+                delete values.diagnosis;
+                delete values.abnormality;
 
-        //         const key1 = 'ailmentId';
-        //         const key2 = 'ailmentSystemId';
-        //         values[key1] = values.diagnosis;
-        //         values[key2] = values.system;
-        //         delete values.diagnosis;
-        //         delete values.system;
-
-        //         values.ailmentId = ailmentid;
-        //         values.ailmentSystemId = ailmentSystemid;
-        //     console.log("final value",values),
-        //     action.resetForm();
-        //   },
-        onSubmit: async (values, {resetForm}) => {
+                values.ailmentId = ailmentid;
+                values.chronicId = abnormalityid;
+            console.log("final value",values),
+            action.resetForm();
+          },
+        // onSubmit: async (values, {resetForm}) => {
             
-                const ailment = diagnosis.find(item => item.label === values.diagnosis);
-                const ailmentid = ailment ? ailment.value : null;
+        //         const ailment = diagnosis.find(item => item.label === values.diagnosis);
+        //         const ailmentid = ailment ? ailment.value : null;
                   
-                const ailmentSystem = bodySystem.find(item => item.label === values.system);
-                const ailmentSystemid = ailmentSystem ? ailmentSystem.value : null;
+        //         const ailmentSystem = abnormility.find(item => item.label === values.system);
+        //         const chronicId = ailmentSystem ? ailmentSystem.value : null;
     
-                    const key1 = 'ailmentId';
-                    const key2 = 'ailmentSystemId';
-                    values[key1] = values.diagnosis;
-                    values[key2] = values.system;
-                    delete values.diagnosis;
-                    delete values.system;
+        //             const key1 = 'ailmentId';
+        //             const key2 = 'chronicId';
+        //             values[key1] = values.diagnosis;
+        //             values[key2] = values.system;
+        //             delete values.diagnosis;
+        //             delete values.system;
     
-                    values.ailmentId = ailmentid;
-                    values.ailmentSystemId = ailmentSystemid;
+        //             values.ailmentId = ailmentid;
+        //             values.ailmentSystemId = chronicId;
              
-           try {
-               const response = await axiosClientPrivate.post('/dignosys-wise-body-systems', values);
-               toast.success("Saved Successfully!",{
-                   position:"top-center"
-                }); 
-                      // getting id(key,value) of last index
-                //    const id = rowData[rowData.length-1].id;
+        //    try {
+        //        const response = await axiosClientPrivate.post('/diagnosis-chronic-mappings ', values);
+        //        toast.success("Saved Successfully!",{
+        //            position:"top-center"
+        //         }); 
+        //               // getting id(key,value) of last index
+        //         //    const id = rowData[rowData.length-1].id;
                     
-                //     console.log("new value",values);
+        //         //     console.log("new value",values);
 
-                    // values.ailmentId = diagnosis.find(item => item.value == parseInt(values.ailmentId)).label;
-                    // values.ailmentSystemId = bodySystem.find(item => item.value == parseInt(values.ailmentSystemId)).label;
+        //             // values.ailmentId = diagnosis.find(item => item.value == parseInt(values.ailmentId)).label;
+        //             // values.ailmentSystemId = bodySystem.find(item => item.value == parseInt(values.ailmentSystemId)).label;
 
-                //     console.log("check value",values);
+        //         //     console.log("check value",values);
 
-                //    const obj = {
-                //        id : id+1,
-                //        ...values
-                //    }
-                // // console.log(obj);
-                // setRowData(rowData => [...rowData, obj]);
-                console.log('Response:', response.data);
-                resetForm();
-                setFetchTrigger(prev => prev+1);
-             } catch (error) {
-            //    console.log(values);
-               console.error('Error:', error);
-             }
-           },
+        //         //    const obj = {
+        //         //        id : id+1,
+        //         //        ...values
+        //         //    }
+        //         // // console.log(obj);
+        //         // setRowData(rowData => [...rowData, obj]);
+        //         console.log('Response:', response.data);
+        //         resetForm();
+        //         setFetchTrigger(prev => prev+1);
+        //      } catch (error) {
+        //     //    console.log(values);
+        //        console.error('Error:', error);
+        //      }
+        //    },
       });
 
 // diagnosis and system 
@@ -148,9 +149,9 @@ useEffect(() => {
 
     const getAllOhc = async () => {
         try {
-            const response = await axiosClientPrivate.get('http://localhost:8080/ailment-systems', { signal: controller.signal });
+            const response = await axiosClientPrivate.get('http://localhost:8080/abnormalities', { signal: controller.signal });
             const items = response.data.content;
-                // console.log(items);
+                console.log(items);
 
                 // const newDiagnosisMap = new Map();
                 // items.forEach(item => newDiagnosisMap.set(item.ailmentSysName, item.id));
@@ -162,12 +163,12 @@ useEffect(() => {
                 //   return item.ailmentSysName;
                 // });
 
-                const ailment = items.map((item)=>{
-                  return {label : item.ailmentSysName,value : item.id};
+                const abnormality = items.map((item)=>{
+                  return {label : item.abnormalityName,value : item.id};
                 });
 
                 
-                setBodySystem(ailment);
+                setAbnormility(abnormality);
                 // console.log(ailment);
 
         } catch (err) {
@@ -190,7 +191,7 @@ useEffect(() => {
         try {
             const response = await axiosClientPrivate.get('http://localhost:8080/ailments', { signal: controller.signal });
             const items = response.data.content;
-            //   console.log(items);
+              console.log(items);
   
   
                   // const newDiagnosisMap = new Map();
@@ -226,7 +227,7 @@ useEffect(() => {
     alert(id)
    if(window.confirm('Are you sure you want to delete this data?')){
    try {
-       await axiosClientPrivate.delete(`/dignosys-wise-body-systems/${id}`);
+       await axiosClientPrivate.delete(`/diagnosis-chronic-mappings /${id}`);
     //    setRowData(prevData => prevData.filter(row => row.id !== id));
           setFetchTrigger(prev => prev+1);
    } catch (error) {
@@ -254,7 +255,7 @@ useEffect(() => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('http://localhost:8080/dignosys-wise-body-systems?page=0&size=50', { signal: controller.signal });
+                const response = await axiosClientPrivate.get('http://localhost:8080/diagnosis-chronic-mappings ?page=0&size=50', { signal: controller.signal });
                 const items = response.data.content;
                       console.log(items);
                         // can be solved using map also
@@ -284,10 +285,10 @@ useEffect(() => {
                         // }));
 
                         // this way also can be done
-                        if(diagnosis.length>0 && bodySystem.length>0){
+                        if(diagnosis.length>0 && abnormility.length>0){
                             items.forEach(obj => {
                                 obj.ailmentId = diagnosis.find(item => item.value == parseInt(obj.ailmentId)).label;
-                                obj.ailmentSystemId = bodySystem.find(item => item.value == parseInt(obj.ailmentSystemId)).label;
+                                obj.ailmentSystemId = abnormility.find(item => item.value == parseInt(obj.chronicId)).label;
                                 // let ailmentIdObj = diagnosis.find(item => item.value == parseInt(obj.ailmentId));
                                 // let ailmentSystemIdObj = bodySystem.find(item => item.value == parseInt(obj.ailmentSystemId));
                                 
@@ -335,18 +336,18 @@ useEffect(() => {
             controller.abort();
         };
 
-    }, [fetchTrigger,diagnosis,bodySystem,axiosClientPrivate]);
+    }, [fetchTrigger,diagnosis,abnormility,axiosClientPrivate]);
 
     const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/dignosys-wise-body-systems/${id}`);
+          const response = await axiosClientPrivate.get(`/diagnosis-chronic-mappings /${id}`);
             console.log("before",response.data);
 
             // setFieldValue("id",response.data.id);
             values.id = response.data.id;
             const updateDiagnosis = diagnosis.find(item => item.value == parseInt(response.data.ailmentId)).label;
-            const updateailmentSystem = bodySystem.find(item => item.value == parseInt(response.data.ailmentSystemId)).label;
+            const updateailmentSystem = abnormility.find(item => item.value == parseInt(response.data.ailmentSystemId)).label;
             // console.log("checkkkkk",updateDiagnosis,updateailmentSystem);
             values.diagnosis = String(updateDiagnosis);
             values.system = String(updateailmentSystem);
@@ -368,14 +369,14 @@ useEffect(() => {
         alert(id);
         // console.log("final check",values);
         values.ailmentId = diagnosis.find(item => item.label == String(values.diagnosis)).value;
-        values.ailmentSystemId = bodySystem.find(item => item.label == String(values.system)).value;
+        values.ailmentSystemId = abnormility.find(item => item.label == String(values.system)).value;
         delete values.diagnosis;
         delete values.system;
         console.log("final check",values);
         const update = values;
         try{
             //  console.log(values);
-             await axiosClientPrivate.put(`/dignosys-wise-body-systems/${id}`,update);
+             await axiosClientPrivate.put(`/diagnosis-chronic-mappings /${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -393,11 +394,11 @@ useEffect(() => {
       const exportpdf = async () => {
         
         const doc = new jsPDF();
-        const header = [["Id","Diagnosis Name",'BodySystem Name']];
+        const header = [["Id","Diagnosis Name",'Chronic Illness']];
         const tableData = rowData.map(item => [
           item.id,
           item.ailmentId,
-          item.ailmentSystemId,
+          item.abnormality,
           
         ]);
         doc.autoTable({
@@ -409,7 +410,7 @@ useEffect(() => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("DiagnosisBSMList.pdf");
+        doc.save("DiagnosisCIMList.pdf");
     };
 
 
@@ -429,13 +430,13 @@ useEffect(() => {
         const columnWidths = {
             id: 10,
             ailmentId: 20,
-            ailmentSystemId: 25,
+            abnormality: 25,
         };
   
         sheet.columns = [
           { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
           { header: "Diagnosis Name", key: 'ailmentId', width: columnWidths.ailmentId, style: headerStyle },
-          { header: "BodySystem Name", key: 'ailmentSystemId', width: columnWidths.ailmentSystemId, style: headerStyle },
+          { header: "Chronic Illness", key: 'abnormality', width: columnWidths.abnormality, style: headerStyle },
           
       ];
   
@@ -454,7 +455,7 @@ useEffect(() => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'DiagnosisBSMList.xlsx';
+            anchor.download = 'DiagnosisCIMList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -472,7 +473,8 @@ useEffect(() => {
                     <ButtonGroup variant="contained" aria-label="Basic button group">
                         <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }}>Add New</Button>
                         <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
-                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button>                    </ButtonGroup>
+                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button> 
+                    </ButtonGroup>
 
                 </Stack>
                 <AgGridReact
@@ -485,13 +487,13 @@ useEffect(() => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Diagnosis Body System Map">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Diagnosis Chronic Illness Mapping">
 
-                <DiagnosisBSMForm diagnosis={diagnosis} bodySystem={bodySystem}  values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <DiagnosisCIMForm diagnosis={diagnosis} abnormility={abnormility} values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default DiagnosisBSMList;
+export default DiagnosisCIMList;

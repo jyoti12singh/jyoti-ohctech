@@ -1,12 +1,7 @@
-import { FormControl, Grid, TextField } from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
-import Input from "../common/Input";
 import SingleSelect from "../common/SingleSelect";
-import MultipleSelect from "../common/MultipleSelect";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useState } from "react";
-import MultiCheckbox from "./MultiCheckbox";
+
 
 const DiagnosisCIMForm = ({
   values,
@@ -16,6 +11,8 @@ const DiagnosisCIMForm = ({
   handleChange,
   setFieldValue,
   handleSubmit,
+  diagnosis,
+  abnormility,
 }) => {
        DiagnosisCIMForm.propTypes = {
     values: PropTypes.object.isRequired,
@@ -27,8 +24,8 @@ const DiagnosisCIMForm = ({
     handleSubmit: PropTypes.func.isRequired,
   };
 
-  const DiagnosisName = ["#BOTH BONES LEFT FOREARM", "........."];
-  const ChronicIllness = ["A", "B",  "C"];
+  // const DiagnosisName = ["#BOTH BONES LEFT FOREARM", "........."];
+  // const ChronicIllness = ["A", "B",  "C"];
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
@@ -41,24 +38,27 @@ const DiagnosisCIMForm = ({
  
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <SingleSelect
-                    arr={DiagnosisName}
+                    arr={diagnosis}
                     label="Diagnosis Name"
-                    name="DiagnosisName"
-                    value={values.DiagnosisName}
+                    name="diagnosis"
+                    value={values.diagnosis}
+                    // onChange={(event, newValue) => {
+                    //   const syntheticEvent = {
+                    //     target: {
+                    //       name: "diagnosis",
+                    //       value: newValue,
+                    //     },
+                    //   };
+                    //   handleChange(syntheticEvent);
+                    // }}
                     onChange={(event, newValue) => {
-                      const syntheticEvent = {
-                        target: {
-                          name: "DiagnosisName",
-                          value: newValue,
-                        },
-                      };
-                      handleChange(syntheticEvent);
+                      setFieldValue('diagnosis', newValue ? newValue.label : '');
                     }}
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                      errors.DiagnosisName && touched.DiagnosisName ? (
-                        <span style={{ color: "red" }}>{errors.DiagnosisName}</span>
+                      errors.diagnosis && touched.diagnosis ? (
+                        <span style={{ color: "red" }}>{errors.diagnosis}</span>
                       ) : null
                     }
                   />
@@ -66,28 +66,31 @@ const DiagnosisCIMForm = ({
 
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <SingleSelect
-                    arr={ChronicIllness}
+                    arr={abnormility}
                     label="Chronic Illness"
-                    name="ChronicIllness"
-                    value={values.ChronicIllness
+                    name="abnormality"
+                    value={values.abnormality
 
                     }
-                    onChange={(event, newValue) => {
-                      const syntheticEvent = {
-                        target: {
-                          name: "ChronicIllness",
-                          value: newValue,
-                        },
-                      };
-                      handleChange(syntheticEvent);
-                    }}
+                    // onChange={(event, newValue) => {
+                    //   const syntheticEvent = {
+                    //     target: {
+                    //       name: "abnormality",
+                    //       value: newValue,
+                    //     },
+                    //   };
+                    //   handleChange(syntheticEvent);
+                    // }}
                     // onChange={handleChange}
+                    onChange={(event, newValue) => {
+                      setFieldValue('abnormality', newValue ? newValue.label : '');
+                    }}
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                      errors.ChronicIllness && touched.ChronicIllness ? (
+                      errors.abnormality && touched.abnormality ? (
                         <span style={{ color: "red" }}>
-                          {errors.ChronicIllness
+                          {errors.abnormality
     }
                         </span>
                       ) : null

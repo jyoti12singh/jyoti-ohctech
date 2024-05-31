@@ -34,6 +34,8 @@ import TaskFrequencyList from "./components/pages/TaskFrequencyList";
 import InjuryClassificationList from "./components/pages/InjuryClassificationList";
 import InjuryPartList from "./components/pages/InjuryPartList";
 import InjuryTypeList from "./components/pages/InjuryTypeList";
+import DiagnosisTreatmentList from "./components/pages/DiagnosisTreatmentList"
+import DiagnosisCIMList from "./components/pages/DiagnosisCIMList";
 
 const router = createBrowserRouter([
   {
@@ -167,6 +169,14 @@ const router = createBrowserRouter([
               {
                 path : "/InjuryTypeList",
                 element : <InjuryTypeList />
+              },
+              {
+                path : "/DiagnosisTreatmentList",
+                element : <DiagnosisTreatmentList />
+              },
+              {
+                path : "/DiagnosisCIMList",
+                element : <DiagnosisCIMList />
               }
             ],
           },

@@ -7,7 +7,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import { DiagnosisValidationForm } from './Validationform';
+// import { DiagnosisValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -63,7 +63,7 @@ const DiagnosisList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: DiagnosisValidationForm,
+        // validationSchema: DiagnosisValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();

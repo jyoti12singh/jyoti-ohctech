@@ -1,4 +1,4 @@
-import ohcimg from "../../../public/welcomeg.jpg";
+import ohcimg from "../../assets/welcome.jpg";
 import { InputAdornment, Stack } from "@mui/material";
 import Container from "@mui/material/Container";
 import { IconButton } from "@mui/material";
@@ -229,7 +229,7 @@ const Login = ()=> {
               </Button>
               <Typography variant="h10" gutterBottom >
                 {" "}
-                Don't have an account?{" "}
+                Don&apost have an account?{" "}
                 <Link href="" style={{ textDecoration: "none" }}>
                   Sign Up
                 </Link>
