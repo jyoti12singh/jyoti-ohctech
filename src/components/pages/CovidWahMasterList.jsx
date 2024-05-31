@@ -38,8 +38,7 @@ const CovidWahMasterList = () => {
         hindi: "",
        english: "",
         type: "",
-       seq:""
-          
+       seq:""   
       };
       const {
         values,

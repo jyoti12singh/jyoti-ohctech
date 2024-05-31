@@ -42,7 +42,6 @@ const QuestionaireMasterList = () => {
         locallanguage:"",
         secavailable: "",
         order: ""
-       
       };
 
       const {

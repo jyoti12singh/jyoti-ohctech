@@ -92,7 +92,7 @@ const CovidWahMasterForm = ({
                       errors.type && touched.type ? (
                         <span style={{ color: "red" }}>{errors.type}</span>
                       ) : null
-                    }
+                  }
                   />
                 </Grid>
                 <Grid item xs={12} container spacing={1} justifyContent="center" alignItems="center">

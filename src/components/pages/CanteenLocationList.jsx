@@ -79,7 +79,7 @@ const CanteenLocationList = () => {
         //   }
         // },
       });
-      const handleEdit = async (id) => {
+    const handleEdit = async (id) => {
         alert(id);
         try {
           const response = await axiosClientPrivate.get(`/business-units/${id}`);

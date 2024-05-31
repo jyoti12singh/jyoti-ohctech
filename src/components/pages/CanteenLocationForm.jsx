@@ -107,6 +107,5 @@ const CanteenLocationForm = ({
     </div>
   );
 };
-
 export default CanteenLocationForm;
 
