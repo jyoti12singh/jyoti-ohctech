@@ -73,74 +73,94 @@ const DiagnosisCIMList = () => {
       } = useFormik({
         initialValues: initialValues,
         // validationSchema: complaintForm,
-        onSubmit: (values, action) => {
-                console.log("ppp",diagnosis,abnormility);
-            const ailment = diagnosis.find(item => item.label === values.diagnosis);
-            const ailmentid = ailment ? ailment.value : null;
-              console.log("gggg",ailmentid);
-            const abnormality = abnormility.find(item => item.label === values.abnormality);
-            const abnormalityid = abnormality ? abnormality.value : null;
-               console.log("gggg",abnormalityid);
+        // onSubmit: (values, action) => {
+        //         console.log("ppp",diagnosis,abnormility);
+        //     const ailment = diagnosis.find(item => item.label === values.diagnosis);
+        //     const ailmentid = ailment ? ailment.value : null;
+        //       console.log("gggg",ailmentid);
+        //     const abnormality = abnormility.find(item => item.label === values.abnormality);
+        //     const abnormalityid = abnormality ? abnormality.value : null;
+        //        console.log("gggg",abnormalityid);
 
-                const key1 = 'ailmentId';
-                const key2 = 'chronicId';
-                values[key1] = values.diagnosis;
-                values[key2] = values.abnormality;
-                delete values.diagnosis;
-                delete values.abnormality;
+        //         const key1 = 'ailmentId';
+        //         const key2 = 'chronicId';
+        //         values[key1] = values.diagnosis;
+        //         values[key2] = values.abnormality;
+        //         delete values.diagnosis;
+        //         delete values.abnormality;
 
-                values.ailmentId = ailmentid;
-                values.chronicId = abnormalityid;
-            console.log("final value",values),
-            action.resetForm();
-          },
-        // onSubmit: async (values, {resetForm}) => {
+        //         values.ailmentId = ailmentid;
+        //         values.chronicId = abnormalityid;
+        //     console.log("final value",values),
+        //     action.resetForm();
+        //   },
+        onSubmit: async (values, {resetForm}) => {
             
-        //         const ailment = diagnosis.find(item => item.label === values.diagnosis);
-        //         const ailmentid = ailment ? ailment.value : null;
+                // const ailment = diagnosis.find(item => item.label === values.diagnosis);
+                // const ailmentid = ailment ? ailment.value : null;
                   
-        //         const ailmentSystem = abnormility.find(item => item.label === values.system);
-        //         const chronicId = ailmentSystem ? ailmentSystem.value : null;
+                // const ailmentSystem = abnormility.find(item => item.label === values.system);
+                // const chronicId = ailmentSystem ? ailmentSystem.value : null;
     
-        //             const key1 = 'ailmentId';
-        //             const key2 = 'chronicId';
-        //             values[key1] = values.diagnosis;
-        //             values[key2] = values.system;
-        //             delete values.diagnosis;
-        //             delete values.system;
+                //     const key1 = 'ailmentId';
+                //     const key2 = 'chronicId';
+                //     values[key1] = values.diagnosis;
+                //     values[key2] = values.system;
+                //     delete values.diagnosis;
+                //     delete values.system;
     
-        //             values.ailmentId = ailmentid;
-        //             values.ailmentSystemId = chronicId;
-             
-        //    try {
-        //        const response = await axiosClientPrivate.post('/diagnosis-chronic-mappings ', values);
-        //        toast.success("Saved Successfully!",{
-        //            position:"top-center"
-        //         }); 
-        //               // getting id(key,value) of last index
-        //         //    const id = rowData[rowData.length-1].id;
+                //     values.ailmentId = ailmentid;
+                //     values.ailmentSystemId = chronicId;
+
+                
+                console.log("ppp",diagnosis,abnormility);
+                const ailment = diagnosis.find(item => item.label === values.diagnosis);
+                const ailmentid = ailment ? ailment.value : null;
+                  console.log("gggg",ailmentid);
+                const abnormality = abnormility.find(item => item.label === values.abnormality);
+                const abnormalityid = abnormality ? abnormality.value : null;
+                   console.log("gggg",abnormalityid);
+    
+                    const key1 = 'ailmentId';
+                    const key2 = 'chronicId';
+                    values[key1] = values.diagnosis;
+                    values[key2] = values.abnormality;
+                    delete values.diagnosis;
+                    delete values.abnormality;
+    
+                    values.ailmentId = ailmentid;
+                    values.chronicId = abnormalityid;
+                    console.log("final value",values);
+           try {
+               const response = await axiosClientPrivate.post('/diagnosis-chronic-mappings ', values);
+               toast.success("Saved Successfully!",{
+                   position:"top-center"
+                }); 
+                      // getting id(key,value) of last index
+                //    const id = rowData[rowData.length-1].id;
                     
-        //         //     console.log("new value",values);
+                //     console.log("new value",values);
 
-        //             // values.ailmentId = diagnosis.find(item => item.value == parseInt(values.ailmentId)).label;
-        //             // values.ailmentSystemId = bodySystem.find(item => item.value == parseInt(values.ailmentSystemId)).label;
+                    // values.ailmentId = diagnosis.find(item => item.value == parseInt(values.ailmentId)).label;
+                    // values.ailmentSystemId = bodySystem.find(item => item.value == parseInt(values.ailmentSystemId)).label;
 
-        //         //     console.log("check value",values);
+                //     console.log("check value",values);
 
-        //         //    const obj = {
-        //         //        id : id+1,
-        //         //        ...values
-        //         //    }
-        //         // // console.log(obj);
-        //         // setRowData(rowData => [...rowData, obj]);
-        //         console.log('Response:', response.data);
-        //         resetForm();
-        //         setFetchTrigger(prev => prev+1);
-        //      } catch (error) {
-        //     //    console.log(values);
-        //        console.error('Error:', error);
-        //      }
-        //    },
+                //    const obj = {
+                //        id : id+1,
+                //        ...values
+                //    }
+                // // console.log(obj);
+                // setRowData(rowData => [...rowData, obj]);
+                
+                console.log('Response:', response.data);
+                resetForm();
+                setFetchTrigger(prev => prev+1);
+             } catch (error) {
+            //    console.log(values);
+               console.error('Error:', error);
+             }
+           },
       });
 
 // diagnosis and system 
