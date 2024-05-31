@@ -1,4 +1,6 @@
-import ohcimg from "../../../public/welcomeg.jpg";
+import React from "react";
+import ohcimg from "../../../public/ohc.jpg";
+import google from "../../../public/google.png";
 import { InputAdornment, Stack } from "@mui/material";
 import Container from "@mui/material/Container";
 import { IconButton } from "@mui/material";
@@ -15,31 +17,17 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Link } from "@mui/material";
 import { useState } from "react";
-import { useAuth } from "../security/AuthContext";
-import { useNavigate } from "react-router-dom";
-
-
-const Login = ()=> {
-
-  const authContext = useAuth();
-
-  const navigate = useNavigate();
-
+export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const [loginData, setLoginData] = useState({
     username: "",
     password: "",
     signedin: false,
   });
-
   const togglePasswordVisibility = () => {
     setShowPassword((prevShow) => !prevShow);
   };
-
-
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prevData) => ({
@@ -47,7 +35,6 @@ const Login = ()=> {
       [name]: value,
     }));
   };
-
   const EndAdorment = ({ showPassword, setShowPassword }) => {
     return (
       <InputAdornment position="end">
@@ -61,20 +48,9 @@ const Login = ()=> {
       </InputAdornment>
     );
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    setIsLoading(true);
-
-    const isLoggedIn = await authContext.login(loginData);
-
-    if (isLoggedIn) {
-      setIsLoading(false);
-      navigate("/ohcSelection");
-    } else {
-      setIsLoading(false);
-    }
+    console.log(loginData);
   };
 
   return (
@@ -83,7 +59,7 @@ const Login = ()=> {
         sx={{
           width: "50vw",
           height: "100vh",
-         // overflow: "hidden",
+          // overflow: "hidden",
           display: { xs: "none", sm: "block" },
         }}
       >
@@ -104,7 +80,7 @@ const Login = ()=> {
           sx={{
             height: "100%",
             display: "flex",
-           
+
             alignItems: "center",
           }}
         >
@@ -114,21 +90,24 @@ const Login = ()=> {
               flexDirection: "column",
               alignItems: "center",
               textAlign: "center",
-              
-              
+             
             }}
           >
             <Typography
-               sx={{
-                fontWeight:'bold',
-                 marginLeft:"-7.5rem"
-               }}
+              sx={{
+                fontWeight: "bold",
+                '@media (min-width:600px)': {
+                     marginLeft:'-8.5rem'
+                   },
+              }}
               display={"flex"}
               flexDirection={"row"}
               variant="h5"
+              
+              justifyContent={'center'}
               gutterBottom
             >
-              Welcome To{" "}
+              Welcome To{""}
               <img
                 src="/logo.svg"
                 alt="logo"
@@ -136,28 +115,27 @@ const Login = ()=> {
               />
             </Typography>
 
-            <Typography variant="h10" gutterBottom>
-              <Box 
-              sx={
-                 { marginLeft:"-15rem" }
-                }
-                >
-              Sign into Your Account
-            </Box>           
+            <Typography variant="h6" gutterBottom>
+              <Box sx={{ '@media (min-width:600px)': {
+                marginLeft:'-13.5rem'
+              }}}
+             
+               >Sign into Your Account</Box>
             </Typography>
 
             <Box
               component="form"
               onSubmit={handleSubmit}
               noValidate
-              sx={{ mt: 1 }}
+              sx={{ mt: 3 }}
             >
               <TextField
-                label="username"
+                label="Username"
                 variant="standard"
                 margin="normal"
                 required
                 fullWidth
+                style={{ marginTop: "2" }}
                 value={loginData.username}
                 onChange={handleFieldChange}
                 id="username"
@@ -167,11 +145,11 @@ const Login = ()=> {
               />
               <TextField
                 variant="standard"
-                
                 onChange={handleFieldChange}
                 value={loginData.password}
                 margin="normal"
                 required
+                style={{ marginTop: "3" }}
                 fullWidth
                 name="password"
                 label="Password"
@@ -193,8 +171,8 @@ const Login = ()=> {
                   flexDirection: "row",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  marginTop:'1rem',
-                  marginBottom:'1rem'
+                  marginTop: "1rem",
+                  marginBottom: "1rem",
                 }}
               >
                 <FormGroup>
@@ -219,27 +197,97 @@ const Login = ()=> {
               </div>
               <Button
                 type="submit"
-                style={{backgroundColor:"blue"}}
+                style={{ backgroundColor: "#42a7f5" ,textTransform:'unset' }}
                 fullWidth
                 variant="contained"
-                sx={{ mt: 1, mb: 1, bgcolor: "cornflowerblue" }}
+                sx={{ mt: 1, mb: 5, bgcolor: "cornflowerblue" }}
                 onClick={handleSubmit}
-              > 
+              >
                 Sign In
               </Button>
-              <Typography variant="h10" gutterBottom >
+              <Typography variant="h10" gutterBottom>
                 {" "}
                 Don't have an account?{" "}
                 <Link href="" style={{ textDecoration: "none" }}>
                   Sign Up
                 </Link>
               </Typography>
+              <Typography
+                margin={"1rem"}
+                position={"relative"}
+                textAlign={"center"}
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <div
+                  style={{
+                    width: "30vw",
+                    marginTop: "1rem",
+                    height: "1px",
+                    backgroundColor: "#dadde0",
+                  }}
+                ></div>
+                <p
+                  style={{
+                    alignItems: "center",
+                    paddingTop: "1rem",
+                    textAlign: "center",
+                    font: "black",
+                    position: "absolute",
+                  }}
+                >
+                  Or
+                </p>
+              </Typography>
+              <Typography
+                margin={"1rem"}
+                position={"relative"}
+                textAlign={"center"}
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <div
+                 
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignContent: "center",
+                      textAlign: "center",
+                      width: "8%",
+                      height: "8%",
+                      marginTop:'1.5rem',
+                      // marginLeft: "15vw",
+                      cursor:'pointer'
+                
+                  }}
+                >
+                  <Link >
+                  <img src={google} alt="" />
+                  </Link>
+                    
+                </div>
+                {/* <p
+                  style={{
+                    alignItems: "center",
+                    paddingTop: "1rem",
+                    textAlign: "center",
+                    font: "black/80",
+                    position: "absolute",
+                  }}
+                >
+                  Or
+                </p> */}
+              </Typography>
+              
+              
+              
             </Box>
           </Box>
         </Container>
       </Box>
-   </Stack>
-);}
-
-
-export default Login;
+       
+    </Stack>
+  );
+}
