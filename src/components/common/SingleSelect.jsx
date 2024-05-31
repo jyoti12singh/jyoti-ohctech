@@ -11,10 +11,12 @@ import Autocomplete from '@mui/material/Autocomplete';
 
  const SingleSelect=({arr,label,type,value,onBlur,onChange,name,helpertext})=> {
 
+
+
     SingleSelect.propTypes = {
-        arr:PropTypes.array.isRequired,
+        arr:PropTypes.isRequired,
         label:PropTypes.string.isRequired,
-        type:PropTypes.node.isRequired,
+        type:PropTypes.isRequired,
         onBlur: PropTypes.func,
         onChange: PropTypes.func,
         helperText:PropTypes.node,
@@ -23,49 +25,50 @@ import Autocomplete from '@mui/material/Autocomplete';
         helpertext:PropTypes.node,
     }
 
+    const isArrayOfObjects = (array) => {
+      return array.length > 0 && typeof array[0] === 'object';
+    };
+    
+    const isObjArray = isArrayOfObjects(arr);
 
-  return (
-    // <Box sx={{ minWidth: 120 }}>
-    //   <FormControl fullWidth>
-    //     <InputLabel id="demo-simple-select-label">{label}</InputLabel>
-    //     <Select
-    //       sx={{width:'250px'}}
-    //       labelId="demo-simple-select-label"
-    //       type={type}
-    //       name={name}
-    //       id="demo-simple-select"
-    //       onChange={onChange}
-    //       onBlur={onBlur}
-    //       value={value}
-    //       label={label}
-    //       helperText={helpertext}
-    //         >
-    //         {arr.map((item,index)=>{
-    //             return(
-    //                 <MenuItem key={index} value={item}>{item}</MenuItem>
-    //             )
-    //         })}
-    //     </Select>
-    //   </FormControl>
-    // </Box>
+    //  console.log("is object",arr);
 
 
+    return (
+      <div>
+        {isObjArray ? (
           <Autocomplete
-            // disablePortal
-            sx={{width:'250px'}}
+          // disablePortal
+          id="combo-box-demo"
+          options={arr}
+          // getOptionLabel={(option) => option.label }  // This tells Autocomplete how to display each option
+          // isOptionEqualToValue={(option, value) => option.value === value.value}
+          sx={{ width: 300 }}
+            value={value}
+            type = {type}
+            onChange={onChange}
+            onBlur={onBlur}
+            helpertext={helpertext}
+            name ={name}
+          renderInput={(params) => <TextField 
+            
+            {...params} label={label} />}
+        />
+        ) : (
+          <Autocomplete
+            sx={{ width: '250px' }}
             id="combo-box-demo"
             options={arr}
-            // labelId="demo-simple-select-label"
-            type={type}
-            name={name}
-            renderInput={(params) => <TextField {...params}  label={label} />}
+            getOptionLabel={(option) => option}
+            renderInput={(params) => <TextField {...params} label={label} />}
             value={value}
             onBlur={onBlur}
-            onChange={onChange}
-            // onChange={(event, newValue) => onChange(newValue)} 
-            helperText={helpertext}
+            onChange={(event, newValue) => onChange(event, newValue)}
+            helpertext={helpertext}
           />
-  );
+        )}
+      </div>
+    );
 }
 
 

@@ -35,6 +35,8 @@ const GroupitemsList = () => {
     const [id,setId] = useState(1);
 
     const [showupdate,setShowupdate] = useState(false);
+    const [fetchTrigger, setFetchTrigger] = useState(0);
+
 
     const initialValues = {
        
@@ -70,13 +72,15 @@ const GroupitemsList = () => {
                 position:"top-center"
              }); 
                    // getting id(key,value) of last index
-                const id = rowData[rowData.length-1].buId;
-                const obj = {
-                    buId : id+1,
-                    ...values
-                }
-             console.log(obj);
-             setRowData(rowData => [...rowData, obj]);
+            //     const id = rowData[rowData.length-1].buId;
+            //     const obj = {
+            //         buId : id+1,
+            //         ...values
+            //     }
+            //  console.log(obj);
+            //  setRowData(rowData => [...rowData, obj]);
+            setFetchTrigger(prev => prev+1);
+
             console.log('Response:', response.data);
             resetForm();
           } catch (error) {
@@ -141,6 +145,8 @@ const GroupitemsList = () => {
              });
              resetForm();
             // setRowData(rowData => [...rowData,values]);
+            setFetchTrigger(prev => prev+1);
+
         }
         catch(err){
             console.log(values);
@@ -155,7 +161,9 @@ const GroupitemsList = () => {
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
            await axiosClientPrivate.delete(`/business-units/${id}`);
-           setRowData(prevData => prevData.filter(row => row.buId !== id));
+        //    setRowData(prevData => prevData.filter(row => row.buId !== id));
+        setFetchTrigger(prev => prev+1);
+
        } catch (error) {
            console.error('Error deleting row:', error);
        }
@@ -217,7 +225,7 @@ const GroupitemsList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [fetchTrigger]);
 
 
      

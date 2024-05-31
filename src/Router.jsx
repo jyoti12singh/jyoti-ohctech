@@ -4,7 +4,8 @@ import ErrorPage from "./components/pages/ErrorPage";
 import Ohcs from "./components/pages/Ohcs";
 import Roles from "./components/pages/Roles";
 import ProtectedRoute from "./utils/ProtectedRoute";
-import Login from "./components/pages/Login";
+// import Login from "./components/pages/Login";
+import Login from "./components/pages/Signup";
 import PersistLogin from "./utils/PersistLogin";
 import OhcList from "./components/pages/OhcList";
 import AdminHome from "./components/pages/AdminHome";
@@ -29,6 +30,10 @@ import RefferedByList from "./components/pages/RefferedByList";
 import AbnormalityList from "./components/pages/AbnormalityList";
 import AddDocDetailList from "./components/pages/AddDocDetailList";
 import DiagnosisBSMList from "./components/pages/DiagnosisBSMList";
+import TaskFrequencyList from "./components/pages/TaskFrequencyList";
+import InjuryClassificationList from "./components/pages/InjuryClassificationList";
+import InjuryPartList from "./components/pages/InjuryPartList";
+import InjuryTypeList from "./components/pages/InjuryTypeList";
 
 const router = createBrowserRouter([
   {
@@ -146,6 +151,22 @@ const router = createBrowserRouter([
               {
                 path : "/DiagnosisBSMList",
                 element : <DiagnosisBSMList/>
+              },
+              {
+                path : "/TaskFrequencyList",
+                element : <TaskFrequencyList />
+              },
+              {
+                path : "/InjuryClassificationList",
+                element : <InjuryClassificationList />
+              },
+              {
+                path : "/InjuryPartList",
+                element : <InjuryPartList />
+              },
+              {
+                path : "/InjuryTypeList",
+                element : <InjuryTypeList />
               }
             ],
           },

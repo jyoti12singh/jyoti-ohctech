@@ -4,27 +4,44 @@ import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
-import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import InjuryClassificationForm from './InjuryClassificationForm';
-import { injuryForm } from './Validationform';
+import { InjuryClassValidationForm } from './Validationform';
 import { useFormik } from "formik";
 // import axios from 'axios';
 import PropTypes from "prop-types";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import DownloadIcon from '@mui/icons-material/Download';
+import ExcelJS from 'exceljs';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const InjuryClassificationList = () => {
 
-    const initialValues = {
-        InjuryName: "",
-        injurydiscri: "",
-        injurycode: ""
-       
+    const [rowData, setRowData] = useState([]);
 
+    const [colDefs, setColDefs] = useState([]);
+
+    const [openPopup, setOpenPopup] = useState(false);
+
+    const axiosClientPrivate = useAxiosPrivate();
+
+    const [id,setId] = useState(1);
+
+    const [showupdate,setShowupdate] = useState(false);
+
+    const [fetchTrigger, setFetchTrigger] = useState(0)
+
+    const initialValues = {
+        injClassName : "",
+        injClassDesc: "",
+        injClassCode: ""
       };
 
-      const axiosClientPrivate = useAxiosPrivate();
     
       const {
         values,
@@ -34,56 +51,61 @@ const InjuryClassificationList = () => {
         handleChange,
         setFieldValue,
         handleSubmit,
-        resetForm
+        resetForm,
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: injuryForm,
-        onSubmit: (values, action) => {
-            console.log(values);
-             action.resetForm();
-          },
-        // onSubmit: async (values, {resetForm}) => {
-        // try {
-        //     const response = await axiosClientPrivate.post('/ohcs', values);
-        //     console.log('Response:', response.data);
-        //     resetForm();
-        //   } catch (error) {
+        validationSchema: InjuryClassValidationForm,
+        // onSubmit: (values, action) => {
         //     console.log(values);
-        //     console.error('Error:', error);
-        //   }
-        // },
+        //     action.resetForm();
+        //   },
+        onSubmit: async (values, {resetForm}) => {
+            console.log(values);
+           try {
+               const response = await axiosClientPrivate.post('/injury-classes', values);
+               toast.success("Saved Successfully!",{
+                   position:"top-center"
+                }); 
+                      // getting id(key,value) of last index
+                //    const id = rowData[rowData.length-1].id;
+                //    const obj = {
+                //        id : id+1,
+                //        ...values
+                //    }
+                // console.log(obj);
+                // setRowData(rowData => [...rowData, obj]);
+               console.log('Response:', response.data);
+               setFetchTrigger(prev => prev+1);
+               resetForm();
+             } catch (error) {
+               console.log(values);
+               console.error('Error:', error);
+             }
+           },
       });
 
 
-    // const handleDelete = (id)=>{
-    //         // alert("Delete item!")
-    //         alert(id);
-    // } 
 
-    const handleDeleteRow = async (id) => {
-        alert(id)
-        try {
-            await axiosClientPrivate.delete(`/ohcs/${id}`);
+    // to delete a row
+   const handleDeleteRow = async (id) => {
+    alert(id)
+   if(window.confirm('Are you sure you want to delete this data?')){
+   try {
+       await axiosClientPrivate.delete(`/injury-classes/${id}`);
+       setFetchTrigger(prev => prev+1);
+       setFetchTrigger(prev => prev+1);
+    } catch (error) {
+       console.error('Error deleting row:', error);
+   }
+}
+};
 
-            // Update the grid data by filtering out the deleted row
-            const newData = rowData.filter(row => row.id !== id);
-            setRowData(newData);
-        } catch (error) {
-            console.error('Error deleting row:', error);
-        }
-    };
-
-    const [rowData, setRowData] = useState([]);
-
-    const [colDefs, setColDefs] = useState([]);
-
-    const [openPopup, setOpenPopup] = useState(false);
 
     const CustomActionComponent = ({id}) => {
         CustomActionComponent.propTypes = {
             id: PropTypes.number.isRequired,
           };
-        return <div> <Button > <EditNoteRoundedIcon /></Button>
+        return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
            <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
     
     };
@@ -97,8 +119,8 @@ const InjuryClassificationList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('ohcs', { signal: controller.signal });
-                const items = response.data;
+                const response = await axiosClientPrivate.get('http://localhost:8080/injury-classes?page=0&size=20', { signal: controller.signal });
+                const items = response.data.content;
                     // console.log(items);
                 
                 if (items.length > 0) {
@@ -110,8 +132,7 @@ const InjuryClassificationList = () => {
                         sortable: true
                     }));
 
-                    columns.push({
-                        // field: "Actions", cellRenderer: CustomActionComponent
+                    columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
                             const id = params.data.id;
                             return <CustomActionComponent id={id} />
@@ -135,10 +156,128 @@ const InjuryClassificationList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [fetchTrigger]);
+
+    const handleEdit = async (id) => {
+        alert(id);
+        try {
+          const response = await axiosClientPrivate.get(`/injury-classes/${id}`);
+            console.log(response.data);
+            setFieldValue("id",response.data.id);
+            setFieldValue("injClassName",response.data.injClassName);
+            setFieldValue("injClassDesc",response.data.injClassDesc);
+            setFieldValue("injClassCode",response.data.injClassCode);
+            setFieldValue("lastModified", response.data.lastModified);
+            setFieldValue("modifiedBy", response.data.modifiedBy);
+            setId(id);
+            setShowupdate(true);
+            setOpenPopup(true);
+        } catch (error) {
+          console.error('Error fetching item for edit:', error);
+        }
+      };
+
+      const handleUpdate = async (id)=> {
+        alert(id);
+        console.log(values);
+        const update = values;
+        try{
+            //  console.log(values);
+             await axiosClientPrivate.put(`/injury-classes/${id}`,update);
+             toast.success("Updated Successfully!",{
+                position:"top-center",
+                autoClose: 3000,
+             });
+             resetForm();
+             setFetchTrigger(prev => prev+1);
+            //  setRowData(rowData => [...rowData,values]);
+        }
+        catch(err){
+            console.log("after:- ",values);
+            console.log(err);
+        }
+      }
+
+      const exportpdf = async () => {
+        
+        const doc = new jsPDF();
+        const header = [["Id","Complaint",'Complaint in Details',"Is Active"]];
+        const tableData = rowData.map(item => [
+          item.id,
+          item.injClassName,
+          item.injClassDesc,
+          item.injClassCode,
+          
+          
+        ]);
+        doc.autoTable({
+          head: header,
+          body: tableData,
+          startY: 20, // Start Y position for the table
+          theme: 'grid', // Optional theme for the table
+          margin: { top: 30 }, // Optional margin from top
+          styles: { fontSize: 5 },
+          columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
+      });
+        doc.save("InjuryClassificationList.pdf");
+    };
+
+
+    const exportExcelfile = async () => {
+        const workbook = new ExcelJS.Workbook();
+        const sheet = workbook.addWorksheet('My Sheet');
+        
+  
+        const headerStyle = {
+          // font: { bold: true, size: 12 },
+          alignment: { horizontal: 'center' }
+          
+      };
+  
+      sheet.getRow(1).font = { bold: true };
+        
+        const columnWidths = {
+            id: 20,
+            injClassName: 30,
+            injClassDesc: 30,
+            injClassCode: 30,
+        };
+  
+        sheet.columns = [
+          { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
+          { header: "Injury Class Name", key: 'injClassName', width: columnWidths.injClassName, style: headerStyle },
+          { header: "Injury Class Desc", key: 'injClassDesc', width: columnWidths.injClassDesc, style: headerStyle },
+          { header: "Injury Class Code", key: 'injClassCode', width: columnWidths.injClassCode, style: headerStyle },
+          
+      ];
+  
+        rowData.map(product =>{
+            sheet.addRow({
+                id: product.id,
+                injClassName: product.injClassName,
+                injClassDesc: product.injClassDesc,
+                injClassCode: product.injClassCode,
+            })
+        });
+  
+        workbook.xlsx.writeBuffer().then(data => {
+            const blob = new Blob([data], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheet.sheet",
+            });
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = 'InjuryClassificationList.xlsx';
+            anchor.click();
+            // anchor.URL.revokeObjectURL(url);
+        })
+    }
+
+
 
     return (
         <>
+        <ToastContainer />
             <Box
                 className="ag-theme-quartz" // applying the grid theme
                 style={{ height: 500 }} // adjust width as necessary
@@ -147,7 +286,8 @@ const InjuryClassificationList = () => {
                 <Stack sx={{ display: 'flex', flexDirection: 'row' }} marginY={1} paddingX={1}>
                     <ButtonGroup variant="contained" aria-label="Basic button group">
                         <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }}>Add New</Button>
-                        <Button variant="contained" color="success" endIcon={<ImportExportRoundedIcon />}>Export Data</Button>
+                        <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
+                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button>
                     </ButtonGroup>
 
                 </Stack>
@@ -161,7 +301,7 @@ const InjuryClassificationList = () => {
                 />
             </Box>
 
-            <Popup resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Injury Classification">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Injury Classification">
 
                 <InjuryClassificationForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 

@@ -9,7 +9,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useState } from "react";
 import MultiCheckbox from "./MultiCheckbox";
 
-const AmbulanceChecklistForm = ({
+const CanteenLocationForm = ({
   values,
   touched,
   handleBlur,
@@ -18,7 +18,7 @@ const AmbulanceChecklistForm = ({
   setFieldValue,
   handleSubmit,
 }) => {
-    AmbulanceChecklistForm.propTypes = {
+  CanteenLocationForm.propTypes = {
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -28,28 +28,62 @@ const AmbulanceChecklistForm = ({
     handleSubmit: PropTypes.func.isRequired,
   };
 
-  const issueto = ["OHC", "......."];
-  const ohclocation = ["Dwarka", ".........", "......."];
-  const itemcatagories=["Capital/NonConsumable/Intruments","......"];
+  const Type = ["#", "##"];
+  
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2} justifyContent="center" alignItems="center" sx={{width:300}}>
-         
+      
           <Grid item xs={12}  justifyContent="center" alignItems="center">
             <FormControl fullWidth>
               <Grid container spacing={2} justifyContent="center" alignItems="center">
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
+                  <Input
+                    label="Canteen Location"
+                    name="location"
+                    type="text"
+                    size="large"
+                    value={values.location}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={
+                      errors.location && touched.location ? (
+                        <span style={{ color: "red" }}>{errors.location}</span>
+                      ) : null
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
+                  <Input
+                    label="Canteen Code"
+                    name="code"
+                    type="number"
+                    size="large"
+                    value={values.code}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={
+                      errors.code && touched.code ? (
+                        <span style={{ color: "red" }}>
+                          {errors.code}
+                        </span>
+                      ) : null
+                    }
+                  />
+                </Grid>
+               
+                <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <SingleSelect
-                    arr={issueto}
-                    label="Issue To*"
-                    name="issueto"
-                    value={values.issueto}
+                    arr={Type}
+                    label="Select Type"
+                    name="type"
+                    value={values.type}
                     onChange={(event, newValue) => {
                       const syntheticEvent = {
                         target: {
-                          name: "issueto",
+                          name: "type",
                           value: newValue,
                         },
                       };
@@ -58,69 +92,13 @@ const AmbulanceChecklistForm = ({
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                      errors.issueto && touched.issueto ? (
-                        <span style={{ color: "red" }}>{errors.issueto}</span>
+                      errors.type && touched.type ? (
+                        <span style={{ color: "red" }}>{errors.type}</span>
                       ) : null
                     }
                   />
                 </Grid>
 
-            
-                <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
-                  <SingleSelect
-                    arr={ohclocation}
-                    label="OHC Location"
-                    name="ohclocation"
-                    value={values.ohclocation}
-                    onChange={(event, newValue) => {
-                      const syntheticEvent = {
-                        target: {
-                          name: "ohclocation",
-                          value: newValue,
-                        },
-                      };
-                      handleChange(syntheticEvent);
-                    }}
-                    // onChange={handleChange}
-                    onBlur={handleBlur}
-                    type="text"
-                    helperText={
-                      errors.ohclocation && touched.ohclocation ? (
-                        <span style={{ color: "red" }}>
-                          {errors.ohclocation}
-                        </span>
-                      ) : null
-                    }
-                  />
-                </Grid>
-                     
-                <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
-                  <SingleSelect
-                    arr={itemcatagories}
-                    label="Item Catagories"
-                    name="itemcatagories"
-                    value={values.itemcatagories}
-                    onChange={(event, newValue) => {
-                      const syntheticEvent = {
-                        target: {
-                          name: "itemcatagories",
-                          value: newValue,
-                        },
-                      };
-                      handleChange(syntheticEvent);
-                    }}
-                    // onChange={handleChange}
-                    onBlur={handleBlur}
-                    type="text"
-                    helperText={
-                      errors.itemcatagories && touched.itemcatagories ? (
-                        <span style={{ color: "red" }}>
-                          {errors.itemcatagories}
-                        </span>
-                      ) : null
-                    }
-                  />
-                </Grid>
               </Grid>
             </FormControl>
           </Grid>
@@ -129,6 +107,5 @@ const AmbulanceChecklistForm = ({
     </div>
   );
 };
-
-export default AmbulanceChecklistForm;
+export default CanteenLocationForm;
 
