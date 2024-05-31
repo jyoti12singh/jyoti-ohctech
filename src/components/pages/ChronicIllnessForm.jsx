@@ -88,7 +88,7 @@ const ChronicIllnessForm = ({
                 
                 <Grid item  xs={12} sm={4} container spacing={1} justifyContent="center"   alignItems="center">
                 <Input
-                    label="Diagnosis Date"
+                    label="Diagno Date"
                     name="date"
                     type="date"
                     size="large"

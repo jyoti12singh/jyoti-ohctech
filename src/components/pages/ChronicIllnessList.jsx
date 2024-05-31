@@ -114,7 +114,7 @@ const ChronicIllnessList = () => {
           setShowupdate(true);
           setOpenPopup(true);
         } catch (error) {
-          console.error('Error fetching item for edit:', error);
+          console.error('Error fetching item for edited:', error);
         }
       };
 
