@@ -36,7 +36,7 @@ const DeviceForm = ({
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2} justifyContent="center" alignItems="center">
 
-          <Grid item xs={12} sm={8} justifyContent="center" alignItems="center">
+          <Grid item xs={12} sm={12} justifyContent="center" alignItems="center">
             <FormControl fullWidth>
               <Grid container spacing={2} justifyContent="center" alignItems="center">
                 <Grid item xs={12} sm={6} container spacing={1} justifyContent="center" alignItems="center">
