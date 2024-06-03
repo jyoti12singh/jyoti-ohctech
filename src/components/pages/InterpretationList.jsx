@@ -7,8 +7,8 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import AbnormalityForm from "./AbnormalityForm"
-import { AbnormValidationForm } from './Validationform';
+import InterpretationForm from './InterpretationForm';
+import { InterpretaionValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,8 +19,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
 
-
-const AbnormalityList = () => {
+const InterpretationList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -39,11 +38,13 @@ const AbnormalityList = () => {
 
 
     const initialValues = {
-        abnormalityName : "",
-        wellnessProgram: "",
+       
+        InterpretationHeader:"",
+        Key:"",
+        Value:""
       };
 
-    
+
       const {
         values,
         touched,
@@ -55,54 +56,102 @@ const AbnormalityList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: AbnormValidationForm,
+        validationSchema: InterpretaionValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
         //   },
         onSubmit: async (values, {resetForm}) => {
-            console.log(values);
-           try {
-               const response = await axiosClientPrivate.post('/abnormalities', values);
-               toast.success("Saved Successfully!",{
-                   position:"top-center"
-                }); 
-                      
+        try {
+            const response = await axiosClientPrivate.post('/business-units', values);
+            toast.success("Saved Successfully!",{
+                position:"top-center"
+             }); 
+                   // getting id(key,value) of last index
+            //     const id = rowData[rowData.length-1].buId;
+            //     const obj = {
+            //         buId : id+1,
+            //         ...values
+            //     }
+            //  console.log(obj);
+            //  setRowData(rowData => [...rowData, obj]);
             setFetchTrigger(prev => prev+1);
-               console.log('Response:', response.data);
-               resetForm();
-             } catch (error) {
-               console.log(values);
-               console.error('Error:', error);
-             }
-           },
+
+            console.log('Response:', response.data);
+            resetForm();
+          } catch (error) {
+            console.log(values);
+            console.error('Error:', error);
+          }
+        },
       });
 
 
 
-    // to delete a row
-   const handleDeleteRow = async (id) => {
-    alert(id)
-   if(window.confirm('Are you sure you want to delete this data?')){
-   try {
-       await axiosClientPrivate.delete(`/abnormalities/${id}`);
-      // setRowData(prevData => prevData.filter(row => row.id !== id));
-      setFetchTrigger(prev => prev+1);
-    } catch (error) {
-       console.error('Error deleting row:', error);
+      const handleEdit = async (id) => {
+        alert(id);
+        try {
+          const response = await axiosClientPrivate.get(`/business-units/${id}`);
+            console.log(response.data);
+            setFieldValue("buEmail",response.data.buEmail);
+            setFieldValue("buHeadName",response.data.buHeadName);
+            setFieldValue("buId",response.data.buId);
+            setFieldValue("buName",response.data.buName);
+            setFieldValue("lastModified", response.data.lastModified);
+            setFieldValue("modifiedBy", response.data.modifiedBy);
+          setId(id);
+          setShowupdate(true);
+          setOpenPopup(true);
+        } catch (error) {
+          console.error('Error fetching item for edit:', error);
+        }
+      };
+
+      const handleUpdate = async (id)=> {
+        alert(id);
+        const update = values;
+        try{
+             console.log(values);
+             await axiosClientPrivate.put(`/business-units/${id}`,update);
+             toast.success("Updated Successfully!",{
+                position:"top-center",
+                autoClose: 3000,
+             });
+             resetForm();
+             //setRowData(rowData => [...rowData,values]);
+             setFetchTrigger(prev => prev+1);
+
+        }
+        catch(err){
+            console.log(values);
+            console.log(err);
+        }
+      }
+
+
+     // to delete a row
+     const handleDeleteRow = async (id) => {
+        alert(id)
+       if(window.confirm('Are you sure you want to delete this data?')){
+       try {
+           await axiosClientPrivate.delete(`/business-units/${id}`);
+        //    setRowData(prevData => prevData.filter(row => row.buId !== id));
+        setFetchTrigger(prev => prev+1);
+
+       } catch (error) {
+           console.error('Error deleting row:', error);
+       }
    }
-  }
-  };
+   };
 
+   const CustomActionComponent = ({id}) => {
+    CustomActionComponent.propTypes = {
+        id: PropTypes.number.isRequired,
+      };
+    return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
+       <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
 
-    const CustomActionComponent = ({id}) => {
-        CustomActionComponent.propTypes = {
-            id: PropTypes.number.isRequired,
-          };
-        return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
-           <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
-    
-    };
+};
 
     const pagination = true;
     const paginationPageSize = 50;
@@ -113,10 +162,10 @@ const AbnormalityList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('http://localhost:8080/abnormalities?page=0&size=5', { signal: controller.signal });
-                const items = response.data.content;
+                const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
+                const items = response.data;
                     // console.log(items);
-                
+                setRowData(items);
                 if (items.length > 0) {
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
@@ -128,7 +177,7 @@ const AbnormalityList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.id;
+                            const id = params.data.buId;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -136,7 +185,7 @@ const AbnormalityList = () => {
                     setColDefs(columns);
                 }
 
-                setRowData(items);
+                
 
             } catch (err) {
                 console.error("Failed to fetch data: ", err);
@@ -152,54 +201,19 @@ const AbnormalityList = () => {
 
     }, [fetchTrigger]);
 
-    const handleEdit = async (id) => {
-        alert(id);
-        try {
-          const response = await axiosClientPrivate.get(`/abnormalities/${id}`);
-            console.log(response.data);
-            setFieldValue("id",response.data.id);
-            setFieldValue("abnormalityName",response.data.abnormalityName);
-            setFieldValue("wellnessProgram",response.data.wellnessProgram);
-            setFieldValue("lastModified", response.data.lastModified);
-            setFieldValue("modifiedBy", response.data.modifiedBy);
-            setId(id);
-            setShowupdate(true);
-            setOpenPopup(true);
-        } catch (error) {
 
-          console.error('Error fetching item for edit:', error);
-        }
-      };
+     
 
-      const handleUpdate = async (id)=> {
-        alert(id);
-        console.log(values);
-        const update = values;
-        try{
-            //  console.log(values);
-             await axiosClientPrivate.put(`/abnormalities/${id}`,update);
-             toast.success("Updated Successfully!",{
-                position:"top-center",
-                autoClose: 3000,
-             });
-             resetForm();
-            //  setRowData(rowData => [...rowData,values]);
-            setFetchTrigger(prev => prev+1);
-        }
-        catch(err){
-            console.log("after:- ",values);
-            console.log(err);
-        }
-      }
-
-      const exportpdf = async () => {
+    const exportpdf = async () => {
         
         const doc = new jsPDF();
-        const header = [["Id","Parameter value Name",'Wellness Progarms']];
+        const header = [['Id', 'buName',"buHeadName","buEmail"]];
         const tableData = rowData.map(item => [
-          item.id,
-          item.abnormalityName,
-          item.wellnessProgram,
+          item.buId,
+          item.buName,
+          item.buHeadName,
+          item.buEmail,
+          
         ]);
         doc.autoTable({
           head: header,
@@ -210,7 +224,7 @@ const AbnormalityList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("AddDocDetailList.pdf");
+        doc.save("InterpretationList.pdf");
     };
 
 
@@ -218,7 +232,6 @@ const AbnormalityList = () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
         
-  
         const headerStyle = {
           // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
@@ -228,25 +241,26 @@ const AbnormalityList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            id: 20,
-            ailmentName: 25,
-            ailmentDesc: 25,
-            ailmentCode: 25,
-        };
+            Id: 10,
+            buName: 20,
+            buHeadName: 15,
+            buEmail: 25,
+      };
   
         sheet.columns = [
-          { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
-          { header: "Doctor", key: 'ailmentName', width: columnWidths.ailmentName, style: headerStyle },
-          { header: "Doctor Emp Code", key: 'ailmentDesc', width: columnWidths.ailmentDesc, style: headerStyle },
-          { header: "Doctor Details", key: 'ailmentCode', width: columnWidths.ailmentCode, style: headerStyle },
+          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
+          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
+          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
+          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                id: product.id,
-                doctorName: product.doctorName,
-                doctorEmpId: product.doctorEmpId,
-                doctorDesc: product.doctorDesc,
+                buId: product.buId,
+                buName: product.buName,
+                buHeadName: product.buHeadName,
+                buEmail: product.buEmail,
             })
         });
   
@@ -257,11 +271,12 @@ const AbnormalityList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'AddDocDetailList.xlsx';
+            anchor.download = 'download.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
     }
+   
 
     return (
         <>
@@ -289,13 +304,13 @@ const AbnormalityList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Anormality Master">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Interpretation Header">
 
-                <AbnormalityForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <InterpretationForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default AbnormalityList;
+export default InterpretationList;
