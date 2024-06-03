@@ -1,21 +1,19 @@
-import Ohclogo from "./Ohclogo";
 import { FormControl, Grid} from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
-import { InputLabel, MenuItem, Select } from "@mui/material";
 
 
 
-const AddHabitForm = ({
+const HabitForm = ({
   values,
   touched,
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
-    AddHabitForm.propTypes = {
+  HabitForm.propTypes = {
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -41,15 +39,15 @@ const AddHabitForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Habit Name"
-                    name="HabitName"
+                    name="habit"
                     type="text"
                     size="large"
-                    value={values.HabitName}
+                    value={values.habit}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.HabitName && touched.HabitName? (
-                        <span style={{ color: "red" }}>{errors.HabitName}</span>
+                      errors.habit && touched.habit? (
+                        <span style={{ color: "red" }}>{errors.habit}</span>
                       ) : null
                     }
                   />
@@ -64,4 +62,4 @@ const AddHabitForm = ({
 };
 
 
-export default AddHabitForm;
+export default HabitForm;

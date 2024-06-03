@@ -55,8 +55,8 @@ const DiagnosisCIMList = () => {
     // console.log("map size",diagnosisMap.size);
 
     const initialValues = {
-        diagnosis : '',
-        abnormality : '',
+        diagnosis : "",
+        abnormality : "",
         lastModified: "",
         modifiedBy: ""
       };
@@ -189,7 +189,7 @@ useEffect(() => {
 
                 
                 setAbnormility(abnormality);
-                // console.log(ailment);
+                console.log("check abnormility",abnormality);
 
         } catch (err) {
             console.error("Failed to fetch data: ", err);
@@ -223,7 +223,7 @@ useEffect(() => {
                 return {label : item.ailmentName,value : item.id};
               });
   
-            //   console.log("check diagnosis",diagnosisArr);
+              console.log("check diagnosis",diagnosisArr);
               setDiagnosis(diagnosisArr);
               
             
@@ -247,7 +247,7 @@ useEffect(() => {
     alert(id)
    if(window.confirm('Are you sure you want to delete this data?')){
    try {
-       await axiosClientPrivate.delete(`/diagnosis-chronic-mappings /${id}`);
+       await axiosClientPrivate.delete(`/diagnosis-chronic-mappings/${id}`);
     //    setRowData(prevData => prevData.filter(row => row.id !== id));
           setFetchTrigger(prev => prev+1);
    } catch (error) {
@@ -275,9 +275,9 @@ useEffect(() => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('http://localhost:8080/diagnosis-chronic-mappings ?page=0&size=50', { signal: controller.signal });
+                const response = await axiosClientPrivate.get('http://localhost:8080/diagnosis-chronic-mappings?page=0&size=10', { signal: controller.signal });
                 const items = response.data.content;
-                      console.log(items);
+                      console.log("checkk",items);
                         // can be solved using map also
                         // const diagnosisMapCopy = new Map();
                         // const bodySystemMapCopy = new Map();
@@ -308,14 +308,17 @@ useEffect(() => {
                         if(diagnosis.length>0 && abnormility.length>0){
                             items.forEach(obj => {
                                 obj.ailmentId = diagnosis.find(item => item.value == parseInt(obj.ailmentId)).label;
-                                obj.ailmentSystemId = abnormility.find(item => item.value == parseInt(obj.chronicId)).label;
+                                obj.chronicId = abnormility.find(item => item.value == parseInt(obj.chronicId)).label;
                                 // let ailmentIdObj = diagnosis.find(item => item.value == parseInt(obj.ailmentId));
                                 // let ailmentSystemIdObj = bodySystem.find(item => item.value == parseInt(obj.ailmentSystemId));
                                 
                                 // obj.ailmentId = ailmentIdObj? ailmentIdObj.label : obj.ailmentId;
                                 // obj.ailmentSystemId = ailmentSystemIdObj? ailmentSystemIdObj.label : obj.ailmentSystemId;
                               });
+                              console.log("itemmmm",items);
                         }
+                        
+                       
                         else{
                             console.log("Not found!");
                         }
@@ -361,18 +364,19 @@ useEffect(() => {
     const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/diagnosis-chronic-mappings /${id}`);
+          const response = await axiosClientPrivate.get(`/diagnosis-chronic-mappings/${id}`);
             console.log("before",response.data);
 
             // setFieldValue("id",response.data.id);
             values.id = response.data.id;
             const updateDiagnosis = diagnosis.find(item => item.value == parseInt(response.data.ailmentId)).label;
-            const updateailmentSystem = abnormility.find(item => item.value == parseInt(response.data.ailmentSystemId)).label;
+            const updateAbnormality = abnormility.find(item => item.value == parseInt(response.data.chronicId)).label;
             // console.log("checkkkkk",updateDiagnosis,updateailmentSystem);
             values.diagnosis = String(updateDiagnosis);
-            values.system = String(updateailmentSystem);
+            values.system = String(updateAbnormality);
+
             setFieldValue("diagnosis",String(updateDiagnosis));
-            setFieldValue("system",String(updateailmentSystem));
+            setFieldValue("abnormality",String(updateAbnormality));
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
             console.log(values);
@@ -387,7 +391,7 @@ useEffect(() => {
 
       const handleUpdate = async (id)=> {
         alert(id);
-        // console.log("final check",values);
+        console.log("final check",values);
         values.ailmentId = diagnosis.find(item => item.label == String(values.diagnosis)).value;
         values.ailmentSystemId = abnormility.find(item => item.label == String(values.system)).value;
         delete values.diagnosis;
@@ -396,7 +400,7 @@ useEffect(() => {
         const update = values;
         try{
             //  console.log(values);
-             await axiosClientPrivate.put(`/diagnosis-chronic-mappings /${id}`,update);
+             await axiosClientPrivate.put(`/diagnosis-chronic-mappings/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,

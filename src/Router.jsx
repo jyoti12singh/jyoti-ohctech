@@ -36,6 +36,12 @@ import InjuryPartList from "./components/pages/InjuryPartList";
 import InjuryTypeList from "./components/pages/InjuryTypeList";
 import DiagnosisTreatmentList from "./components/pages/DiagnosisTreatmentList"
 import DiagnosisCIMList from "./components/pages/DiagnosisCIMList";
+import AppointmentList from "./components/pages/AppointmentList";
+import SaltList from "./components/pages/SaltList";
+import HabitList from "./components/pages/HabitList";
+import DeviceList from "./components/pages/DeviceList";
+
+
 
 const router = createBrowserRouter([
   {
@@ -177,7 +183,24 @@ const router = createBrowserRouter([
               {
                 path : "/DiagnosisCIMList",
                 element : <DiagnosisCIMList />
+              },
+              {
+                path : "/AppointmentList",
+                element : <AppointmentList />
+              },
+              {
+                path : "/SaltList",
+                element : <SaltList />
+              },
+              {
+                path : "/HabitList",
+                element : <HabitList />
+              },
+              {
+                path : "/DeviceList",
+                element : <DeviceList />
               }
+              
             ],
           },
         ],

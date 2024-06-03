@@ -1,6 +1,6 @@
-import React from "react";
-import ohcimg from "../../../public/ohc.jpg";
-import google from "../../../public/google.png";
+import ohcimg from "../../assets/images/ohc.jpg";
+import google from "../../assets/images/google.png";
+
 import { InputAdornment, Stack } from "@mui/material";
 import Container from "@mui/material/Container";
 import { IconButton } from "@mui/material";

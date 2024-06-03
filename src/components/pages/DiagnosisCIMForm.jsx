@@ -8,7 +8,7 @@ const DiagnosisCIMForm = ({
   touched,
   handleBlur,
   errors,
-  handleChange,
+  // handleChange,
   setFieldValue,
   handleSubmit,
   diagnosis,

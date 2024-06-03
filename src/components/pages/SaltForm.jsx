@@ -1,8 +1,6 @@
-import Ohclogo from "./Ohclogo";
 import { FormControl, Grid} from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
-import { InputLabel, MenuItem, Select } from "@mui/material";
 
 
 
@@ -12,7 +10,7 @@ const SaltForm = ({
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
     SaltForm.propTypes = {
@@ -41,15 +39,15 @@ const SaltForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Salt Name"
-                    name="SaltName"
+                    name="saltName"
                     type="text"
                     size="large"
-                    value={values.SaltName}
+                    value={values.saltName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.SaltName && touched.SaltName? (
-                        <span style={{ color: "red" }}>{errors.SaltName}</span>
+                      errors.saltName && touched.saltName? (
+                        <span style={{ color: "red" }}>{errors.saltName}</span>
                       ) : null
                     }
                   />
