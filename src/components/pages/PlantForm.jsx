@@ -41,15 +41,15 @@ const PlantForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Plant Name"
-                    name="PlantName"
+                    name="plantName"
                     type="text"
                     size="large"
-                    value={values.PlantName}
+                    value={values.plantName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.PlantName && touched.PlantName? (
-                        <span style={{ color: "red" }}>{errors.PlantName}</span>
+                      errors.plantName && touched.plantName? (
+                        <span style={{ color: "red" }}>{errors.plantName}</span>
                       ) : null
                     }
                   />

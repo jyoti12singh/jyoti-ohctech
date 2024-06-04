@@ -1,8 +1,6 @@
-import Ohclogo from "./Ohclogo";
 import { FormControl, Grid} from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
-import { InputLabel, MenuItem, Select } from "@mui/material";
 
 
 
@@ -12,7 +10,7 @@ const VaccineForm = ({
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
     VaccineForm.propTypes = {
@@ -41,15 +39,15 @@ const VaccineForm = ({
               <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="Vaccine Name"
-                    name="VaccineName"
+                    name="vaccineName"
                     type="text"
                     size="large"
-                    value={values.VaccineName}
+                    value={values.vaccineName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.VaccineName && touched.VaccineName? (
-                        <span style={{ color: "red" }}>{errors.VaccineName}</span>
+                      errors.vaccineName && touched.vaccineName? (
+                        <span style={{ color: "red" }}>{errors.vaccineName}</span>
                       ) : null
                     }
                   />
@@ -57,15 +55,15 @@ const VaccineForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="Company Name"
-                    name="CompanyName"
+                    name="vaccineCompany"
                     type="text"
                     size="large"
-                    value={values.CompanyName}
+                    value={values.vaccineCompany}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.CompanyName && touched.CompanyName? (
-                        <span style={{ color: "red" }}>{errors.CompanyName}</span>
+                      errors.vaccineCompany && touched.vaccineCompany? (
+                        <span style={{ color: "red" }}>{errors.vaccineCompany}</span>
                       ) : null
                     }
                   />
@@ -74,15 +72,15 @@ const VaccineForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="Vaccine Description"
-                    name="VaccineDesc"
+                    name="vaccineDesc"
                     type="text"
                     size="large"
-                    value={values.VaccineDesc}
+                    value={values.vaccineDesc}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.VaccineDesc && touched.VaccineDesc? (
-                        <span style={{ color: "red" }}>{errors.VaccineDesc}</span>
+                      errors.vaccineDesc && touched.vaccineDesc? (
+                        <span style={{ color: "red" }}>{errors.vaccineDesc}</span>
                       ) : null
                     }
                   />

@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import VaccineForm from './VaccineForm';
-import { VaccineValidationForm } from './Validationform';
+// import { VaccineValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -37,11 +37,10 @@ const VaccineList = () => {
 
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
-
     const initialValues = {
-        VaccineName:"",
-        CompanyName:"",
-        VaccineDesc:""
+        vaccineName:"",
+        vaccineCompany:"",
+        vaccineDesc:""
       };
 
 
@@ -56,14 +55,14 @@ const VaccineList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: VaccineValidationForm,
+        // validationSchema: VaccineValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
         //   },
         onSubmit: async (values, {resetForm}) => {
         try {
-            const response = await axiosClientPrivate.post('/business-units', values);
+            const response = await axiosClientPrivate.post('/vaccines', values);
             toast.success("Saved Successfully!",{
                 position:"top-center"
              }); 
@@ -86,17 +85,17 @@ const VaccineList = () => {
         },
       });
 
-
+      
 
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/business-units/${id}`);
+          const response = await axiosClientPrivate.get(`/vaccines/${id}`);
             console.log(response.data);
-            setFieldValue("buEmail",response.data.buEmail);
-            setFieldValue("buHeadName",response.data.buHeadName);
-            setFieldValue("buId",response.data.buId);
-            setFieldValue("buName",response.data.buName);
+            setFieldValue("id",response.data.id);
+            setFieldValue("vaccineName",response.data.vaccineName);
+            setFieldValue("vaccineCompany",response.data.vaccineCompany);
+            setFieldValue("vaccineDesc",response.data.vaccineDesc);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -112,7 +111,7 @@ const VaccineList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(`/business-units/${id}`,update);
+             await axiosClientPrivate.put(`/vaccines/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -134,7 +133,7 @@ const VaccineList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(`/business-units/${id}`);
+           await axiosClientPrivate.delete(`/vaccines/${id}`);
         //    setRowData(prevData => prevData.filter(row => row.buId !== id));
         setFetchTrigger(prev => prev+1);
 
@@ -157,27 +156,35 @@ const VaccineList = () => {
     const paginationPageSize = 50;
     const paginationPageSizeSelector = [50, 100, 200, 500];
 
+    const headerMappings = {
+        vaccineName: "Vaccine Name",
+        vaccineCompany : "Company",
+        vaccineDesc : "Description",
+    };
+
     useEffect(() => {
         const controller = new AbortController();
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
-                const items = response.data;
-                    // console.log(items);
+                const response = await axiosClientPrivate.get('http://localhost:8080/vaccines?page=0&size=5', { signal: controller.signal });
+                const items = response.data.content;
+                    console.log("new",items);
                 setRowData(items);
+
                 if (items.length > 0) {
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName: key.charAt(0).toUpperCase() + key.slice(1),
+                        headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
                         filter: true,
                         floatingFilter: true,
-                        sortable: true
+                        sortable: true,
+                        width: key === 'id' ? 100 : undefined,
                     }));
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.id;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -249,13 +256,16 @@ const VaccineList = () => {
         //     ohcName : rowData[0].ohcName,
         // }
         // doc.table(1,1,tableData,headers, {autoSize:true});
+        // vaccineName:"",
+        // vaccineCompany:"",
+        // vaccineDesc:""
         const doc = new jsPDF();
-        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const header = [['Id', 'Vaccine Name',"Company","Description"]];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.buName,
-          item.buHeadName,
-          item.buEmail,
+          item.id,
+          item.vaccineName,
+          item.vaccineCompany,
+          item.vaccineDesc,
           
         ]);
         doc.autoTable({
@@ -267,7 +277,7 @@ const VaccineList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("BussinessList.pdf");
+        doc.save("VaccineList.pdf");
     };
 
 
@@ -343,25 +353,26 @@ const VaccineList = () => {
         
         const columnWidths = {
             Id: 10,
-            buName: 20,
-            buHeadName: 15,
-            buEmail: 25,
+            vaccineName: 20,
+            vaccineCompany: 20,
+            vaccineDesc: 25,
       };
+      
   
         sheet.columns = [
-          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
-          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "Id", key: 'Id', width: columnWidths.Id, style: headerStyle },
+          { header: "Vaccine Name", key: 'vaccineName', width: columnWidths.vaccineName, style: headerStyle },
+          { header: "Company", key: 'vaccineCompany', width: columnWidths.vaccineCompany, style: headerStyle },
+          { header: "Description", key: 'vaccineDesc', width: columnWidths.vaccineDesc, style: headerStyle },
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
-                buName: product.buName,
-                buHeadName: product.buHeadName,
-                buEmail: product.buEmail,
+                id: product.id,
+                vaccineName: product.vaccineName,
+                vaccineCompany: product.vaccineCompany,
+                vaccineDesc: product.vaccineDesc,
             })
         });
   
@@ -372,7 +383,7 @@ const VaccineList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'VaccineList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })

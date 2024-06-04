@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import AbnormalityForm from "./AbnormalityForm"
-import { AbnormValidationForm } from './Validationform';
+// import { AbnormValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -55,7 +55,7 @@ const AbnormalityList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: AbnormValidationForm,
+        // validationSchema: AbnormValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
