@@ -186,3 +186,229 @@ export const RefferedByValidationForm = Yup.object({
 
 
 
+
+
+//Appoinment validation
+
+export const AppointmentvalidationForm = Yup.object({
+  SlotStart: Yup.string().min(2).max(25).required("Please enter Slot Start Time "),
+  SlotEnd: Yup.string().min(2).max(25).required("Please enter Slot End Time"),
+  NoOfAppointment: Yup.number().min(2).max(25).required("Please enter No Of Appointmentl"),
+  AppointmentsType: Yup.string().email().required("Please enter Appointments Type"),
+     
+});
+
+//Habit Validation
+export const HabitValidationForm = Yup.object({
+  HabitName: Yup.string().required("Please enter Habit Name"),
+  
+});
+
+//First Aid Box Validation
+
+export const FirstAidValidationForm = Yup.object({
+  BoxName: Yup.string().min(2).max(25).required("Please enter Box Name "),
+  boxCode: Yup.string().min(2).max(25).required("Please enter box Code"),
+  boxLoc: Yup.number().min(2).max(25).required("Please enter box Loc"),
+  firstAider: Yup.string().email().required("Please enter first Aider"),
+     
+});
+
+//Grade Form Validation
+export const GradeValidationForm = Yup.object({
+  GradeName: Yup.string().required("Please enter Grade Name"),
+  
+});
+
+//Interpretation validation
+export const InterpretaionValidationForm = Yup.object({
+  InterpretationHeader: Yup.string().required("Please enter Interpretaion Header"),
+  Key: Yup.string().required("Please Enter Key"),
+  Value: Yup.string().required("Please Enter Value"),
+});
+
+//Merge Destination
+
+export const MergeDestinationValidationForm = Yup.object({
+  DesignationUsed: Yup.string().required("Please enter Designation Used"),
+  DesignationRecord: Yup.string().required("Please Designation Record"),
+  
+});
+
+//Vaccine List Validation
+
+export const VaccineValidationForm = Yup.object({
+  VaccineName: Yup.string().required("Please enter Vaccine Name"),
+  CompanyName: Yup.string().required("Please Enter Company Name"),
+  VaccineDesc: Yup.string().required("Please Enter Vaccine Description"),
+});
+
+//Shift Status validation
+export const ShiftValidationForm = Yup.object({
+  shiftNo: Yup.string().required("Please enter shift No"),
+  
+});
+
+export const AbnormValidationForm = Yup.object({
+  AbnormalityName: Yup.string().min(2).max(25).required("Please enter Abnormality Name"),
+  WellnessPrograms: Yup.string().min(2).max(25).required("Please enter Wellness Programs"),
+});
+
+export const SaltValidationForm = Yup.object({
+  SaltName: Yup.string().min(2).max(25).required("Please enter salt Name")
+});
+
+export const disposalValidationForm = Yup.object({
+  CollectorName: Yup.string().min(2).max(25).required("Please enter collector Name"),
+  CollectingOHC: Yup.string().min(2).max(25).required("Please enter collecting OHC"),
+});
+
+export const PlantValidationForm = Yup.object({
+  PlantName: Yup.string().min(2).max(25).required("Please enter Plant Name")
+});
+
+export const ReportMasterValidationForm = Yup.object({
+  ReportType: Yup.string().min(2).max(25).required("Please enter report type"),
+  FunctionName: Yup.string().min(2).max(25).required("Please enter Function Name"),
+  url: Yup.string().min(2).max(25).required("Please enter url"),
+  ReportName: Yup.string().min(2).max(25).required("Please enter Report Name"),
+  ReportCode: Yup.string().email().required("Please enter Report Code"),
+     
+});
+
+export const MergeDepartmentValidationForm = Yup.object({
+  DepartmentUsed: Yup.string().min(2).max(25).required("Please enter department used"),
+  DepartmentRecord: Yup.string().min(2).max(25).required("Please enter department record")
+});
+
+export const DiagnosisTreatmentValidationForm = Yup.object({
+  duration: Yup.string().required("Please enter duration"),
+  doseqty: Yup.string().required("Please Enter dose quantity"),
+  healthadvice: Yup.string().required("Please give Health Advice"),
+});
+export const DeviceValidationForm = Yup.object({
+  devicename: Yup.string().required("Please enter device name"),
+ 
+});
+export const TestDeviceValidationForm = Yup.object({
+  testcatagory: Yup.string().required("Please enter test category"),
+});
+
+export const ConfigValidationForm = Yup.object({
+  keyname: Yup.string().required("Please enter the Key Name"),
+  valued: Yup.string().required("Please Enter the Value"),
+
+});
+export const DisposalAgencyValidationForm = Yup.object({
+  
+  agencyname: Yup.string().required("Please enter agency Name"),
+  agencyaddress: Yup.string().required("Please enter Agency Address"),
+  registrationno: Yup.string().required("Please enter registration no."),
+  allocation: Yup.string().required("Please enter allocation"),
+  hodname: Yup.string().required("Please enter hod name"),
+  hodemail: Yup.string().required("Please enter hod mail"),
+  
+});
+export const MedicalitemValidationForm = Yup.object({
+  
+  itemName: Yup.string().required("Please enter Item Name"),
+  itemCode: Yup.string().required("Please enter Item Code"),
+  subClassification: Yup.string().required("Please enter subclassification"),
+  salt: Yup.string().required("Please enter what salt"),
+  indication: Yup.string().required("Please enter indication"),
+  contraindication: Yup.string().required("Please enter contraindication"),
+  sideEffect: Yup.string().required("Please enter sideeffect"),
+  interaction: Yup.string().required("Please enter interaction"),
+  medicineprecaution: Yup.string().required("Please enter medicine precaution"),
+  reorderstorelevel: Yup.string().required("Please enter store level"),
+  ministorelevel: Yup.string().required("Please enter mini store level"),
+  minindentlevel: Yup.string().required("Please enter min indent level"),
+  maxiindentlevel: Yup.string().required("Please enter max indent level"),
+  reorderpercentagelevel: Yup.string().required("Please enter record percentage level"),
+  remark: Yup.string().required("Please enter remark"),
+  
+  
+});
+export const GroupitemsValidationForm = Yup.object({
+  cost: Yup.string().required("Please enter the cost"),
+  convertedquantity: Yup.string().required("Please enter converted quantity"),
+  unit: Yup.string().required("Please enter unit"),
+  delete: Yup.string().required("Please enter delete"),
+
+});
+
+export const HealthReporatbleParameterValidationForm = Yup.object({
+  kid: Yup.string().required("Please enter Key Id"),
+  parametername: Yup.string().required("Please enter Parameter Name"),
+  
+  
+});
+export const ParameterUnitMasterValidationForm = Yup.object({
+  unitname: Yup.string().required("Please enter Unit Name"),
+  
+  
+});
+export const CheckupParameterValidationForm = Yup.object({
+  cpname: Yup.string().required("Please enter checkup parameter"),
+  startingrange: Yup.string().required("Please enter starting range"),
+  endingrange: Yup.string().required("Please enter ending range"),
+  columnorder: Yup.string().required("Please enter column order"),
+  placeholder: Yup.string().required("Please enter Place holder"),
+  parametervaluename: Yup.string().required("Please enter Parameter Name"),
+  checkuptype: Yup.string().required("Please enter the checkup type"),
+  refrange: Yup.string().required("Please enter ref range"),
+  default: Yup.string().required("Please enter the default"),
+  
+});
+
+
+export const ChronicIllnessValidationForm = Yup.object({
+  pname: Yup.string().required("Please enter Patient Name"),
+  date: Yup.string().required("Please enter Date of Diagnosis"),
+  duedate: Yup.string().required("Please enter date Of Remission"),
+  remark: Yup.string().required("Please enter remark"),
+  duration: Yup.string().required("Please enter the duration"),
+  
+});
+export const MergeAilmentValidationForm = Yup.object({
+
+  delete: Yup.string().required("Please delete"),
+  
+});
+
+export const AddCityValidationForm = Yup.object({
+  city: Yup.string().min(2).max(25).required("Please enter city name"),
+  AcPerKMCost: Yup.string().min(2).max(25).required("Please enter Ac perKM Cost"),
+  AcAmbulanceCharge: Yup.string().min(2).max(25).required("Please enter AC Ambulance Charge"),
+  NonAcPerKMCost: Yup.string().min(2).max(25).required("Please enter Non AC cost"),
+  NonAcAmbulanceCharge: Yup.string().email().required("Please enter Non AC Ambulance charge"),
+     
+});
+
+export const UnitValidationForm = Yup.object({
+  unitId: Yup.string().required("Please enter unit id"),
+  UnitName: Yup.string().required("Please Enter unit name"),
+  Remarks: Yup.string().required("Please Enter Remarks"),
+});
+
+export const CategoryValidationForm = Yup.object({
+  CategoryName: Yup.string().required("Please enter Category Name"),
+  status: Yup.string().required("Please Enter status"),
+  remarks: Yup.string().required("Please Enter Remarks"),
+});
+
+//Merge Complaint
+
+export const MergeComplaintValidationForm = Yup.object({
+  ComplaintRecordUsed: Yup.string().required("Please Choose primary complaint"),
+  ComplaintRecordMerged: Yup.string().required("Please choose duplicate complaint"),
+  
+});
+
+//addFilterMaster
+
+export const AddFilterMasterform = Yup.object({
+  filterName: Yup.string().required("Please Enter filter name"),
+  filterCode: Yup.string().required("Please enter filter code"),
+  
+});
