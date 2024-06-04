@@ -18,7 +18,7 @@ const AmbulanceItemForm = ({
   setFieldValue,
   handleSubmit,
 }) => {
-    AmbulanceChecklistForm.propTypes = {
+    AmbulanceItemForm.propTypes = {
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -31,7 +31,7 @@ const AmbulanceItemForm = ({
   const issueto = ["OHC", "......."];
   const ohclocation = ["Dwarka", ".........", "......."];
   const itemcatagories=["Capital/NonConsumable/Intruments","......"];
-
+  
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit}>

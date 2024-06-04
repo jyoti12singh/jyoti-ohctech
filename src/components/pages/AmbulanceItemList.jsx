@@ -8,8 +8,8 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 
-import CheckupTypeNameForm from './CheckupTypeNameForm';
-import { CheckupTypeNameValidationForm } from './Validationform';
+
+import { AmbulanceItemValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,9 +19,10 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+import AmbulanceItemForm from './AmbulanceItemForm';
 
 
-const CheckupTypeNameList = () => {
+const AmbulanceItemList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -36,18 +37,13 @@ const CheckupTypeNameList = () => {
 
     const [showupdate,setShowupdate] = useState(false);
 
+    const [fetchTrigger, setFetchTrigger] = useState(0);
     const initialValues = {
-       
-        CheckTypeName:"",
-        CheckTypeCode:"",
-        Duration:"",
-        Cost:"",
-        CheckFormSection:"",
-        SetStatus:"",
-        LabCheckup:"",
-        SectionChoiceAvailable:"",
-        ApplicableOhcs:"",
-        
+
+        issueto: "",
+        ohclocation: "",
+        itemcatagories: ""
+
       };
 
 
@@ -62,11 +58,7 @@ const CheckupTypeNameList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: CheckupTypeNameValidationForm,
-        // onSubmit: (values, action) => {
-        //     console.log(values);
-        //     action.resetForm();
-        //   },
+        validationSchema: AmbulanceItemValidationForm,
         onSubmit: async (values, {resetForm}) => {
         try {
             const response = await axiosClientPrivate.post('/business-units', values);
@@ -74,13 +66,14 @@ const CheckupTypeNameList = () => {
                 position:"top-center"
              }); 
                    // getting id(key,value) of last index
-                const id = rowData[rowData.length-1].id;
-                const obj = {
-                    id : id+1,
-                    ...values
-                }
-             console.log(obj);
-             setRowData(rowData => [...rowData, obj]);
+               // const id = rowData[rowData.length-1].id;
+              //  const obj = {
+                  //  id : id+1,
+                   // ...values
+              //  }
+            // console.log(obj);
+           //  setRowData(rowData => [...rowData, obj]);
+            setFetchTrigger(prev => prev+1);
             console.log('Response:', response.data);
             resetForm();
           } catch (error) {
@@ -97,10 +90,10 @@ const CheckupTypeNameList = () => {
         try {
           const response = await axiosClientPrivate.get(`/business-units/${id}`);
             console.log(response.data);
-            setFieldValue("buEmail",response.data.buEmail);
-            setFieldValue("buHeadName",response.data.buHeadName);
-            setFieldValue("buId",response.data.buId);
-            setFieldValue("buName",response.data.buName);
+            setFieldValue("id",response.data.id);
+            setFieldValue(" issueto",response.data. issueto);
+            setFieldValue("ohclocation",response.data.ohclocation);
+            setFieldValue(" itemcatagories",response.data. itemcatagories);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -123,6 +116,7 @@ const CheckupTypeNameList = () => {
              });
              resetForm();
              //setRowData(rowData => [...rowData,values]);
+             setFetchTrigger(prev => prev+1);
         }
         catch(err){
             console.log(values);
@@ -137,7 +131,8 @@ const CheckupTypeNameList = () => {
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
            await axiosClientPrivate.delete(`/business-units/${id}`);
-           setRowData(prevData => prevData.filter(row => row.buId !== id));
+          // setRowData(prevData => prevData.filter(row => row.buId !== id));
+        setFetchTrigger(prev => prev+1);
        } catch (error) {
            console.error('Error deleting row:', error);
        }
@@ -177,7 +172,7 @@ const CheckupTypeNameList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.id;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -199,63 +194,17 @@ const CheckupTypeNameList = () => {
             controller.abort();
         };
 
-    }, []);
-
-
-     
+    }, [fetchTrigger]);
 
     const exportpdf = async () => {
-        // const headers = createHeaders([
-        //     "id",
-        //     "ohcName",
-        //     // "ohcCode",
-        //     // "OhcDescription",
-        //     // "Address",
-        //     // "State",
-        //     // "Fax",
-        //     // "PrimaryPhone",
-        //     // "PrimaryEmail",
-        //     // "PinCode",
-        //     // "OhcType",
-        //     // "IconColor",
-        //     // "IconText",
-        //     // "OhcCategory",
-        // ]);
-        // const doc = new jsPDF({orientation: "landscape"});
-        // console.log(rowData[0].id);
-        // const tableData = rowData.map((row)=>(
-        //     console.log(row.id),
-        //   {
-             
-          // console.log(row.id),
-            // ...row,
-            // id: row.id,
-            // ohcName: row.ohcName,
-            // ohcCode: row.ohcCode.toString(),
-            // ohcDescription: row.ohcDescription.toString(),
-            // address: row.address.toString(),
-            // state: row.state.toString(),
-            // fax: row.fax.toString(),
-            // primaryPhone: row.primaryPhone.toString(),
-            // primaryEmail: row.primaryEmail.toString(),
-            // pinCode: row.pinCode.toString(),
-            // ohcType: row.ohcType.toString(),
-            // iconColor: row.iconColor.toString(),
-            // iconText: row.iconText.toString(),
-            // OhcCategory: row.ohcCategory.toString(),
-        // }))
-        // const tableData = {
-        //     id : rowData[0].id,
-        //     ohcName : rowData[0].ohcName,
-        // }
-        // doc.table(1,1,tableData,headers, {autoSize:true});
         const doc = new jsPDF();
-        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const header = [['Id', ' issueto'," ohclocation"," itemcatagories"]];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.buName,
-          item.buHeadName,
-          item.buEmail,
+          item.Id,
+          item.issueto,
+          item.ohclocation,
+          item.itemcatagories,
+        
           
         ]);
         doc.autoTable({
@@ -267,74 +216,14 @@ const CheckupTypeNameList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("CheckupTypeNameForm.pdf");
+        doc.save("AmbulanceItemList.pdf");
     };
 
 
     const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-        // sheet.columns = [
-        //     {
-        //         header: "Id",
-        //         key: 'id',
-        //     },
-        //     {
-        //         header: "OhcName",
-        //         key: 'ohcName',
-        //     },
-        //     {
-        //         header: "OhcCode",
-        //         key: 'ohcCode',
-        //     },
-        //     {
-        //         header: "OhcDescription",
-        //         key: 'ohcDescription',
-        //     },
-        //     {
-        //       header : "Address",
-        //       key : "address",
-        //     },
-        //     {
-        //         header: "State",
-        //         key: 'state',
-        //     },
-        //     {
-        //         header: "Fax",
-        //         key: 'fax',
-        //     },
-        //     {
-        //       header: "PrimaryPhone",
-        //       key: 'primaryPhone',
-        //   },
-        //   {
-        //       header: "PrimaryEmail",
-        //       key: 'primaryEmail',
-        //   },
-        //   {
-        //       header : "PinCode",
-        //       key : "pinCode",
-        //   },
-        //   {
-        //       header: "OhcType",
-        //       key: 'ohcType',
-        //   },
-        //   {
-        //       header: "IconColor",
-        //       key: 'iconColor',
-        //   },
-        //   {
-        //     header: "IconText",
-        //     key: 'iconText',
-        // },
-        // {
-        //     header: "OhcCategory",
-        //     key: 'OhcCategory',
-        // }
-        // ];
-  
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -343,25 +232,26 @@ const CheckupTypeNameList = () => {
         
         const columnWidths = {
             Id: 10,
-            buName: 20,
-            buHeadName: 15,
-            buEmail: 25,
+            issueto: 20,
+            ohclocation: 20,
+            itemcatagories: 10,
+        
+           
       };
   
         sheet.columns = [
-          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
-          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
-          
+          { header: "Id", key: 'Id', width: columnWidths.Id, style: headerStyle },
+          { header: " issueto", key: ' issueto', width: columnWidths. issueto, style: headerStyle },
+          { header: "  ohclocation", key: '  ohclocation', width:  columnWidths.ohclocation, style: headerStyle },
+          { header: " itemcatagories", key: ' itemcatagories', width: columnWidths. itemcatagories, style: headerStyle },    
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
-                buName: product.buName,
-                buHeadName: product.buHeadName,
-                buEmail: product.buEmail,
+                Id: product.Id,
+                item: product.issueto,
+                item: product.ohclocation,
+                item: product.itemcatagories,
             })
         });
   
@@ -405,9 +295,9 @@ const CheckupTypeNameList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Checkup Type Name">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Ambulance Item">
 
-                <CheckupTypeNameForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <AmbulanceItemForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
@@ -415,4 +305,4 @@ const CheckupTypeNameList = () => {
 };
 
 
-export default CheckupTypeNameList;
+export default AmbulanceItemList;
