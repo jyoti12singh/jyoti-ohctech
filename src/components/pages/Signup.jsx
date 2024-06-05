@@ -1,6 +1,5 @@
 
-import React from "react";
-import ohcimg from "../../../public/ohc.jpg";
+import ohcimg from "../../assets/images/ohc.jpg";
 import AddIcon from '@mui/icons-material/Add';
 import GoogleIcon from '@mui/icons-material/Google';
 

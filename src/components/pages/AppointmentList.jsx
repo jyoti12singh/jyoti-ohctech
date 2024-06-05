@@ -250,10 +250,10 @@ const AppointmentList = () => {
         // }
         // doc.table(1,1,tableData,headers, {autoSize:true});
         const doc = new jsPDF();
-        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const header = [['Id', 'Slot start',"buHeadName","buEmail"]];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.buName,
+          item.id,
+          item.slot,
           item.buHeadName,
           item.buEmail,
           
