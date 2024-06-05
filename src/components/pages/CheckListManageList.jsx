@@ -27,7 +27,7 @@ const CheckListManageList = () => {
 
     const [colDefs, setColDefs] = useState([]);
 
-    const [openPopup, setOpenPopup] = useState(false);
+    const [openPopup, setOpenPopup] =useState(false);
 
     const axiosClientPrivate = useAxiosPrivate();
 
