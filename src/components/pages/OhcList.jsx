@@ -46,7 +46,7 @@ const OhcList = ()=> {
 
     const [openPopup, setOpenPopup] = useState(false);
 
-    const [paginationPageSize, setPaginationPageSize] = useState(10);
+    const [paginationPageSize, setPaginationPageSize] = useState(2);
     
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
     
@@ -54,6 +54,7 @@ const OhcList = ()=> {
    
     // const [data, setData] = useState([]);// I added
 
+    // const pageSizeOptions = [50, 100, 200, 500];
     const pageSizeOptions = [2, 4, 8, 10];
 
     const [fetchTrigger, setFetchTrigger] = useState(0);
@@ -174,16 +175,9 @@ useEffect(() => {
 
 
 
-// }, [paginationPageSize,axiosClientPrivate,currentPageIndex]);
-}, [fetchTrigger]);
+}, [fetchTrigger,axiosClientPrivate]);
 
-  //  // I did Modification.
-  //  fetch("https://dummyjson.com/products")
-  //  .then((res) => res.json())
-  //  .then(async(data)=>{
-  //      console.log(data);
-  //      setData(data);
-  //  })
+  
    
 
 
@@ -255,128 +249,9 @@ const handleUpdate = async (id)=> {
         }
         };
 
-    // const pagination = true;
-
-    // const paginationPageSize = 50;
-    // const paginationPageSize = 10;
-    // const paginationPageSizeSelector = [50, 100, 200, 500];
-    // const paginationPageSizeSelector = [2, 4, 8, 10];
-
-    // const paginationPageSizeSelector = useMemo(() => {
-    //   return [2, 4, 8, 10];
-    // }, []);
-
-
-    // const [paginationPageSize, setPaginationPageSize] = useState(2); // Default pagination page size
-
-    // Define custom page size options
-    // const pageSizeOptions = [2, 4, 8, 10];
-
-
-    // useEffect(() => {
-    //     fetchData(0, paginationPageSize); // Fetch initial data
-    //   }, []); // Empty dependency array to fetch data only once
-    // useEffect(() => {
-    //   // const fetchData = async (startRow, paginationPageSize) => {
-    //     // Make API call to fetch data based on startRow and endRow
-    //     // Replace this with your actual API call
-    //     // const response = await fetch(`your-api-endpoint?start_row=${startRow}&end_row=${endRow}`);
-    //     const controller = new AbortController();
-    //     const response = await axiosClientPrivate.get(`ohcs?page=${startRow}&size=${paginationPageSize}`, { signal: controller.signal });
-    //     const items = await response.data.content;
-    //     console.log(items);
-    //     setRowData(items);
-    //     if (items.length > 0) {
-    //                     const columns = Object.keys(items[0]).map(key => ({
-    //                         field: key,
-    //                         headerName: key.charAt(0).toUpperCase() + key.slice(1),
-    //                         filter: true,
-    //                         floatingFilter: true,
-    //                         sortable: true
-    //                     }));
-          
-    //                     columns.unshift({
-    //                         // field: "Actions", cellRenderer: CustomActionComponent
-    //                         field: "Actions", cellRenderer:  (params) =>{
-    //                             const id = params.data.id;
-    //                             return <CustomActionComponent id={id} />
-    //                         }
-    //                     });
-          
-    //                     setColDefs(columns);
-    //                 }
-    //   };
     
-    // }, []);
-
-    //   const onGridReady = (params) => {
-    //     setGridApi(params.api);
-    //     params.api.se
-    //     // setGridColumnApi(params.columnApi);
-    //   };
-    
-    // //   const onPageSizeChanged = (newPageSize) => {
-    // //     const startRow = 0;
-    // //     const endRow = newPageSize;
-    // //     fetchData(startRow, endRow);
-    //   };
-    
-  //   const createHeaders = (keys) => {
-  //     const result = [];
-  //     for( let key of keys){
-  //         result.push({
-  //             id: key,
-  //             name: key,
-  //             prompt: key,
-  //         })
-  //     }
-  //     return result;
-  // };
   const exportpdf = async () => {
-      // const headers = createHeaders([
-      //     "id",
-      //     "ohcName",
-      //     // "ohcCode",
-      //     // "OhcDescription",
-      //     // "Address",
-      //     // "State",
-      //     // "Fax",
-      //     // "PrimaryPhone",
-      //     // "PrimaryEmail",
-      //     // "PinCode",
-      //     // "OhcType",
-      //     // "IconColor",
-      //     // "IconText",
-      //     // "OhcCategory",
-      // ]);
-      // const doc = new jsPDF({orientation: "landscape"});
-      // console.log(rowData[0].id);
-      // const tableData = rowData.map((row)=>(
-      //     console.log(row.id),
-      //   {
-           
-        // console.log(row.id),
-          // ...row,
-          // id: row.id,
-          // ohcName: row.ohcName,
-          // ohcCode: row.ohcCode.toString(),
-          // ohcDescription: row.ohcDescription.toString(),
-          // address: row.address.toString(),
-          // state: row.state.toString(),
-          // fax: row.fax.toString(),
-          // primaryPhone: row.primaryPhone.toString(),
-          // primaryEmail: row.primaryEmail.toString(),
-          // pinCode: row.pinCode.toString(),
-          // ohcType: row.ohcType.toString(),
-          // iconColor: row.iconColor.toString(),
-          // iconText: row.iconText.toString(),
-          // OhcCategory: row.ohcCategory.toString(),
-      // }))
-      // const tableData = {
-      //     id : rowData[0].id,
-      //     ohcName : rowData[0].ohcName,
-      // }
-      // doc.table(1,1,tableData,headers, {autoSize:true});
+      
       const doc = new jsPDF();
       const header = [['Id', 'OhcName',"ohcCode","OhcDescription","Address","State","Fax","PrimaryPhone","PrimaryEmail","PinCode","OhcType","IconColor","IconText","OhcCategory"]];
       const tableData = rowData.map(item => [
@@ -411,64 +286,7 @@ const handleUpdate = async (id)=> {
   const exportExcelfile = async () => {
       const workbook = new ExcelJS.Workbook();
       const sheet = workbook.addWorksheet('My Sheet');
-      // sheet.columns = [
-      //     {
-      //         header: "Id",
-      //         key: 'id',
-      //     },
-      //     {
-      //         header: "OhcName",
-      //         key: 'ohcName',
-      //     },
-      //     {
-      //         header: "OhcCode",
-      //         key: 'ohcCode',
-      //     },
-      //     {
-      //         header: "OhcDescription",
-      //         key: 'ohcDescription',
-      //     },
-      //     {
-      //       header : "Address",
-      //       key : "address",
-      //     },
-      //     {
-      //         header: "State",
-      //         key: 'state',
-      //     },
-      //     {
-      //         header: "Fax",
-      //         key: 'fax',
-      //     },
-      //     {
-      //       header: "PrimaryPhone",
-      //       key: 'primaryPhone',
-      //   },
-      //   {
-      //       header: "PrimaryEmail",
-      //       key: 'primaryEmail',
-      //   },
-      //   {
-      //       header : "PinCode",
-      //       key : "pinCode",
-      //   },
-      //   {
-      //       header: "OhcType",
-      //       key: 'ohcType',
-      //   },
-      //   {
-      //       header: "IconColor",
-      //       key: 'iconColor',
-      //   },
-      //   {
-      //     header: "IconText",
-      //     key: 'iconText',
-      // },
-      // {
-      //     header: "OhcCategory",
-      //     key: 'OhcCategory',
-      // }
-      // ];
+      
 
       const headerStyle = {
         // font: { bold: true, size: 12 },
@@ -577,7 +395,7 @@ const handleUpdate = async (id)=> {
                     setPaginationPageSize(event.api.paginationGetPageSize());
                     // setCurrentPageIndex(0);
                     // setCurrentPageIndex(event.api.paginationGetCurrentPage() + 1);
-                }}
+                    }}
                 />
             </Box>
 

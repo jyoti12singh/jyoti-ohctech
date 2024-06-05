@@ -37,6 +37,10 @@ const VaccineList = () => {
 
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
+    const [paginationPageSize, setPaginationPageSize] = useState(2);
+
+    console.log("check",paginationPageSize);
+
     const initialValues = {
         vaccineName:"",
         vaccineCompany:"",
@@ -152,27 +156,31 @@ const VaccineList = () => {
 
 };
 
-    const pagination = true;
-    const paginationPageSize = 50;
-    const paginationPageSizeSelector = [50, 100, 200, 500];
+    
+    
+    // const paginationPageSizeSelector = [50, 100, 200, 500];
+    const pageSizeOptions = [2, 4, 8, 10];
 
-    const headerMappings = {
-        vaccineName: "Vaccine Name",
-        vaccineCompany : "Company",
-        vaccineDesc : "Description",
-    };
+    
 
     useEffect(() => {
         const controller = new AbortController();
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('http://localhost:8080/vaccines?page=0&size=5', { signal: controller.signal });
+                const response = await axiosClientPrivate.get(`http://localhost:8080/vaccines?page=0&size=${paginationPageSize}`, { signal: controller.signal });
                 const items = response.data.content;
-                    console.log("new",items);
+                    // console.log("new",items);
                 setRowData(items);
 
                 if (items.length > 0) {
+
+                    const headerMappings = {
+                        vaccineName: "Vaccine Name",
+                        vaccineCompany : "Company",
+                        vaccineDesc : "Description",
+                    };
+
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
                         headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
@@ -206,7 +214,7 @@ const VaccineList = () => {
             controller.abort();
         };
 
-    }, [fetchTrigger]);
+    }, [paginationPageSize,fetchTrigger,axiosClientPrivate]);
 
 
      
@@ -410,9 +418,12 @@ const VaccineList = () => {
                     rowData={rowData}
                     columnDefs={colDefs}
                     animateRows={true} 
-                    pagination={pagination}
+                    pagination={true}
                     paginationPageSize={paginationPageSize}
-                    paginationPageSizeSelector={paginationPageSizeSelector}
+                    paginationPageSizeSelector={pageSizeOptions}
+                    onPaginationChanged={(event) => {
+                        setPaginationPageSize(event.api.paginationGetPageSize());
+                    }}
                 />
             </Box>
 
