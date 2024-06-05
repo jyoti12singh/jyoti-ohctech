@@ -183,24 +183,7 @@ const CheckListManageForm = ({
                     }
                   />
                 </Grid>
-                <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
-                  <Input
-                    label="Delete"
-                    name="delete"
-                    type="text"
-                    size="large"
-                    value={values.delete}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    helperText={
-                      errors.delete && touched.delete ? (
-                        <span style={{ color: "red" }}>
-                          {errors.delete}
-                        </span>
-                      ) : null
-                    }
-                  />
-                </Grid>
+                
                 
               </Grid>
             </FormControl>
