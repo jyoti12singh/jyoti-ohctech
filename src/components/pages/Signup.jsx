@@ -1,5 +1,8 @@
-import ohcimg from "../../assets/images/ohc.jpg";
-import google from "../../assets/images/google.png";
+
+import React from "react";
+import ohcimg from "../../../public/ohc.jpg";
+import AddIcon from '@mui/icons-material/Add';
+import GoogleIcon from '@mui/icons-material/Google';
 
 import { InputAdornment, Stack } from "@mui/material";
 import Container from "@mui/material/Container";
@@ -285,6 +288,7 @@ import { useNavigate } from "react-router-dom";
                  
                     style={{
                       display: "flex",
+                      // flexDirection:'row',
                       justifyContent: "center",
                       alignContent: "center",
                       textAlign: "center",
@@ -296,8 +300,12 @@ import { useNavigate } from "react-router-dom";
                 
                   }}
                 >
-                  <Link >
-                  <img src={google} alt="" />
+                  <Link display={'flex'} flexDirection={'row'}>
+                  {/* <img src={google} alt="" /> */}
+                  <GoogleIcon sx={{color:'red' ,fontSize:'3'}}>
+                  
+                  </GoogleIcon>
+                  <AddIcon sx={{color:'red' ,fontSize:'2',marginLeft: '-0.3rem'}}/>
                   </Link>
                     
                 </div>
@@ -326,3 +334,4 @@ import { useNavigate } from "react-router-dom";
 }
 
 export default Login;
+
