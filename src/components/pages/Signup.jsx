@@ -1,6 +1,7 @@
 import React from "react";
 import ohcimg from "../../../public/ohc.jpg";
-import google from "../../../public/google.png";
+import AddIcon from '@mui/icons-material/Add';
+import GoogleIcon from '@mui/icons-material/Google';
 import { InputAdornment, Stack } from "@mui/material";
 import Container from "@mui/material/Container";
 import { IconButton } from "@mui/material";
@@ -17,8 +18,16 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Link } from "@mui/material";
 import { useState } from "react";
-export default function Signup() {
+import { useAuth } from "../security/AuthContext";
+import { useNavigate } from "react-router-dom";
+
+
+ const Login = ()=> {
+
+  const authContext = useAuth();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [loginData, setLoginData] = useState({
     username: "",
@@ -50,7 +59,17 @@ export default function Signup() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(loginData);
+
+    setIsLoading(true);
+
+    const isLoggedIn = await authContext.login(loginData);
+
+    if (isLoggedIn) {
+      setIsLoading(false);
+      navigate("/ohcSelection");
+    } else {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -80,7 +99,7 @@ export default function Signup() {
           sx={{
             height: "100%",
             display: "flex",
-
+            justifyContent: "left",
             alignItems: "center",
           }}
         >
@@ -88,23 +107,33 @@ export default function Signup() {
             sx={{
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center",
-             
+              alignItems: "left",
+              // textAlign: "left",
+              justifyItems:"left",
+              '@media (min-width:600px)': {
+                //  marginLeft:'-8.5rem'
+                // textAlign : "center",
+                // display:"block",
+                // textAlign: "center",
+               },
             }}
+           
           >
             <Typography
               sx={{
                 fontWeight: "bold",
-                '@media (min-width:600px)': {
-                     marginLeft:'-8.5rem'
+                '@media (max-width:600px)': {
+                    //  marginLeft:'-8.5rem'
+                    // textAlign : "center",
+                    // textAlignLast :"center",
+                    justifyContent : 'center',
+                    // display:"block",
                    },
               }}
               display={"flex"}
               flexDirection={"row"}
               variant="h5"
-              
-              justifyContent={'center'}
+              justifyContent={'left'}
               gutterBottom
             >
               Welcome To{""}
@@ -116,10 +145,13 @@ export default function Signup() {
             </Typography>
 
             <Typography variant="h6" gutterBottom>
-              <Box sx={{ '@media (min-width:600px)': {
-                marginLeft:'-13.5rem'
+              <Box sx={{ '@media (max-width:600px)': {
+                // marginLeft:'-13.5rem'
+                display:"block",
+                textAlign:'center',
               }}}
-             
+              //  display={'block'}
+              //  textAlign={'center'}
                >Sign into Your Account</Box>
             </Typography>
 
@@ -205,9 +237,11 @@ export default function Signup() {
               >
                 Sign In
               </Button>
-              <Typography variant="h10" gutterBottom>
-                {" "}
-                Don't have an account?{" "}
+              <Typography variant="h10" gutterBottom
+               textAlign={'center'}
+               display={'block'}
+              >
+                {"Don't have an account? "}
                 <Link href="" style={{ textDecoration: "none" }}>
                   Sign Up
                 </Link>
@@ -252,6 +286,7 @@ export default function Signup() {
                  
                     style={{
                       display: "flex",
+                      // flexDirection:'row',
                       justifyContent: "center",
                       alignContent: "center",
                       textAlign: "center",
@@ -263,8 +298,12 @@ export default function Signup() {
                 
                   }}
                 >
-                  <Link >
-                  <img src={google} alt="" />
+                  <Link display={'flex'} flexDirection={'row'}>
+                  {/* <img src={google} alt="" /> */}
+                  <GoogleIcon sx={{color:'red' ,fontSize:'3'}}>
+                  
+                  </GoogleIcon>
+                  <AddIcon sx={{color:'red' ,fontSize:'2',marginLeft: '-0.3rem'}}/>
                   </Link>
                     
                 </div>
@@ -287,7 +326,9 @@ export default function Signup() {
           </Box>
         </Container>
       </Box>
-       
+      
     </Stack>
   );
 }
+
+export default Login;
