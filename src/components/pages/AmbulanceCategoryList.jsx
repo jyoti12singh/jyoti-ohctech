@@ -4,11 +4,11 @@ import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
-import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import AddHabitForm from './AddHabitForm';
-import { HabitValidationForm } from './Validationform';
+import AmbulanceCategoryForm from './AmbulanceCategoryForm';
+import { AmbulanceValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,8 +17,9 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import PropTypes from "prop-types";
 
-const AddHabitList = () => {
+const AmbulanceCategoryList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -32,13 +33,13 @@ const AddHabitList = () => {
     const [id,setId] = useState(1);
 
     const [showupdate,setShowupdate] = useState(false);
+
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
 
     const initialValues = {
        
-
-        HabitName:""
+        AmbulanceCategory:""
       };
 
 
@@ -53,7 +54,7 @@ const AddHabitList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: HabitValidationForm,
+        validationSchema: AmbulanceValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
@@ -73,6 +74,7 @@ const AddHabitList = () => {
             //  console.log(obj);
             //  setRowData(rowData => [...rowData, obj]);
             setFetchTrigger(prev => prev+1);
+
             console.log('Response:', response.data);
             resetForm();
           } catch (error) {
@@ -114,8 +116,9 @@ const AddHabitList = () => {
                 autoClose: 3000,
              });
              resetForm();
-            //  setRowData(rowData => [...rowData,values]);
-            setFetchTrigger(prev => prev+1);
+             //setRowData(rowData => [...rowData,values]);
+             setFetchTrigger(prev => prev+1);
+
         }
         catch(err){
             console.log(values);
@@ -132,17 +135,21 @@ const AddHabitList = () => {
            await axiosClientPrivate.delete(`/business-units/${id}`);
         //    setRowData(prevData => prevData.filter(row => row.buId !== id));
         setFetchTrigger(prev => prev+1);
-    } catch (error) {
+
+       } catch (error) {
            console.error('Error deleting row:', error);
        }
    }
    };
 
-    const CustomActionComponent = (props) => {
-          
-        return <> <Button onClick={() =>  handleEdit(props.id)}> <EditNoteRoundedIcon /></Button>
-            <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
-    };
+   const CustomActionComponent = ({id}) => {
+    CustomActionComponent.propTypes = {
+        id: PropTypes.number.isRequired,
+      };
+    return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
+       <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+
+};
 
     const pagination = true;
     const paginationPageSize = 50;
@@ -196,50 +203,7 @@ const AddHabitList = () => {
      
 
     const exportpdf = async () => {
-        // const headers = createHeaders([
-        //     "id",
-        //     "ohcName",
-        //     // "ohcCode",
-        //     // "OhcDescription",
-        //     // "Address",
-        //     // "State",
-        //     // "Fax",
-        //     // "PrimaryPhone",
-        //     // "PrimaryEmail",
-        //     // "PinCode",
-        //     // "OhcType",
-        //     // "IconColor",
-        //     // "IconText",
-        //     // "OhcCategory",
-        // ]);
-        // const doc = new jsPDF({orientation: "landscape"});
-        // console.log(rowData[0].id);
-        // const tableData = rowData.map((row)=>(
-        //     console.log(row.id),
-        //   {
-             
-          // console.log(row.id),
-            // ...row,
-            // id: row.id,
-            // ohcName: row.ohcName,
-            // ohcCode: row.ohcCode.toString(),
-            // ohcDescription: row.ohcDescription.toString(),
-            // address: row.address.toString(),
-            // state: row.state.toString(),
-            // fax: row.fax.toString(),
-            // primaryPhone: row.primaryPhone.toString(),
-            // primaryEmail: row.primaryEmail.toString(),
-            // pinCode: row.pinCode.toString(),
-            // ohcType: row.ohcType.toString(),
-            // iconColor: row.iconColor.toString(),
-            // iconText: row.iconText.toString(),
-            // OhcCategory: row.ohcCategory.toString(),
-        // }))
-        // const tableData = {
-        //     id : rowData[0].id,
-        //     ohcName : rowData[0].ohcName,
-        // }
-        // doc.table(1,1,tableData,headers, {autoSize:true});
+        
         const doc = new jsPDF();
         const header = [['Id', 'buName',"buHeadName","buEmail"]];
         const tableData = rowData.map(item => [
@@ -258,72 +222,14 @@ const AddHabitList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("BussinessList.pdf");
+        doc.save("AmbulanceCategoryList.pdf");
     };
 
 
     const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-        // sheet.columns = [
-        //     {
-        //         header: "Id",
-        //         key: 'id',
-        //     },
-        //     {
-        //         header: "OhcName",
-        //         key: 'ohcName',
-        //     },
-        //     {
-        //         header: "OhcCode",
-        //         key: 'ohcCode',
-        //     },
-        //     {
-        //         header: "OhcDescription",
-        //         key: 'ohcDescription',
-        //     },
-        //     {
-        //       header : "Address",
-        //       key : "address",
-        //     },
-        //     {
-        //         header: "State",
-        //         key: 'state',
-        //     },
-        //     {
-        //         header: "Fax",
-        //         key: 'fax',
-        //     },
-        //     {
-        //       header: "PrimaryPhone",
-        //       key: 'primaryPhone',
-        //   },
-        //   {
-        //       header: "PrimaryEmail",
-        //       key: 'primaryEmail',
-        //   },
-        //   {
-        //       header : "PinCode",
-        //       key : "pinCode",
-        //   },
-        //   {
-        //       header: "OhcType",
-        //       key: 'ohcType',
-        //   },
-        //   {
-        //       header: "IconColor",
-        //       key: 'iconColor',
-        //   },
-        //   {
-        //     header: "IconText",
-        //     key: 'iconText',
-        // },
-        // {
-        //     header: "OhcCategory",
-        //     key: 'OhcCategory',
-        // }
-        // ];
-  
+        
         const headerStyle = {
           // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
@@ -396,13 +302,13 @@ const AddHabitList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Add Habit">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Add Ambulance Category Details">
 
-                <AddHabitForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <AmbulanceCategoryForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default AddHabitList;
+export default AmbulanceCategoryList;

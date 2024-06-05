@@ -2,18 +2,16 @@ import { FormControl, Grid} from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
 
-
-
-const SaltForm = ({
+const AmbulanceCategoryForm = ({
   values,
   touched,
   handleBlur,
   errors,
   handleChange,
-  // setFieldValue,
+  setFieldValue,
   handleSubmit,
 }) => {
-    SaltForm.propTypes = {
+    AmbulanceCategoryForm.propTypes = {
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -23,31 +21,25 @@ const SaltForm = ({
     handleSubmit: PropTypes.func.isRequired,
   };
 
-
-//   const Medselect = ["Active", "Not Active"];
-//   const isDefault = ["Yes", "No"];
-
-
-
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit}>
-        <Grid container spacing={2} justifyContent="center" alignItems="center" sx={{width:400}} >
+        <Grid container spacing={2} justifyContent="center" alignItems="center" sx={{width:300}} >
           <Grid item xs={12}  justifyContent="center" alignItems="center">
             <FormControl fullWidth>
               <Grid container spacing={2} justifyContent="center" alignItems="center">
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
-                    label="Salt Name"
-                    name="saltName"
+                    label="Ambulance Category"
+                    name="AmbulanceCategory"
                     type="text"
                     size="large"
-                    value={values.saltName}
+                    value={values.AmbulanceCategory}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.saltName && touched.saltName? (
-                        <span style={{ color: "red" }}>{errors.saltName}</span>
+                      errors.AmbulanceCategory && touched.AmbulanceCategory? (
+                        <span style={{ color: "red" }}>{errors.AmbulanceCategory}</span>
                       ) : null
                     }
                   />
@@ -62,4 +54,4 @@ const SaltForm = ({
 };
 
 
-export default SaltForm;
+export default AmbulanceCategoryForm;

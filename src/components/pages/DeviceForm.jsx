@@ -1,12 +1,9 @@
-import { FormControl, Grid, TextField } from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
 import SingleSelect from "../common/SingleSelect"
-import MultipleSelect from "../common/MultipleSelect";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useState } from "react";
-import MultiCheckbox from "./MultiCheckbox";
+
+
 //import Select from "@mui/material";
 const DeviceForm = ({
   values,
@@ -14,7 +11,7 @@ const DeviceForm = ({
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
   DeviceForm.propTypes = {
@@ -28,7 +25,7 @@ const DeviceForm = ({
   };
 
   //const ohcselect = ["Student", "Employee"];
-  const adroute=["ICU","Personal Clinic","Government Hospital"];
+  // const adroute=["ICU","Personal Clinic","Government Hospital"];
   const acstatus=["Yes","No"];
  
   return (
@@ -42,15 +39,15 @@ const DeviceForm = ({
                 <Grid item xs={12} sm={6} container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="Enter Device Name"
-                    name="devicename"
+                    name="deviceName"
                     type="text"
                     size="large"
-                    value={values.devicename}
+                    value={values.deviceName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.devicename && touched.devicename? (
-                        <span style={{ color: "red" }}>{errors.devicename}</span>
+                      errors.deviceName && touched.deviceName? (
+                        <span style={{ color: "red" }}>{errors.deviceName}</span>
                       ) : null
                     }
                   />
@@ -59,12 +56,12 @@ const DeviceForm = ({
                 <SingleSelect
                     arr={acstatus}
                     label="is Active"
-                    name="Isstatus"
-                    value={values.Isstatus}
+                    name="isActive"
+                    value={values.isActive}
                     onChange={(event, newValue) => {
                       const syntheticEvent = {
                         target: {
-                          name: "Isstatus",
+                          name: "isActive",
                           value: newValue,
                         },
                       };
@@ -73,8 +70,8 @@ const DeviceForm = ({
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                      errors.Isstatus && touched.Isstatus ? (
-                        <span style={{ color: "red" }}>{errors.Isstatus}</span>
+                      errors.isActive && touched.isActive ? (
+                        <span style={{ color: "red" }}>{errors.isActive}</span>
                       ) : null
                     }
                   />

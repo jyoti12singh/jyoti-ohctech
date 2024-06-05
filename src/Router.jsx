@@ -34,6 +34,14 @@ import TaskFrequencyList from "./components/pages/TaskFrequencyList";
 import InjuryClassificationList from "./components/pages/InjuryClassificationList";
 import InjuryPartList from "./components/pages/InjuryPartList";
 import InjuryTypeList from "./components/pages/InjuryTypeList";
+import DiagnosisTreatmentList from "./components/pages/DiagnosisTreatmentList"
+import DiagnosisCIMList from "./components/pages/DiagnosisCIMList";
+import AppointmentList from "./components/pages/AppointmentList";
+import SaltList from "./components/pages/SaltList";
+import HabitList from "./components/pages/HabitList";
+import DeviceList from "./components/pages/DeviceList";
+import PlantList from "./components/pages/PlantList";
+import VaccineList from "./components/pages/VaccineList";
 
 const router = createBrowserRouter([
   {
@@ -167,7 +175,40 @@ const router = createBrowserRouter([
               {
                 path : "/InjuryTypeList",
                 element : <InjuryTypeList />
+              },
+              {
+                path : "/DiagnosisTreatmentList",
+                element : <DiagnosisTreatmentList />
+              },
+              {
+                path : "/DiagnosisCIMList",
+                element : <DiagnosisCIMList />
+              },
+              {
+                path : "/AppointmentList",
+                element : <AppointmentList />
+              },
+              {
+                path : "/SaltList",
+                element : <SaltList />
+              },
+              {
+                path : "/HabitList",
+                element : <HabitList />
+              },
+              {
+                path : "/DeviceList",
+                element : <DeviceList />
+              },
+              {
+                path : "/PlantList",
+                element : <PlantList />
+              },
+              {
+                path : "/VaccineList",
+                element : <VaccineList />
               }
+              
             ],
           },
         ],

@@ -7,8 +7,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import VaccineForm from './VaccineForm';
-// import { VaccineValidationForm } from './Validationform';
+import { RulegenerationValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,10 +16,11 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import RulegenerationForm from './RulegenerationForm';
 import PropTypes from "prop-types";
-
-
-const VaccineList = () => {
+//import MultipleSelect from '../common/MultipleSelect';
+//import TextField from '@mui/material';
+const RulegenerationList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -38,9 +38,22 @@ const VaccineList = () => {
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
     const initialValues = {
-        vaccineName:"",
-        vaccineCompany:"",
-        vaccineDesc:""
+        
+        bracket: "",
+        age:"",
+        risk:"",
+        ageend:"",
+        advice:"",
+        value:"",
+        result:"",
+        close:"",
+        checkup:"",
+        condition:"",
+        gender:"",
+        abnormality:"",
+        range:"",
+        res:"",
+        rule:""
       };
 
 
@@ -55,27 +68,22 @@ const VaccineList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: VaccineValidationForm,
-        // onSubmit: (values, action) => {
-        //     console.log(values);
-        //     action.resetForm();
-        //   },
+        validationSchema: RulegenerationValidationForm,
         onSubmit: async (values, {resetForm}) => {
         try {
-            const response = await axiosClientPrivate.post('/vaccines', values);
+            const response = await axiosClientPrivate.post('/medicallist', values);
             toast.success("Saved Successfully!",{
                 position:"top-center"
              }); 
                    // getting id(key,value) of last index
-            //     const id = rowData[rowData.length-1].buId;
-            //     const obj = {
-            //         buId : id+1,
-            //         ...values
-            //     }
-            //  console.log(obj);
-            //  setRowData(rowData => [...rowData, obj]);
+               // const id = rowData[rowData.length-1].buId;
+              //  const obj = {
+                  //  buId : id+1,
+                   // ...values
+             //   }
+             //console.log(obj);
+             //setRowData(rowData => [...rowData, obj]);
             setFetchTrigger(prev => prev+1);
-
             console.log('Response:', response.data);
             resetForm();
           } catch (error) {
@@ -85,20 +93,32 @@ const VaccineList = () => {
         },
       });
 
-      
+
 
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/vaccines/${id}`);
+          const response = await axiosClientPrivate.get(`/business-units/${id}`);
             console.log(response.data);
             setFieldValue("id",response.data.id);
-            setFieldValue("vaccineName",response.data.vaccineName);
-            setFieldValue("vaccineCompany",response.data.vaccineCompany);
-            setFieldValue("vaccineDesc",response.data.vaccineDesc);
-            setFieldValue("lastModified", response.data.lastModified);
-            setFieldValue("modifiedBy", response.data.modifiedBy);
-          setId(id);
+            setFieldValue("bracket",response.data.bracket);
+            setFieldValue(" age",response.data. age);
+            setFieldValue("risk",response.data.risk);
+            setFieldValue("ageend",response.data.ageend);
+            setFieldValue("advice", response.data.advice);
+            setFieldValue("value", response.data.value);
+
+            setFieldValue("result",response.data.result);
+            setFieldValue("close",response.data.close);
+            setFieldValue("checkup",response.data.checkup);
+            setFieldValue("condition",response.data.condition);
+            setFieldValue("gender", response.data.gender);
+            setFieldValue("abnormality", response.data.abnormality);
+
+            setFieldValue("range",response.data.range);
+            setFieldValue("res",response.data.res);
+            setFieldValue("rule",response.data.rule);
+            setId(id);
           setShowupdate(true);
           setOpenPopup(true);
         } catch (error) {
@@ -111,14 +131,14 @@ const VaccineList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(`/vaccines/${id}`,update);
+             await axiosClientPrivate.put(`/medicalitem/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
              });
              resetForm();
-            // setRowData(rowData => [...rowData,values]);
-            setFetchTrigger(prev => prev+1);
+             //setRowData(rowData => [...rowData,values]);
+             setFetchTrigger(prev => prev+1);
 
         }
         catch(err){
@@ -133,10 +153,9 @@ const VaccineList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(`/vaccines/${id}`);
-        //    setRowData(prevData => prevData.filter(row => row.buId !== id));
-        setFetchTrigger(prev => prev+1);
-
+           await axiosClientPrivate.delete(`/business-units/${id}`);
+           //setRowData(prevData => prevData.filter(row => row.buId !== id));
+           setFetchTrigger(prev => prev+1);
        } catch (error) {
            console.error('Error deleting row:', error);
        }
@@ -151,40 +170,31 @@ const VaccineList = () => {
        <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
 
 };
-
     const pagination = true;
     const paginationPageSize = 50;
     const paginationPageSizeSelector = [50, 100, 200, 500];
-
-    const headerMappings = {
-        vaccineName: "Vaccine Name",
-        vaccineCompany : "Company",
-        vaccineDesc : "Description",
-    };
 
     useEffect(() => {
         const controller = new AbortController();
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('http://localhost:8080/vaccines?page=0&size=5', { signal: controller.signal });
+                const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
                 const items = response.data.content;
-                    console.log("new",items);
+                    // console.log(items);
                 setRowData(items);
-
                 if (items.length > 0) {
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
+                        headerName: key.charAt(0).toUpperCase() + key.slice(1),
                         filter: true,
                         floatingFilter: true,
-                        sortable: true,
-                        width: key === 'id' ? 100 : undefined,
+                        sortable: true
                     }));
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.id;
+                            const id = params.data.buId;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -212,60 +222,27 @@ const VaccineList = () => {
      
 
     const exportpdf = async () => {
-        // const headers = createHeaders([
-        //     "id",
-        //     "ohcName",
-        //     // "ohcCode",
-        //     // "OhcDescription",
-        //     // "Address",
-        //     // "State",
-        //     // "Fax",
-        //     // "PrimaryPhone",
-        //     // "PrimaryEmail",
-        //     // "PinCode",
-        //     // "OhcType",
-        //     // "IconColor",
-        //     // "IconText",
-        //     // "OhcCategory",
-        // ]);
-        // const doc = new jsPDF({orientation: "landscape"});
-        // console.log(rowData[0].id);
-        // const tableData = rowData.map((row)=>(
-        //     console.log(row.id),
-        //   {
-             
-          // console.log(row.id),
-            // ...row,
-            // id: row.id,
-            // ohcName: row.ohcName,
-            // ohcCode: row.ohcCode.toString(),
-            // ohcDescription: row.ohcDescription.toString(),
-            // address: row.address.toString(),
-            // state: row.state.toString(),
-            // fax: row.fax.toString(),
-            // primaryPhone: row.primaryPhone.toString(),
-            // primaryEmail: row.primaryEmail.toString(),
-            // pinCode: row.pinCode.toString(),
-            // ohcType: row.ohcType.toString(),
-            // iconColor: row.iconColor.toString(),
-            // iconText: row.iconText.toString(),
-            // OhcCategory: row.ohcCategory.toString(),
-        // }))
-        // const tableData = {
-        //     id : rowData[0].id,
-        //     ohcName : rowData[0].ohcName,
-        // }
-        // doc.table(1,1,tableData,headers, {autoSize:true});
-        // vaccineName:"",
-        // vaccineCompany:"",
-        // vaccineDesc:""
+       
         const doc = new jsPDF();
-        const header = [['Id', 'Vaccine Name',"Company","Description"]];
+        const header = [['Id','bracket', 'age',"risk","ageend","advice","value","result","close","checkup","condition"
+        ,"gender","abnormality","range","res","rule"]];
         const tableData = rowData.map(item => [
-          item.id,
-          item.vaccineName,
-          item.vaccineCompany,
-          item.vaccineDesc,
+            item.bracket,
+            item.age,
+            item.risk,
+            item.ageend,
+            item.advice,
+            item.value,
+            item.result,
+            item.close,
+            item.checkup,
+            item.condition,
+            item.gender,
+            item.abnormality,
+            item.range,
+            item.res,
+            item.rule,
+          
           
         ]);
         doc.autoTable({
@@ -277,74 +254,17 @@ const VaccineList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("VaccineList.pdf");
+        doc.save("RulegenerationList.pdf");
     };
 
 
     const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-        // sheet.columns = [
-        //     {
-        //         header: "Id",
-        //         key: 'id',
-        //     },
-        //     {
-        //         header: "OhcName",
-        //         key: 'ohcName',
-        //     },
-        //     {
-        //         header: "OhcCode",
-        //         key: 'ohcCode',
-        //     },
-        //     {
-        //         header: "OhcDescription",
-        //         key: 'ohcDescription',
-        //     },
-        //     {
-        //       header : "Address",
-        //       key : "address",
-        //     },
-        //     {
-        //         header: "State",
-        //         key: 'state',
-        //     },
-        //     {
-        //         header: "Fax",
-        //         key: 'fax',
-        //     },
-        //     {
-        //       header: "PrimaryPhone",
-        //       key: 'primaryPhone',
-        //   },
-        //   {
-        //       header: "PrimaryEmail",
-        //       key: 'primaryEmail',
-        //   },
-        //   {
-        //       header : "PinCode",
-        //       key : "pinCode",
-        //   },
-        //   {
-        //       header: "OhcType",
-        //       key: 'ohcType',
-        //   },
-        //   {
-        //       header: "IconColor",
-        //       key: 'iconColor',
-        //   },
-        //   {
-        //     header: "IconText",
-        //     key: 'iconText',
-        // },
-        // {
-        //     header: "OhcCategory",
-        //     key: 'OhcCategory',
-        // }
-        // ];
+       
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
+      
           alignment: { horizontal: 'center' }
           
       };
@@ -353,26 +273,76 @@ const VaccineList = () => {
         
         const columnWidths = {
             Id: 10,
-            vaccineName: 20,
-            vaccineCompany: 20,
-            vaccineDesc: 25,
+            bracket: 20,
+            age: 20,
+            risk: 20,
+            ageend: 20,
+            advice: 20,
+            value: 20,
+            result: 20,
+            close: 20,
+            checkup: 20,
+            condition: 20,
+            gender: 20,
+            abnormality: 20,
+            range: 20,
+            res: 20,
+            rule: 20,
+         
+           
+            
       };
-      
   
         sheet.columns = [
-          { header: "Id", key: 'Id', width: columnWidths.Id, style: headerStyle },
-          { header: "Vaccine Name", key: 'vaccineName', width: columnWidths.vaccineName, style: headerStyle },
-          { header: "Company", key: 'vaccineCompany', width: columnWidths.vaccineCompany, style: headerStyle },
-          { header: "Description", key: 'vaccineDesc', width: columnWidths.vaccineDesc, style: headerStyle },
+          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
+          { header: "bracket", key: 'bracket', width: columnWidths.bracket, style: headerStyle },
+          { header: "age", key: 'age', width: columnWidths.age, style: headerStyle },
+          { header: "risk", key: 'risk', width: columnWidths.risk, style: headerStyle },
+
+          { header: "ageend", key: 'ageend', width: columnWidths.ageend, style: headerStyle },
+          { header: "advice", key: 'advice', width: columnWidths.advice, style: headerStyle },
+          { header: "value", key: 'value', width: columnWidths.value, style: headerStyle },
+          { header: "result", key: 'result', width: columnWidths.result, style: headerStyle },
+
+          { header: "close", key: 'close', width: columnWidths.close, style: headerStyle },
+          { header: "checkup", key: 'checkup', width: columnWidths.checkup, style: headerStyle },
+          { header: "condition", key: 'condition', width: columnWidths.condition, style: headerStyle },
+          { header: "gender", key: 'gender', width: columnWidths.gender, style: headerStyle },
+
+          { header: "abnormality", key: 'abnormality', width: columnWidths.abnormality, style: headerStyle },
+          { header: "range", key: 'range', width: columnWidths.range, style: headerStyle },
+          { header: "res", key: 'res', width: columnWidths.res, style: headerStyle },
+          { header: "rule", key: 'rule', width: columnWidths.rule, style: headerStyle },
           
+
+         
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                id: product.id,
-                vaccineName: product.vaccineName,
-                vaccineCompany: product.vaccineCompany,
-                vaccineDesc: product.vaccineDesc,
+                buId: product.buId,
+                bracket: product.bracket,
+                age: product. age,
+                risk: product. risk,
+                ageend: product.ageend,
+                advice: product. advice,
+                value: product. value,
+                result: product. result,
+                close: product. close,
+                checkup: product. checkup,
+                condition: product.condition,
+                gender: product. gender,
+                abnormality: product. abnormality,
+                range: product.range,
+                res: product. res,
+                rule: product.rule,
+               
+                
+
+              
+
+
+
             })
         });
   
@@ -383,7 +353,7 @@ const VaccineList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'VaccineList.xlsx';
+            anchor.download = 'download.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -416,13 +386,13 @@ const VaccineList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Vaccine Master">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Rule Generation Form">
 
-                <VaccineForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                < RulegenerationForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default VaccineList;
+export default  RulegenerationList;

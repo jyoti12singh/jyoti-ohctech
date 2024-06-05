@@ -2,7 +2,7 @@ import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import {Box,Stack,Button} from '@mui/material';
 import { useRef } from "react";
 import { useState } from 'react';
-import no_img from '../../assets/no_image.png';
+import no_img from '../../assets/images/no_image.png';
 import PropTypes from 'prop-types'; 
 
  const Ohclogo = ({setFieldValue}) => {

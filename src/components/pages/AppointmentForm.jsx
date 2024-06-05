@@ -1,12 +1,8 @@
-import Ohclogo from "./Ohclogo";
-import { FormControl, Grid, TextField } from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
 import SingleSelect from "../common/SingleSelect"
-import MultipleSelect from "../common/MultipleSelect";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useState } from "react";
+
 
 
 const AppointmentForm = ({
@@ -15,7 +11,7 @@ const AppointmentForm = ({
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
     AppointmentForm.propTypes = {
@@ -29,7 +25,7 @@ const AppointmentForm = ({
   };
 
 
-  const Medselect = ["AAA", "BBB","CCC"];
+  const Medselect = ["Periodic Health Checkup", "OPD/ Sickness/ Fitness"];
 //   const isDefault = ["Yes", "No"];
 
 
@@ -44,15 +40,15 @@ const AppointmentForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Slot Start"
-                    name="SlotStart"
+                    name="slot"
                     type="time"
                     size="large"
-                    value={values.SlotStart}
+                    value={values.slot}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.SlotStart && touched.SlotStart? (
-                        <span style={{ color: "red" }}>{errors.SlotStart}</span>
+                      errors.slot && touched.slot? (
+                        <span style={{ color: "red" }}>{errors.slot}</span>
                       ) : null
                     }
                   />
@@ -60,16 +56,16 @@ const AppointmentForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Slot End"
-                    name="SlotEnd"
+                    name="slotEnd"
                     type="time"
                     size="large"
-                    value={values.SlotEnd}
+                    value={values.slotEnd}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.SlotEnd && touched.SlotEnd? (
+                      errors.slotEnd && touched.slotEnd? (
                         <span style={{ color: "red" }}>
-                          {errors.SlotEnd}
+                          {errors.slotEnd}
                         </span>
                       ) : null
                     }
@@ -78,15 +74,15 @@ const AppointmentForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="No Of Appointment"
-                    name="NoOfAppointment"
+                    name="slotCount"
                     type="number"
                     size="large"
-                    value={values.NoOfAppointment}
+                    value={values.slotCount}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.NoOfAppointment && touched.NoOfAppointment ? (
-                        <span style={{ color: "red" }}>{errors.NoOfAppointment}</span>
+                      errors.slotCount && touched.slotCount ? (
+                        <span style={{ color: "red" }}>{errors.slotCount}</span>
                       ) : null
                     }
                   />
@@ -95,12 +91,12 @@ const AppointmentForm = ({
                 <SingleSelect
                     arr={Medselect}
                     label="Appointments Type"
-                    name="AppointmentsType"
-                    value={values.AppointmentsType}
+                    name="appType"
+                    value={values.appType}
                     onChange={(event, newValue) => {
                         const syntheticEvent = {
                         target: {
-                            name: "AppointmentsType",
+                            name: "appType",
                             value: newValue,
                         },
                         };
@@ -109,8 +105,8 @@ const AppointmentForm = ({
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                        errors.AppointmentsType && touched.AppointmentsType ? (
-                        <span style={{ color: "red" }}>{errors.AppointmentsType}</span>
+                        errors.appType && touched.appType ? (
+                        <span style={{ color: "red" }}>{errors.appType}</span>
                         ) : null
                     }
                     />

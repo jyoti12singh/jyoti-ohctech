@@ -7,7 +7,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import PlantForm from './PlantForm.jsx';
-import { PlantValidationForm } from './Validationform';
+// import { PlantValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -40,7 +40,7 @@ const PlantList = () => {
     const initialValues = {
        
 
-        PlantName:""
+      plantName:""
       };
 
 
@@ -55,14 +55,14 @@ const PlantList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: PlantValidationForm,
+        // validationSchema: PlantValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
         //   },
         onSubmit: async (values, {resetForm}) => {
         try {
-            const response = await axiosClientPrivate.post('/business-units', values);
+            const response = await axiosClientPrivate.post('/plants', values);
             toast.success("Saved Successfully!",{
                 position:"top-center"
              }); 
@@ -90,12 +90,10 @@ const PlantList = () => {
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/business-units/${id}`);
+          const response = await axiosClientPrivate.get(`/plants/${id}`);
             console.log(response.data);
-            setFieldValue("buEmail",response.data.buEmail);
-            setFieldValue("buHeadName",response.data.buHeadName);
-            setFieldValue("buId",response.data.buId);
-            setFieldValue("buName",response.data.buName);
+            setFieldValue("id",response.data.id);
+            setFieldValue("plantName",response.data.plantName);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -111,7 +109,7 @@ const PlantList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(`/business-units/${id}`,update);
+             await axiosClientPrivate.put(`/plants/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -133,7 +131,7 @@ const PlantList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(`/business-units/${id}`);
+           await axiosClientPrivate.delete(`/plants/${id}`);
         //    setRowData(prevData => prevData.filter(row => row.buId !== id));
         setFetchTrigger(prev => prev+1);
 
@@ -161,8 +159,8 @@ const PlantList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
-                const items = response.data;
+                const response = await axiosClientPrivate.get('http://localhost:8080/plants?page=0&size=5', { signal: controller.signal });
+                const items = response.data.content;
                     // console.log(items);
                 setRowData(items);
                 if (items.length > 0) {
@@ -176,7 +174,7 @@ const PlantList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.id;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -198,7 +196,7 @@ const PlantList = () => {
             controller.abort();
         };
 
-    }, [fetchTriggerf]);
+    }, [fetchTrigger]);
 
 
      
@@ -253,8 +251,6 @@ const PlantList = () => {
         const tableData = rowData.map(item => [
           item.buId,
           item.buName,
-          item.buHeadName,
-          item.buEmail,
           
         ]);
         doc.autoTable({
@@ -266,7 +262,7 @@ const PlantList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("BussinessList.pdf");
+        doc.save("PlantList.pdf");
     };
 
 
@@ -371,7 +367,7 @@ const PlantList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'PlantList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })

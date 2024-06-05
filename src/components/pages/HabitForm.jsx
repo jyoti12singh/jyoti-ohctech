@@ -4,7 +4,7 @@ import Input from "../common/Input";
 
 
 
-const SaltForm = ({
+const HabitForm = ({
   values,
   touched,
   handleBlur,
@@ -13,7 +13,7 @@ const SaltForm = ({
   // setFieldValue,
   handleSubmit,
 }) => {
-    SaltForm.propTypes = {
+  HabitForm.propTypes = {
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -38,16 +38,16 @@ const SaltForm = ({
               <Grid container spacing={2} justifyContent="center" alignItems="center">
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
-                    label="Salt Name"
-                    name="saltName"
+                    label="Habit Name"
+                    name="habit"
                     type="text"
                     size="large"
-                    value={values.saltName}
+                    value={values.habit}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.saltName && touched.saltName? (
-                        <span style={{ color: "red" }}>{errors.saltName}</span>
+                      errors.habit && touched.habit? (
+                        <span style={{ color: "red" }}>{errors.habit}</span>
                       ) : null
                     }
                   />
@@ -62,4 +62,4 @@ const SaltForm = ({
 };
 
 
-export default SaltForm;
+export default HabitForm;

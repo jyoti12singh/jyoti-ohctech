@@ -1,19 +1,22 @@
+import Ohclogo from "./Ohclogo";
 import { FormControl, Grid} from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
+import TextArea from "../pages/TextArea";
+import { InputLabel, MenuItem, Select } from "@mui/material";
 
 
 
-const VaccineForm = ({
+const InterpretationForm = ({
   values,
   touched,
   handleBlur,
   errors,
   handleChange,
-  // setFieldValue,
+  setFieldValue,
   handleSubmit,
 }) => {
-    VaccineForm.propTypes = {
+    InterpretationForm.propTypes = {
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -23,64 +26,57 @@ const VaccineForm = ({
     handleSubmit: PropTypes.func.isRequired,
   };
 
-
-//   const Medselect = ["Active", "Not Active"];
-//   const isDefault = ["Yes", "No"];
-
-
-
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit}>
-        <Grid container spacing={2} justifyContent="center" alignItems="center" sx={{width:400}} >
+        <Grid container spacing={2} justifyContent="center" alignItems="center" sx={{width:300}} >
           <Grid item xs={12}  justifyContent="center" alignItems="center">
             <FormControl fullWidth>
               <Grid container spacing={2} justifyContent="center" alignItems="center">
-              <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
-                <Input
-                    label="Vaccine Name"
-                    name="vaccineName"
+                <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
+                  <Input
+                    label="Interpretation Header"
+                    name="InterpretationHeader"
                     type="text"
                     size="large"
-                    value={values.vaccineName}
+                    value={values.unitId}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.vaccineName && touched.vaccineName? (
-                        <span style={{ color: "red" }}>{errors.vaccineName}</span>
+                      errors.InterpretationHeader && touched.InterpretationHeader? (
+                        <span style={{ color: "red" }}>{errors.InterpretationHeader}</span>
                       ) : null
                     }
                   />
                 </Grid>
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
-                <Input
-                    label="Company Name"
-                    name="vaccineCompany"
+                  <TextArea
+                    label="Key"
+                    name="Key"
                     type="text"
                     size="large"
-                    value={values.vaccineCompany}
+                    value={values.Key}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.vaccineCompany && touched.vaccineCompany? (
-                        <span style={{ color: "red" }}>{errors.vaccineCompany}</span>
+                      errors.Key && touched.Key? (
+                        <span style={{ color: "red" }}>{errors.Key}</span>
                       ) : null
                     }
                   />
                 </Grid>
-
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
-                <Input
-                    label="Vaccine Description"
-                    name="vaccineDesc"
+                  <TextArea
+                    label="Value(Enter $ as a separator)"
+                    name="Value"
                     type="text"
                     size="large"
-                    value={values.vaccineDesc}
+                    value={values.Value}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.vaccineDesc && touched.vaccineDesc? (
-                        <span style={{ color: "red" }}>{errors.vaccineDesc}</span>
+                      errors.Value && touched.Value? (
+                        <span style={{ color: "red" }}>{errors.Value}</span>
                       ) : null
                     }
                   />
@@ -95,4 +91,4 @@ const VaccineForm = ({
 };
 
 
-export default VaccineForm;
+export default InterpretationForm;

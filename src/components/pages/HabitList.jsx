@@ -7,8 +7,8 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import VaccineForm from './VaccineForm';
-// import { VaccineValidationForm } from './Validationform';
+import HabitForm from './HabitForm';
+// import { HabitValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,7 +20,7 @@ import 'jspdf-autotable';
 import PropTypes from "prop-types";
 
 
-const VaccineList = () => {
+const HabitList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -34,13 +34,13 @@ const VaccineList = () => {
     const [id,setId] = useState(1);
 
     const [showupdate,setShowupdate] = useState(false);
-
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
+
     const initialValues = {
-        vaccineName:"",
-        vaccineCompany:"",
-        vaccineDesc:""
+       
+
+        habit:""
       };
 
 
@@ -55,14 +55,14 @@ const VaccineList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: VaccineValidationForm,
+        // validationSchema: HabitValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
         //   },
         onSubmit: async (values, {resetForm}) => {
         try {
-            const response = await axiosClientPrivate.post('/vaccines', values);
+            const response = await axiosClientPrivate.post('/habits', values);
             toast.success("Saved Successfully!",{
                 position:"top-center"
              }); 
@@ -75,7 +75,6 @@ const VaccineList = () => {
             //  console.log(obj);
             //  setRowData(rowData => [...rowData, obj]);
             setFetchTrigger(prev => prev+1);
-
             console.log('Response:', response.data);
             resetForm();
           } catch (error) {
@@ -85,17 +84,15 @@ const VaccineList = () => {
         },
       });
 
-      
+
 
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/vaccines/${id}`);
+          const response = await axiosClientPrivate.get(`/habits/${id}`);
             console.log(response.data);
             setFieldValue("id",response.data.id);
-            setFieldValue("vaccineName",response.data.vaccineName);
-            setFieldValue("vaccineCompany",response.data.vaccineCompany);
-            setFieldValue("vaccineDesc",response.data.vaccineDesc);
+            setFieldValue("habit",response.data.habit);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -111,15 +108,14 @@ const VaccineList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(`/vaccines/${id}`,update);
+             await axiosClientPrivate.put(`/habits/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
              });
              resetForm();
-            // setRowData(rowData => [...rowData,values]);
+            //  setRowData(rowData => [...rowData,values]);
             setFetchTrigger(prev => prev+1);
-
         }
         catch(err){
             console.log(values);
@@ -133,11 +129,10 @@ const VaccineList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(`/vaccines/${id}`);
+           await axiosClientPrivate.delete(`/habits/${id}`);
         //    setRowData(prevData => prevData.filter(row => row.buId !== id));
         setFetchTrigger(prev => prev+1);
-
-       } catch (error) {
+    } catch (error) {
            console.error('Error deleting row:', error);
        }
    }
@@ -151,35 +146,26 @@ const VaccineList = () => {
        <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
 
 };
-
     const pagination = true;
     const paginationPageSize = 50;
     const paginationPageSizeSelector = [50, 100, 200, 500];
-
-    const headerMappings = {
-        vaccineName: "Vaccine Name",
-        vaccineCompany : "Company",
-        vaccineDesc : "Description",
-    };
 
     useEffect(() => {
         const controller = new AbortController();
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('http://localhost:8080/vaccines?page=0&size=5', { signal: controller.signal });
+                const response = await axiosClientPrivate.get('http://localhost:8080/habits?page=0&size=50', { signal: controller.signal });
                 const items = response.data.content;
-                    console.log("new",items);
+                    console.log(items);
                 setRowData(items);
-
                 if (items.length > 0) {
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
+                        headerName: key.charAt(0).toUpperCase() + key.slice(1),
                         filter: true,
                         floatingFilter: true,
-                        sortable: true,
-                        width: key === 'id' ? 100 : undefined,
+                        sortable: true
                     }));
 
                     columns.unshift({
@@ -212,60 +198,13 @@ const VaccineList = () => {
      
 
     const exportpdf = async () => {
-        // const headers = createHeaders([
-        //     "id",
-        //     "ohcName",
-        //     // "ohcCode",
-        //     // "OhcDescription",
-        //     // "Address",
-        //     // "State",
-        //     // "Fax",
-        //     // "PrimaryPhone",
-        //     // "PrimaryEmail",
-        //     // "PinCode",
-        //     // "OhcType",
-        //     // "IconColor",
-        //     // "IconText",
-        //     // "OhcCategory",
-        // ]);
-        // const doc = new jsPDF({orientation: "landscape"});
-        // console.log(rowData[0].id);
-        // const tableData = rowData.map((row)=>(
-        //     console.log(row.id),
-        //   {
-             
-          // console.log(row.id),
-            // ...row,
-            // id: row.id,
-            // ohcName: row.ohcName,
-            // ohcCode: row.ohcCode.toString(),
-            // ohcDescription: row.ohcDescription.toString(),
-            // address: row.address.toString(),
-            // state: row.state.toString(),
-            // fax: row.fax.toString(),
-            // primaryPhone: row.primaryPhone.toString(),
-            // primaryEmail: row.primaryEmail.toString(),
-            // pinCode: row.pinCode.toString(),
-            // ohcType: row.ohcType.toString(),
-            // iconColor: row.iconColor.toString(),
-            // iconText: row.iconText.toString(),
-            // OhcCategory: row.ohcCategory.toString(),
-        // }))
-        // const tableData = {
-        //     id : rowData[0].id,
-        //     ohcName : rowData[0].ohcName,
-        // }
-        // doc.table(1,1,tableData,headers, {autoSize:true});
-        // vaccineName:"",
-        // vaccineCompany:"",
-        // vaccineDesc:""
+       
         const doc = new jsPDF();
-        const header = [['Id', 'Vaccine Name',"Company","Description"]];
+        const header = [['Id', 'habit',]];
         const tableData = rowData.map(item => [
           item.id,
-          item.vaccineName,
-          item.vaccineCompany,
-          item.vaccineDesc,
+          item.habit,
+          
           
         ]);
         doc.autoTable({
@@ -277,71 +216,14 @@ const VaccineList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("VaccineList.pdf");
+        doc.save("HabitList.pdf");
     };
 
 
     const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-        // sheet.columns = [
-        //     {
-        //         header: "Id",
-        //         key: 'id',
-        //     },
-        //     {
-        //         header: "OhcName",
-        //         key: 'ohcName',
-        //     },
-        //     {
-        //         header: "OhcCode",
-        //         key: 'ohcCode',
-        //     },
-        //     {
-        //         header: "OhcDescription",
-        //         key: 'ohcDescription',
-        //     },
-        //     {
-        //       header : "Address",
-        //       key : "address",
-        //     },
-        //     {
-        //         header: "State",
-        //         key: 'state',
-        //     },
-        //     {
-        //         header: "Fax",
-        //         key: 'fax',
-        //     },
-        //     {
-        //       header: "PrimaryPhone",
-        //       key: 'primaryPhone',
-        //   },
-        //   {
-        //       header: "PrimaryEmail",
-        //       key: 'primaryEmail',
-        //   },
-        //   {
-        //       header : "PinCode",
-        //       key : "pinCode",
-        //   },
-        //   {
-        //       header: "OhcType",
-        //       key: 'ohcType',
-        //   },
-        //   {
-        //       header: "IconColor",
-        //       key: 'iconColor',
-        //   },
-        //   {
-        //     header: "IconText",
-        //     key: 'iconText',
-        // },
-        // {
-        //     header: "OhcCategory",
-        //     key: 'OhcCategory',
-        // }
-        // ];
+        
   
         const headerStyle = {
           // font: { bold: true, size: 12 },
@@ -353,26 +235,20 @@ const VaccineList = () => {
         
         const columnWidths = {
             Id: 10,
-            vaccineName: 20,
-            vaccineCompany: 20,
-            vaccineDesc: 25,
+            habit: 20,
       };
-      
   
         sheet.columns = [
-          { header: "Id", key: 'Id', width: columnWidths.Id, style: headerStyle },
-          { header: "Vaccine Name", key: 'vaccineName', width: columnWidths.vaccineName, style: headerStyle },
-          { header: "Company", key: 'vaccineCompany', width: columnWidths.vaccineCompany, style: headerStyle },
-          { header: "Description", key: 'vaccineDesc', width: columnWidths.vaccineDesc, style: headerStyle },
+          { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
+          { header: "Habit", key: 'habit', width: columnWidths.habit, style: headerStyle },
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
                 id: product.id,
-                vaccineName: product.vaccineName,
-                vaccineCompany: product.vaccineCompany,
-                vaccineDesc: product.vaccineDesc,
+                habit: product.habit,
+                
             })
         });
   
@@ -383,7 +259,7 @@ const VaccineList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'VaccineList.xlsx';
+            anchor.download = 'HabitList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -416,13 +292,13 @@ const VaccineList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Vaccine Master">
+            <Popup  showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Add Habit">
 
-                <VaccineForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <HabitForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default VaccineList;
+export default HabitList;

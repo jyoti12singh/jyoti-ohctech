@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import SaltForm from "./SaltForm";
-import { SaltValidationForm } from './Validationform';
+// import { SaltValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -39,8 +39,7 @@ const SaltList = () => {
 
     const initialValues = {
        
-
-        SaltName:""
+        saltName:""
       };
 
 
@@ -52,17 +51,17 @@ const SaltList = () => {
         handleChange,
         setFieldValue,
         handleSubmit,
-        resetForm
+        resetForm,
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: SaltValidationForm,
+        // validationSchema: SaltValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
         //   },
         onSubmit: async (values, {resetForm}) => {
         try {
-            const response = await axiosClientPrivate.post('/business-units', values);
+            const response = await axiosClientPrivate.post('/salt-masters', values);
             toast.success("Saved Successfully!",{
                 position:"top-center"
              }); 
@@ -90,17 +89,15 @@ const SaltList = () => {
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/business-units/${id}`);
+          const response = await axiosClientPrivate.get(`/salt-masters/${id}`);
             console.log(response.data);
-            setFieldValue("buEmail",response.data.buEmail);
-            setFieldValue("buHeadName",response.data.buHeadName);
-            setFieldValue("buId",response.data.buId);
-            setFieldValue("buName",response.data.buName);
+            setFieldValue("id",response.data.id);
+            setFieldValue("saltName",response.data.saltName);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
-          setId(id);
-          setShowupdate(true);
-          setOpenPopup(true);
+            setId(id);
+            setShowupdate(true);
+            setOpenPopup(true);
         } catch (error) {
           console.error('Error fetching item for edit:', error);
         }
@@ -111,7 +108,7 @@ const SaltList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(`/business-units/${id}`,update);
+             await axiosClientPrivate.put(`/salt-masters/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -133,7 +130,7 @@ const SaltList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(`/business-units/${id}`);
+           await axiosClientPrivate.delete(`/salt-masters/${id}`);
         //    setRowData(prevData => prevData.filter(row => row.buId !== id));
         setFetchTrigger(prev => prev+1);
 
@@ -161,8 +158,8 @@ const SaltList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
-                const items = response.data;
+                const response = await axiosClientPrivate.get('http://localhost:8080/salt-masters?page=0&size=50', { signal: controller.signal });
+                const items = response.data.content;
                     // console.log(items);
                 setRowData(items);
                 if (items.length > 0) {
@@ -176,7 +173,7 @@ const SaltList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.id;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -249,12 +246,10 @@ const SaltList = () => {
         // }
         // doc.table(1,1,tableData,headers, {autoSize:true});
         const doc = new jsPDF();
-        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const header = [['Id', "salt"]];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.buName,
-          item.buHeadName,
-          item.buEmail,
+          item.id,
+          item.saltName,
           
         ]);
         doc.autoTable({
@@ -342,25 +337,20 @@ const SaltList = () => {
         
         const columnWidths = {
             Id: 10,
-            buName: 20,
-            buHeadName: 15,
-            buEmail: 25,
+            saltName: 20,
+            
       };
   
         sheet.columns = [
-          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
-          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
-          
+          { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
+          { header: "Salt", key: 'saltName', width: columnWidths.saltName, style: headerStyle },          
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
-                buName: product.buName,
-                buHeadName: product.buHeadName,
-                buEmail: product.buEmail,
+                id: product.id,
+                saltName: product.saltName,
+                
             })
         });
   

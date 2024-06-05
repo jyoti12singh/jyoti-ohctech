@@ -55,7 +55,7 @@ const AbnormalityList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: RefferedByValidationForm,
+        // validationSchema: AbnormValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();

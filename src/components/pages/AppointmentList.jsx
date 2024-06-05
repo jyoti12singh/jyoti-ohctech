@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import AppointmentForm from './AppointmentForm';
-import { AppointValidationForm } from './Validationform';
+// import { AppointValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -40,10 +40,10 @@ const AppointmentList = () => {
     const initialValues = {
        
 
-        SlotStart:"",
-        SlotEnd: "",
-        NoOfAppointment:"",
-        AppointmentsType:""
+        slot:"",
+        slotEnd: "",
+        slotCount:"",
+        appType:""
       };
 
 
@@ -55,17 +55,17 @@ const AppointmentList = () => {
         handleChange,
         setFieldValue,
         handleSubmit,
-        resetForm
+        resetForm,
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: AppointValidationForm,
+        // validationSchema: AppointValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
         //   },
         onSubmit: async (values, {resetForm}) => {
         try {
-            const response = await axiosClientPrivate.post('/business-units', values);
+            const response = await axiosClientPrivate.post('/appointment-slots', values);
             toast.success("Saved Successfully!",{
                 position:"top-center"
              }); 
@@ -92,12 +92,13 @@ const AppointmentList = () => {
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/business-units/${id}`);
+          const response = await axiosClientPrivate.get(`/appointment-slots/${id}`);
             console.log(response.data);
-            setFieldValue("buEmail",response.data.buEmail);
-            setFieldValue("buHeadName",response.data.buHeadName);
-            setFieldValue("buId",response.data.buId);
-            setFieldValue("buName",response.data.buName);
+            setFieldValue("id",response.data.id);
+            setFieldValue("slot",response.data.slot);
+            setFieldValue("slotEnd",response.data.slotEnd);
+            setFieldValue("slotCount",response.data.slotCount);
+            setFieldValue("appType",response.data.appType);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -113,7 +114,7 @@ const AppointmentList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(`/business-units/${id}`,update);
+             await axiosClientPrivate.put(`/appointment-slots/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -134,7 +135,7 @@ const AppointmentList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(`/business-units/${id}`);
+           await axiosClientPrivate.delete(`/appointment-slots/${id}`);
         //    setRowData(prevData => prevData.filter(row => row.buId !== id));
         setFetchTrigger(prev => prev+1);
     } catch (error) {
@@ -161,8 +162,8 @@ const AppointmentList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
-                const items = response.data;
+                const response = await axiosClientPrivate.get('http://localhost:8080/appointment-slots?page=0&size=5', { signal: controller.signal });
+                const items = response.data.content;
                     // console.log(items);
                 setRowData(items);
                 if (items.length > 0) {
@@ -176,7 +177,7 @@ const AppointmentList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.id;
                             return <CustomActionComponent id={id} />
                         }
                     });
