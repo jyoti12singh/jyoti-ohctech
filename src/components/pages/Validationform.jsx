@@ -412,3 +412,136 @@ export const AddFilterMasterform = Yup.object({
   filterCode: Yup.string().required("Please enter filter code"),
   
 });
+
+
+export const taskFrequencyForm = Yup.object({
+ 
+  frequencyName:Yup.string().required("Please enter Frequency Name"),
+  frequencyCode:Yup.number().min(6).required("Please enter Frequency Name"),
+    
+});
+export const checkListManageForm = Yup.object({
+  delete: Yup.string().min(2).max(25).required("Please enter Deleting obj"),
+  unit: Yup.string().min(2).max(25).required("Please enter Unit"),
+  qty: Yup.number().min(6).required("Please enter QTY"),
+  issueto: Yup.string().required("Please enter Issue to"),
+  itemtype:Yup.string().required("Please enter Issue Type"),
+  ohclocation: Yup.string().required("Please enter OHC Location"),
+  item: Yup.string().required("Please enter items"),
+    
+});
+export const AmbulanceitemForm = Yup.object({
+  issueto: Yup.string().required("Please enter Check Type Name"),
+  itemcatagories: Yup.string().required("Please enter Check Type Code  "),
+  ohclocation: Yup.string().required("Please enter  Cost"),
+
+
+});
+export const routeadminForm = Yup.object({
+ 
+  routeAdmin:Yup.string().required("Please enter RouteAdmin"),
+  remarks:Yup.string().required("Please enter remarks"),
+    
+});
+export const ambulanceForm = Yup.object({
+  ambulancenumber: Yup.string().required("Please enter ambulance Number"),
+  ambulanceform: Yup.string().required("Please enter ambulance Form "),
+  ambulances:Yup.string().required("Please enter ambulances "),
+  cardiacs: Yup.string().required("Please enter cardiacs "),  
+});
+export const calibrationform = Yup.object({
+  modelbrand: Yup.string().required("Please enter modelbrand"),
+  idnumber: Yup.string().required("Please enter idnumber"),
+  location: Yup.string().required("Please enter location"),
+  date: Yup.string().required("Please enter date"),
+
+   duedate: Yup.string().required("Please enter duedate "),
+   docupdate: Yup.string().required("Update file"),
+
+    calibration: Yup.string().required("Please enter calibration Equipment"),
+  
+});
+export const businessReportform = Yup.object({
+
+  filtername: Yup.string().required("Please enter ohc type"),
+ reportname: Yup.string().required("Please enter ohc category"),
+  specific: Yup.string().required("Please enter fax"),
+});
+export const AddFilterform = Yup.object({
+ 
+  filterName:Yup.string().required("Please enter filter Name"),
+  filterCode:Yup.string().required("Please enter filter Code"),
+    
+});
+export const MedicineCategoryform = Yup.object({
+  categoryDescription:Yup.string().required("Please enter description Category"),
+  medicineCategory:Yup.string().required("Please enter Medicine Category"),
+  code : Yup.number().required("Please enter Code"),  
+});
+export const medicalform = Yup.object({
+  medicalname: Yup.string().required("Please enter Medical Name"),
+  medicalcode: Yup.number().min(6).required("Please enter Medical Code"),
+  QTY: Yup.string().required("Please enter Qty"),
+    
+
+});
+
+export const canteenLocationform = Yup.object({
+  location: Yup.string().required("Please enter Canteen Location "),
+  code: Yup.number().min(4).required("Please enter Canteen Code"),
+  type: Yup.string().required("Please Select Type"),
+ 
+});
+export const jobProfileform = Yup.object({
+  Name: Yup.string().required("Please enter Profile Name"),
+  code: Yup.number().min(4).required("Please enter Profile Code"),
+
+});
+export const questionaireMasterform = Yup.object({
+  secname: Yup.string().required("Please enter Section Name"),
+  seq: Yup.string().required("Please enter Sequence"),
+  locallanguage: Yup.string().required("Please enter Local Language "),
+  question: Yup.string().required("Please enter  Question"),
+  order: Yup.string().required("Please enter order"),
+  type: Yup.string().required("Please enter  type"),
+  secavailable: Yup.string().required("Please enter Section Available"),
+  
+});
+export const covidWahMasterform = Yup.object({
+
+  hindi: Yup.string().required("Please enter in Hindi"),
+  english: Yup.string().required("Please enter in English"),
+  seq: Yup.string().required("Please enter Sequence"),
+  type: Yup.string().required("Please enter  type"),
+});
+export const RulegenerationValidationForm = Yup.object({
+  bracket: Yup.string().required("Please enter Bracket"),
+  age: Yup.string().required("Please enter Age"),
+  risk: Yup.string().required("Please enter Risk  "),
+  ageend: Yup.string().required("Please enter Age End"),
+  advice: Yup.string().required("Please enter  Advice"),
+  condition: Yup.string().required("Please enter Condition"),
+  value: Yup.string().required("Please enter  Value"),
+  gender: Yup.string().required("Please enter  Gender"),
+  abnormality: Yup.string().required("Please enter  Abnormality"),
+  result: Yup.string().required("Please enter Result"),
+  close: Yup.string().required("Please enter Close Bracket"),
+  range:Yup.string().required("Please enter Range Type "),
+  checkup:Yup.string().required("Please enter Checkup Parameter  "),
+  rule:Yup.string().required("Please enter Text Comparsion Rule"),
+  res:Yup.string().required("Please enter Result Field "),
+
+});
+export const CheckupParameterGroupValidationForm = Yup.object({
+  group: Yup.string().required("Please enter Group"),
+  groupnumber: Yup.string().required("Please enter Group Number"),
+    groupsec: Yup.string().required("Please enter Group Section "),
+   
+});
+export const MergeStationValidationForm = Yup.object({
+ 
+  record: Yup.string().required("Please enter Steation Record To Be Used "),
+ 
+  records: Yup.string().required("Please enter Steation Record To Be Merged "),
+
+});
