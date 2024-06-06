@@ -4,10 +4,11 @@ import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import PlantForm from './PlantForm.jsx';
-// import { PlantValidationForm } from './Validationform';
+import AddFilterMasterForm from './AddFilterMasterForm';
+import { AddFilterMasterform } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,8 +19,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
 
-
-const PlantList = () => {
+const AddFilterMasterList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -39,8 +39,8 @@ const PlantList = () => {
 
     const initialValues = {
        
-
-      plantName:""
+        filterName:"",
+        filterCode:"",
       };
 
 
@@ -55,14 +55,14 @@ const PlantList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: PlantValidationForm,
+        validationSchema: AddFilterMasterform,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
         //   },
         onSubmit: async (values, {resetForm}) => {
         try {
-            const response = await axiosClientPrivate.post('/plants', values);
+            const response = await axiosClientPrivate.post('/business-units', values);
             toast.success("Saved Successfully!",{
                 position:"top-center"
              }); 
@@ -90,10 +90,12 @@ const PlantList = () => {
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/plants/${id}`);
+          const response = await axiosClientPrivate.get(`/business-units/${id}`);
             console.log(response.data);
-            setFieldValue("id",response.data.id);
-            setFieldValue("plantName",response.data.plantName);
+            setFieldValue("buEmail",response.data.buEmail);
+            setFieldValue("buHeadName",response.data.buHeadName);
+            setFieldValue("buId",response.data.buId);
+            setFieldValue("buName",response.data.buName);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -109,7 +111,7 @@ const PlantList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(`/plants/${id}`,update);
+             await axiosClientPrivate.put(`/business-units/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -131,7 +133,7 @@ const PlantList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(`/plants/${id}`);
+           await axiosClientPrivate.delete(`/business-units/${id}`);
         //    setRowData(prevData => prevData.filter(row => row.buId !== id));
         setFetchTrigger(prev => prev+1);
 
@@ -159,8 +161,8 @@ const PlantList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('http://localhost:8080/plants?page=0&size=5', { signal: controller.signal });
-                const items = response.data.content;
+                const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
+                const items = response.data;
                     // console.log(items);
                 setRowData(items);
                 if (items.length > 0) {
@@ -174,7 +176,7 @@ const PlantList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.id;
+                            const id = params.data.buId;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -201,56 +203,13 @@ const PlantList = () => {
 
      
 
-    const exportpdf = async () => {
-        // const headers = createHeaders([
-        //     "id",
-        //     "ohcName",
-        //     // "ohcCode",
-        //     // "OhcDescription",
-        //     // "Address",
-        //     // "State",
-        //     // "Fax",
-        //     // "PrimaryPhone",
-        //     // "PrimaryEmail",
-        //     // "PinCode",
-        //     // "OhcType",
-        //     // "IconColor",
-        //     // "IconText",
-        //     // "OhcCategory",
-        // ]);
-        // const doc = new jsPDF({orientation: "landscape"});
-        // console.log(rowData[0].id);
-        // const tableData = rowData.map((row)=>(
-        //     console.log(row.id),
-        //   {
-             
-          // console.log(row.id),
-            // ...row,
-            // id: row.id,
-            // ohcName: row.ohcName,
-            // ohcCode: row.ohcCode.toString(),
-            // ohcDescription: row.ohcDescription.toString(),
-            // address: row.address.toString(),
-            // state: row.state.toString(),
-            // fax: row.fax.toString(),
-            // primaryPhone: row.primaryPhone.toString(),
-            // primaryEmail: row.primaryEmail.toString(),
-            // pinCode: row.pinCode.toString(),
-            // ohcType: row.ohcType.toString(),
-            // iconColor: row.iconColor.toString(),
-            // iconText: row.iconText.toString(),
-            // OhcCategory: row.ohcCategory.toString(),
-        // }))
-        // const tableData = {
-        //     id : rowData[0].id,
-        //     ohcName : rowData[0].ohcName,
-        // }
-        // doc.table(1,1,tableData,headers, {autoSize:true});
+    const exportpdf = async () => {     
         const doc = new jsPDF();
-        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const header = [['Id', 'filterName',"filterCode",]];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.buName,
+          item.Id,
+          item.filterName,
+          item.filterCode,
           
         ]);
         doc.autoTable({
@@ -262,71 +221,13 @@ const PlantList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("PlantList.pdf");
+        doc.save("AddFilterMasterList.pdf");
     };
 
 
     const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-        // sheet.columns = [
-        //     {
-        //         header: "Id",
-        //         key: 'id',
-        //     },
-        //     {
-        //         header: "OhcName",
-        //         key: 'ohcName',
-        //     },
-        //     {
-        //         header: "OhcCode",
-        //         key: 'ohcCode',
-        //     },
-        //     {
-        //         header: "OhcDescription",
-        //         key: 'ohcDescription',
-        //     },
-        //     {
-        //       header : "Address",
-        //       key : "address",
-        //     },
-        //     {
-        //         header: "State",
-        //         key: 'state',
-        //     },
-        //     {
-        //         header: "Fax",
-        //         key: 'fax',
-        //     },
-        //     {
-        //       header: "PrimaryPhone",
-        //       key: 'primaryPhone',
-        //   },
-        //   {
-        //       header: "PrimaryEmail",
-        //       key: 'primaryEmail',
-        //   },
-        //   {
-        //       header : "PinCode",
-        //       key : "pinCode",
-        //   },
-        //   {
-        //       header: "OhcType",
-        //       key: 'ohcType',
-        //   },
-        //   {
-        //       header: "IconColor",
-        //       key: 'iconColor',
-        //   },
-        //   {
-        //     header: "IconText",
-        //     key: 'iconText',
-        // },
-        // {
-        //     header: "OhcCategory",
-        //     key: 'OhcCategory',
-        // }
-        // ];
   
         const headerStyle = {
           // font: { bold: true, size: 12 },
@@ -338,25 +239,22 @@ const PlantList = () => {
         
         const columnWidths = {
             Id: 10,
-            buName: 20,
-            buHeadName: 15,
-            buEmail: 25,
+            filterName: 20,
+            filterCode: 15,
       };
   
         sheet.columns = [
           { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
-          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "filterName", key: 'filterName', width: columnWidths.buName, style: headerStyle },
+          { header: "filterCode", key: 'filterCode', width: columnWidths.buHeadName, style: headerStyle },
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
-                buName: product.buName,
-                buHeadName: product.buHeadName,
-                buEmail: product.buEmail,
+                Id: product.Id,
+                filterName: product.filterName,
+                filterCode: product.filterCode,
             })
         });
   
@@ -367,7 +265,7 @@ const PlantList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'PlantList.xlsx';
+            anchor.download = 'AddFilterMasterList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -400,13 +298,13 @@ const PlantList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Plant Form">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Add Filter Master Form">
 
-                <PlantForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <AddFilterMasterForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default PlantList;
+export default AddFilterMasterList;

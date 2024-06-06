@@ -40,8 +40,8 @@ import AppointmentList from "./components/pages/AppointmentList";
 import SaltList from "./components/pages/SaltList";
 import HabitList from "./components/pages/HabitList";
 import DeviceList from "./components/pages/DeviceList";
-
-
+import PlantList from "./components/pages/PlantList";
+import VaccineList from "./components/pages/VaccineList";
 
 const router = createBrowserRouter([
   {
@@ -199,6 +199,14 @@ const router = createBrowserRouter([
               {
                 path : "/DeviceList",
                 element : <DeviceList />
+              },
+              {
+                path : "/PlantList",
+                element : <PlantList />
+              },
+              {
+                path : "/VaccineList",
+                element : <VaccineList />
               }
               
             ],

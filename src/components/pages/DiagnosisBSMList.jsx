@@ -350,11 +350,12 @@ useEffect(() => {
             // console.log("checkkkkk",updateDiagnosis,updateailmentSystem);
             values.diagnosis = String(updateDiagnosis);
             values.system = String(updateailmentSystem);
+            
             setFieldValue("diagnosis",String(updateDiagnosis));
             setFieldValue("system",String(updateailmentSystem));
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
-            console.log(values);
+            console.log("after",values);
             setId(id);
             setShowupdate(true);
             setOpenPopup(true);

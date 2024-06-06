@@ -110,7 +110,7 @@ const DiagnosisCIMList = () => {
                 //     delete values.system;
     
                 //     values.ailmentId = ailmentid;
-                //     values.ailmentSystemId = chronicId;
+                //     values.chronicId = chronicId;
 
                 
                 console.log("ppp",diagnosis,abnormility);
@@ -373,13 +373,13 @@ useEffect(() => {
             const updateAbnormality = abnormility.find(item => item.value == parseInt(response.data.chronicId)).label;
             // console.log("checkkkkk",updateDiagnosis,updateailmentSystem);
             values.diagnosis = String(updateDiagnosis);
-            values.system = String(updateAbnormality);
+            values.abnormality = String(updateAbnormality);
 
             setFieldValue("diagnosis",String(updateDiagnosis));
             setFieldValue("abnormality",String(updateAbnormality));
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
-            console.log(values);
+            // console.log("final check",values);
             setId(id);
             setShowupdate(true);
             setOpenPopup(true);
@@ -391,11 +391,11 @@ useEffect(() => {
 
       const handleUpdate = async (id)=> {
         alert(id);
-        console.log("final check",values);
+        // console.log("final check",values);
         values.ailmentId = diagnosis.find(item => item.label == String(values.diagnosis)).value;
-        values.ailmentSystemId = abnormility.find(item => item.label == String(values.system)).value;
+        values.chronicId = abnormility.find(item => item.label == String(values.abnormality)).value;
         delete values.diagnosis;
-        delete values.system;
+        delete values.abnormality;
         console.log("final check",values);
         const update = values;
         try{
@@ -422,7 +422,7 @@ useEffect(() => {
         const tableData = rowData.map(item => [
           item.id,
           item.ailmentId,
-          item.abnormality,
+          item.chronicId,
           
         ]);
         doc.autoTable({
@@ -454,13 +454,13 @@ useEffect(() => {
         const columnWidths = {
             id: 10,
             ailmentId: 20,
-            abnormality: 25,
+            chronicId: 25,
         };
   
         sheet.columns = [
           { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
           { header: "Diagnosis Name", key: 'ailmentId', width: columnWidths.ailmentId, style: headerStyle },
-          { header: "Chronic Illness", key: 'abnormality', width: columnWidths.abnormality, style: headerStyle },
+          { header: "Chronic Illness", key: 'chronicId', width: columnWidths.chronicId, style: headerStyle },
           
       ];
   
@@ -468,7 +468,7 @@ useEffect(() => {
             sheet.addRow({
                 id: product.id,
                 ailmentId: product.ailmentId,
-                ailmentSystemId: product.ailmentSystemId,
+                chronicId: product.chronicId,
             })
         });
   

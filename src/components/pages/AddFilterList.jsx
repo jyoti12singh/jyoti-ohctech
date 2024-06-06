@@ -191,7 +191,7 @@ const handleUpdate = async (id)=> {
 
   return (
     <>
-    < ToastContainer />
+    <ToastContainer />
       <Box
         className="ag-theme-quartz" // applying the grid theme
         style={{ height: 500 }} // adjust width as necessary

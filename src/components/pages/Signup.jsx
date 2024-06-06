@@ -283,10 +283,12 @@ import { useNavigate } from "react-router-dom";
                 <div
                  
                     style={{
-                    //   display: "flex",
-                    //   // flexDirection:'row',
-                    //   justifyContent: "center",
-                    //   alignContent: "center",
+
+                      display: "flex",
+                      // flexDirection:'row',
+                      justifyContent: "center",
+                      alignContent: "center",
+
                       textAlign: "center",
                     //   width: "8%",
                     //   height: "8%",
@@ -296,13 +298,17 @@ import { useNavigate } from "react-router-dom";
                 
                   }}
                 >
-                  {/* <Link display={'flex'} flexDirection={'row'}> */}
+
+                  <Link display={'flex'} flexDirection={'row'}>
+
                   {/* <img src={google} alt="" /> */}
                   <GoogleIcon sx={{color:'red' ,fontSize:'3'}}>
                   
                   </GoogleIcon>
                   <AddIcon sx={{color:'red' ,fontSize:'2',marginLeft: '-0.3rem'}}/>
-                  {/* </Link> */}
+
+                  </Link>
+
                     
                 </div>
                 {/* <p
@@ -330,3 +336,4 @@ import { useNavigate } from "react-router-dom";
 }
 
 export default Login;
+
