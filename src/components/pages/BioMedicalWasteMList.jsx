@@ -7,7 +7,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import { SlotsListform } from './Validationform';
+import { BioMedicalWasteMform } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,14 +16,14 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import SlotsListForm from './SlotsListForm';
+import BioMedicalWasteMForm from './BioMedicalWasteMForm';
 import PropTypes from "prop-types";
 //import MultipleSelect from '../common/MultipleSelect';
 //import TextField from '@mui/material';
-const SlotslistList = () => {
+const BioMedicalWasteMList = () => {
 
 
-    const [rowData, setRowData] =useState([]);
+    const [rowData, setRowData] = useState([]);
 
     const [colDefs, setColDefs] = useState([]);
 
@@ -38,11 +38,13 @@ const SlotslistList = () => {
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
     const initialValues = {
+        
       
-        type:"",
-        name:"",
-        date:""
-       
+        agency:"",
+        collected:"",
+        surveillance:"",
+        remark:"",
+    
       };
 
 
@@ -57,7 +59,7 @@ const SlotslistList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: SlotsListform,
+        validationSchema: BioMedicalWasteMform,
         onSubmit: async (values, {resetForm}) => {
         try {
             const response = await axiosClientPrivate.post('/medicallist', values);
@@ -90,10 +92,12 @@ const SlotslistList = () => {
           const response = await axiosClientPrivate.get(`/business-units/${id}`);
             console.log(response.data);
             setFieldValue("id",response.data.id);
-            setFieldValue("date",response.data.date);
-            setFieldValue("type",response.data.type);
-            setFieldValue("name",response.data.name);
        
+            setFieldValue("agency", response.data.agency);
+            setFieldValue("collected",response.data.collected);
+            setFieldValue("surveillance", response.data.surveillance);
+            setFieldValue("remark",response.data.remark);
+         
             setId(id);
           setShowupdate(true);
           setOpenPopup(true);
@@ -200,13 +204,14 @@ const SlotslistList = () => {
     const exportpdf = async () => {
        
         const doc = new jsPDF();
-        const header = [['Id',"type","name","date"]];
+        const header = [['Id',"agency","collected","surveillance","remark"]];
         const tableData = rowData.map(item => [
-            item.bracket,
-            item.date,
-            item.type,
-            item.name,
-          
+           
+            item.agency,
+            item.collected,
+            item.surveillance,
+            item.remark,
+           
           
           
         ]);
@@ -219,7 +224,7 @@ const SlotslistList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("RulegenerationList.pdf");
+        doc.save("BioMedicalWasteMList.pdf");
     };
 
 
@@ -238,10 +243,14 @@ const SlotslistList = () => {
         
         const columnWidths = {
             Id: 10,
-           date:20,
-            type: 20,
-            name: 20,
-  
+          
+            agency: 20,
+           
+            collected: 20,
+          
+            surveillance: 20,
+            remark: 20,
+            
          
            
             
@@ -249,11 +258,14 @@ const SlotslistList = () => {
   
         sheet.columns = [
           { header: "Id", key: 'Id', width: columnWidths.Id, style: headerStyle },
-          { header: "date", key: 'date', width: columnWidths.date, style: headerStyle },
        
-          { header: "type", key: 'type', width: columnWidths.type, style: headerStyle },
-          { header: "name", key: 'name', width: columnWidths.name, style: headerStyle },
-    
+          { header: "agency", key: 'agency', width: columnWidths.agency, style: headerStyle },
+         
+          { header: "collected", key: 'collected', width: columnWidths.collected, style: headerStyle },
+        
+          { header: "surveillance", key: 'surveillance', width: columnWidths.surveillance, style: headerStyle },
+          { header: "remark", key: 'remark', width: columnWidths.remark, style: headerStyle },
+         
 
          
       ];
@@ -261,9 +273,20 @@ const SlotslistList = () => {
         rowData.map(product =>{
             sheet.addRow({
                 Id: product.Id,
-              date:product.date,
-                type: product.type,
-                name: product.name,
+               
+                agency: product. agency,
+                
+                collected: product. collected,
+                
+                surveillance: product. surveillance,
+                remark: product.remark,
+               
+               
+                
+
+              
+
+
 
             })
         });
@@ -308,13 +331,13 @@ const SlotslistList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Slots List Form">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Bio Medical Waste Management Form">
 
-                <SlotsListForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                < BioMedicalWasteMForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default  SlotslistList;
+export default  BioMedicalWasteMList;
