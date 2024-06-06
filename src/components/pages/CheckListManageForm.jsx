@@ -1,4 +1,3 @@
-
 import { FormControl, Grid, TextField } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
@@ -9,7 +8,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useState } from "react";
 import MultiCheckbox from "./MultiCheckbox";
 
-const AmbulanceItemForm = ({
+const CheckListManageForm =({
   values,
   touched,
   handleBlur,
@@ -18,7 +17,7 @@ const AmbulanceItemForm = ({
   setFieldValue,
   handleSubmit,
 }) => {
-    AmbulanceItemForm.propTypes = {
+    CheckListManageForm.propTypes = {
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -29,24 +28,25 @@ const AmbulanceItemForm = ({
   };
 
   const issueto = ["OHC", "......."];
-  const ohclocation = ["Dwarka", ".........", "......."];
-  const itemcatagories=["Capital/NonConsumable/Intruments","......"];
-  
+  const itemtype = ["dispensary", "....."];
+  const itemType = ["Instrument and items", "Comments"];
+  const item = [".......", "......"];
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit}>
-        <Grid container spacing={2} justifyContent="center" alignItems="center" sx={{width:300}}>
-         
-          <Grid item xs={12}  justifyContent="center" alignItems="center">
+      
+          <Grid item xs={12}  justifyContent="center" alignItems="center" sx={{width:300}}>
             <FormControl fullWidth>
               <Grid container spacing={2} justifyContent="center" alignItems="center">
+      
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <SingleSelect
                     arr={issueto}
                     label="Issue To*"
                     name="issueto"
                     value={values.issueto}
-                    onChange={(event, newValue) => {
+                    onChange={(event, newValue) =>{
                       const syntheticEvent = {
                         target: {
                           name: "issueto",
@@ -65,11 +65,11 @@ const AmbulanceItemForm = ({
                   />
                 </Grid>
 
-            
+         
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <SingleSelect
-                    arr={ohclocation}
-                    label="OHC Location"
+                    arr={itemtype}
+                    label="OHC Location*"
                     name="ohclocation"
                     value={values.ohclocation}
                     onChange={(event, newValue) => {
@@ -93,17 +93,16 @@ const AmbulanceItemForm = ({
                     }
                   />
                 </Grid>
-                     
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <SingleSelect
-                    arr={itemcatagories}
-                    label="Item Catagories"
-                    name="itemcatagories"
-                    value={values.itemcatagories}
+                    arr={itemType}
+                    label="Item Type*"
+                    name="itemtype"
+                    value={values.itemtype}
                     onChange={(event, newValue) => {
                       const syntheticEvent = {
                         target: {
-                          name: "itemcatagories",
+                          name: "itemtype",
                           value: newValue,
                         },
                       };
@@ -113,22 +112,86 @@ const AmbulanceItemForm = ({
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                      errors.itemcatagories && touched.itemcatagories ? (
+                      errors.itemtype && touched.itemtype ? (
                         <span style={{ color: "red" }}>
-                          {errors.itemcatagories}
+                          {errors.itemtype}
                         </span>
                       ) : null
                     }
                   />
                 </Grid>
+                <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
+                  <SingleSelect
+                    arr={item}
+                    label="Item*"
+                    name="item"
+                    value={values.item}
+                    onChange={(event, newValue) => {
+                      const syntheticEvent = {
+                        target: {
+                          name: "item",
+                          value: newValue,
+                        },
+                      };
+                      handleChange(syntheticEvent);
+                    }}
+                    // onChange={handleChange}
+                    onBlur={handleBlur}
+                    type="text"
+                    helperText={
+                      errors.item && touched.item ? (
+                        <span style={{ color: "red" }}>
+                          {errors.item}
+                        </span>
+                      ) : null
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
+                  <Input
+                    label="QTY"
+                    name="qty"
+                    type="number"
+                    size="large"
+                    value={values.qty}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={
+                      errors.qty && touched.qty ? (
+                        <span style={{ color: "red" }}>
+                          {errors.qty}
+                        </span>
+                      ) : null
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
+                  <Input
+                    label="Unit"
+                    name="unit"
+                    type="text"
+                    size="large"
+                    value={values.unit}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={
+                      errors.unit && touched.unit ? (
+                        <span style={{ color: "red" }}>
+                          {errors.unit}
+                        </span>
+                      ) : null
+                    }
+                  />
+                </Grid>
+                
+                
               </Grid>
             </FormControl>
           </Grid>
-        </Grid>
-      </form>
-    </div>
+          </form>
+        </div>
   );
 };
-
-export default AmbulanceItemForm;
+  
+export default CheckListManageForm;
 

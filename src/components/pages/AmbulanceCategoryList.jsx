@@ -205,12 +205,12 @@ const AmbulanceCategoryList = () => {
     const exportpdf = async () => {
         
         const doc = new jsPDF();
-        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const header = [['Id', "AmbulanceCategory"]];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.buName,
-          item.buHeadName,
-          item.buEmail,
+          item.Id,
+          item.AmbulanceCategory,
+          //item.buHeadName,
+          //item.buEmail,
           
         ]);
         doc.autoTable({
@@ -239,26 +239,26 @@ const AmbulanceCategoryList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            Id: 10,
-            buName: 20,
-            buHeadName: 15,
-            buEmail: 25,
+            id: 10,
+            AmbulanceCategory: 20,
+            //buHeadName: 15,
+           // buEmail: 25,
       };
   
         sheet.columns = [
-          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
-          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "id", key: 'id', width: columnWidths.buId, style: headerStyle },
+          { header: "AmbulanceCategory", key: 'AmbulanceCategory', width: columnWidths.AmbulanceCategory, style: headerStyle },
+          //{ header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
+          //{ header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
-                buName: product.buName,
-                buHeadName: product.buHeadName,
-                buEmail: product.buEmail,
+                Id: product.id,
+                AmbulanceCategory: product.AmbulanceCategory,
+               // buHeadName: product.buHeadName,
+                //buEmail: product.buEmail,
             })
         });
   
@@ -269,7 +269,7 @@ const AmbulanceCategoryList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'AmbulanceCategoryList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -312,3 +312,4 @@ const AmbulanceCategoryList = () => {
 };
 
 export default AmbulanceCategoryList;
+ 

@@ -4,10 +4,10 @@ import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import PlantForm from './PlantForm.jsx';
-// import { PlantValidationForm } from './Validationform';
+import { checkListManageForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,17 +16,18 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import CheckListManageForm from './CheckListManageForm';
 import PropTypes from "prop-types";
-
-
-const PlantList = () => {
+//import MultipleSelect from '../common/MultipleSelect';
+//import TextField from '@mui/material';
+const CheckListManageList = () => {
 
 
     const [rowData, setRowData] = useState([]);
 
     const [colDefs, setColDefs] = useState([]);
 
-    const [openPopup, setOpenPopup] = useState(false);
+    const [openPopup, setOpenPopup] =useState(false);
 
     const axiosClientPrivate = useAxiosPrivate();
 
@@ -36,11 +37,26 @@ const PlantList = () => {
 
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
-
     const initialValues = {
+        //issueto: "",
+        //         ohclocation:"",
+        //         itemtype:"",
+               
+        //         item:"",
+        //         qty:"",
+        //         unit:"",
+        //         delete:""
+        
+        issueto: "",
+        
+        ohclocation:"",
+        itemtype:"",
+        item:"",
+        qty:"",
        
-
-      plantName:""
+        unit:"",
+        delete:"",
+       
       };
 
 
@@ -55,27 +71,22 @@ const PlantList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: PlantValidationForm,
-        // onSubmit: (values, action) => {
-        //     console.log(values);
-        //     action.resetForm();
-        //   },
+        validationSchema: checkListManageForm,
         onSubmit: async (values, {resetForm}) => {
         try {
-            const response = await axiosClientPrivate.post('/plants', values);
+            const response = await axiosClientPrivate.post('/medicallist', values);
             toast.success("Saved Successfully!",{
                 position:"top-center"
              }); 
                    // getting id(key,value) of last index
-            //     const id = rowData[rowData.length-1].buId;
-            //     const obj = {
-            //         buId : id+1,
-            //         ...values
-            //     }
-            //  console.log(obj);
-            //  setRowData(rowData => [...rowData, obj]);
+               // const id = rowData[rowData.length-1].buId;
+              //  const obj = {
+                  //  buId : id+1,
+                   // ...values
+             //   }
+             //console.log(obj);
+             //setRowData(rowData => [...rowData, obj]);
             setFetchTrigger(prev => prev+1);
-
             console.log('Response:', response.data);
             resetForm();
           } catch (error) {
@@ -90,13 +101,21 @@ const PlantList = () => {
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/plants/${id}`);
+          const response = await axiosClientPrivate.get(`/business-units/${id}`);
             console.log(response.data);
             setFieldValue("id",response.data.id);
-            setFieldValue("plantName",response.data.plantName);
-            setFieldValue("lastModified", response.data.lastModified);
-            setFieldValue("modifiedBy", response.data.modifiedBy);
-          setId(id);
+            setFieldValue("issueto",response.data.issueto);
+           
+            setFieldValue("ohclocation",response.data.ohclocation);
+            setFieldValue("itemtype",response.data.itemtype);
+            setFieldValue("item", response.data.item);
+            
+
+            setFieldValue("qty",response.data.qty);
+            
+            setFieldValue("unit",response.data.unit);
+            setFieldValue("delete",response.data.delete);
+            setId(id);
           setShowupdate(true);
           setOpenPopup(true);
         } catch (error) {
@@ -109,7 +128,7 @@ const PlantList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(`/plants/${id}`,update);
+             await axiosClientPrivate.put(`/medicalitem/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -131,10 +150,9 @@ const PlantList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(`/plants/${id}`);
-        //    setRowData(prevData => prevData.filter(row => row.buId !== id));
-        setFetchTrigger(prev => prev+1);
-
+           await axiosClientPrivate.delete(`/business-units/${id}`);
+           //setRowData(prevData => prevData.filter(row => row.buId !== id));
+           setFetchTrigger(prev => prev+1);
        } catch (error) {
            console.error('Error deleting row:', error);
        }
@@ -149,7 +167,6 @@ const PlantList = () => {
        <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
 
 };
-
     const pagination = true;
     const paginationPageSize = 50;
     const paginationPageSizeSelector = [50, 100, 200, 500];
@@ -159,7 +176,7 @@ const PlantList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('http://localhost:8080/plants?page=0&size=5', { signal: controller.signal });
+                const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
                 const items = response.data.content;
                     // console.log(items);
                 setRowData(items);
@@ -174,7 +191,7 @@ const PlantList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.id;
+                            const id = params.data.buId;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -202,55 +219,23 @@ const PlantList = () => {
      
 
     const exportpdf = async () => {
-        // const headers = createHeaders([
-        //     "id",
-        //     "ohcName",
-        //     // "ohcCode",
-        //     // "OhcDescription",
-        //     // "Address",
-        //     // "State",
-        //     // "Fax",
-        //     // "PrimaryPhone",
-        //     // "PrimaryEmail",
-        //     // "PinCode",
-        //     // "OhcType",
-        //     // "IconColor",
-        //     // "IconText",
-        //     // "OhcCategory",
-        // ]);
-        // const doc = new jsPDF({orientation: "landscape"});
-        // console.log(rowData[0].id);
-        // const tableData = rowData.map((row)=>(
-        //     console.log(row.id),
-        //   {
-             
-          // console.log(row.id),
-            // ...row,
-            // id: row.id,
-            // ohcName: row.ohcName,
-            // ohcCode: row.ohcCode.toString(),
-            // ohcDescription: row.ohcDescription.toString(),
-            // address: row.address.toString(),
-            // state: row.state.toString(),
-            // fax: row.fax.toString(),
-            // primaryPhone: row.primaryPhone.toString(),
-            // primaryEmail: row.primaryEmail.toString(),
-            // pinCode: row.pinCode.toString(),
-            // ohcType: row.ohcType.toString(),
-            // iconColor: row.iconColor.toString(),
-            // iconText: row.iconText.toString(),
-            // OhcCategory: row.ohcCategory.toString(),
-        // }))
-        // const tableData = {
-        //     id : rowData[0].id,
-        //     ohcName : rowData[0].ohcName,
-        // }
-        // doc.table(1,1,tableData,headers, {autoSize:true});
+       
         const doc = new jsPDF();
-        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const header = [['Id','issueto', "ohclocation","itemtype","item","qty","unit","delete"
+        ]];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.buName,
+            item.issueto,
+          
+            item.ohclocation,
+            item.itemtype,
+            item.item,
+            
+            item.qty,
+            
+            item.unit,
+            item.delete,
+         
+          
           
         ]);
         doc.autoTable({
@@ -262,74 +247,17 @@ const PlantList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("PlantList.pdf");
+        doc.save("RulegenerationList.pdf");
     };
 
 
     const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-        // sheet.columns = [
-        //     {
-        //         header: "Id",
-        //         key: 'id',
-        //     },
-        //     {
-        //         header: "OhcName",
-        //         key: 'ohcName',
-        //     },
-        //     {
-        //         header: "OhcCode",
-        //         key: 'ohcCode',
-        //     },
-        //     {
-        //         header: "OhcDescription",
-        //         key: 'ohcDescription',
-        //     },
-        //     {
-        //       header : "Address",
-        //       key : "address",
-        //     },
-        //     {
-        //         header: "State",
-        //         key: 'state',
-        //     },
-        //     {
-        //         header: "Fax",
-        //         key: 'fax',
-        //     },
-        //     {
-        //       header: "PrimaryPhone",
-        //       key: 'primaryPhone',
-        //   },
-        //   {
-        //       header: "PrimaryEmail",
-        //       key: 'primaryEmail',
-        //   },
-        //   {
-        //       header : "PinCode",
-        //       key : "pinCode",
-        //   },
-        //   {
-        //       header: "OhcType",
-        //       key: 'ohcType',
-        //   },
-        //   {
-        //       header: "IconColor",
-        //       key: 'iconColor',
-        //   },
-        //   {
-        //     header: "IconText",
-        //     key: 'iconText',
-        // },
-        // {
-        //     header: "OhcCategory",
-        //     key: 'OhcCategory',
-        // }
-        // ];
+       
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
+      
           alignment: { horizontal: 'center' }
           
       };
@@ -338,25 +266,57 @@ const PlantList = () => {
         
         const columnWidths = {
             Id: 10,
-            buName: 20,
-            buHeadName: 15,
-            buEmail: 25,
+            issueto: 20,
+        
+            ohclocation: 20,
+            itemtype: 20,
+            item: 20,
+          
+            qty: 20,
+            
+            unit: 20,
+            delete: 20,
+           
+         
+           
+            
       };
   
         sheet.columns = [
           { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
-          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "issueto", key: 'issueto', width: columnWidths.issueto, style: headerStyle },
+          { header: "ohclocation", key: 'ohclocation', width: columnWidths.ohclocation, style: headerStyle },
+
+          { header: "itemtype", key: 'itemtype', width: columnWidths.itemtype, style: headerStyle },
+          { header: "item", key: 'item', width: columnWidths.item, style: headerStyle },
+          { header: "qty", key: 'qty', width: columnWidths.qty, style: headerStyle },
+
+          { header: "unit", key: 'unit', width: columnWidths.unit, style: headerStyle },
+          { header: "delete", key: 'delete', width: columnWidths.delete, style: headerStyle },
+         
           
+
+         
       ];
   
         rowData.map(product =>{
             sheet.addRow({
                 buId: product.buId,
-                buName: product.buName,
-                buHeadName: product.buHeadName,
-                buEmail: product.buEmail,
+                issueto: product.issueto,
+                ohclocation: product. ohclocation,
+                itemtype: product.itemtype,
+                item: product. item,
+             
+                qty: product. qty,
+      
+                unit: product. unit,
+                delete: product.delete,
+             
+
+              
+
+
+
             })
         });
   
@@ -367,7 +327,7 @@ const PlantList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'PlantList.xlsx';
+            anchor.download = 'download.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -400,13 +360,14 @@ const PlantList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Plant Form">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="CheckList Manage Form">
 
-                <PlantForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                < CheckListManageForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default PlantList;
+export default  CheckListManageList;
+
