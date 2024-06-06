@@ -39,6 +39,8 @@ const VaccineList = () => {
 
     const [paginationPageSize, setPaginationPageSize] = useState(2);
 
+    // const [change, setChange] = useState("";)
+
     console.log("check",paginationPageSize);
 
     const initialValues = {
@@ -414,6 +416,7 @@ const VaccineList = () => {
                     </ButtonGroup>
 
                 </Stack>
+
                 <AgGridReact
                     rowData={rowData}
                     columnDefs={colDefs}
@@ -425,6 +428,7 @@ const VaccineList = () => {
                         setPaginationPageSize(event.api.paginationGetPageSize());
                     }}
                 />
+
             </Box>
 
             <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Vaccine Master">
