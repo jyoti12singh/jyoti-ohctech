@@ -28,7 +28,7 @@ const Roles = () => {
             signal: controller.signal,
           }
         );
-        // console.log(response.data);
+        console.log(response.data);
         setRoles(response.data);
       } catch (err) {
         console.error(err);

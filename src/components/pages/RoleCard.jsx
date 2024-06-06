@@ -1,5 +1,4 @@
 import { Card, CardActionArea, CardMedia, Typography } from '@mui/material';
-import React from 'react';
 
 export default function RoleCard({ icon, name }) {
   return (

@@ -29,6 +29,7 @@ const RoleList = () => {
     roleCode: "",
     iconColor: "",
     iconText: "",
+
     // lastModified: "",
     // modifiedBy: ""
   };
@@ -47,26 +48,26 @@ const RoleList = () => {
     resetForm,
   } = useFormik({
     initialValues: initialValues,
-    validationSchema: roleValidationForm,
-    // onSubmit: (values, action) => {
-    //   console.log(values);
-    //   action.resetForm();
-    // },
-    onSubmit: async (values, {resetForm}) => {
-      try {
-           await axiosClientPrivate.post('/roles', values);
-          toast.success("Saved Successfully!",{
-            position:"top-center"
-         });
-          // setRowData(prevRowData => [...prevRowData, values]);
-          setFetchTrigger(prev => prev+1);
+    // validationSchema: roleValidationForm,
+    onSubmit: (values, action) => {
+      console.log(values);
+      action.resetForm();
+    },
+    // onSubmit: async (values, {resetForm}) => {
+    //   try {
+    //        await axiosClientPrivate.post('/roles', values);
+    //       toast.success("Saved Successfully!",{
+    //         position:"top-center"
+    //      });
+    //       // setRowData(prevRowData => [...prevRowData, values]);
+    //       setFetchTrigger(prev => prev+1);
 
-          resetForm();
-        } catch (error) {
-          console.log(values);
-          console.error('Error:', error);
-        }
-      },
+    //       resetForm();
+    //     } catch (error) {
+    //       console.log(values);
+    //       console.error('Error:', error);
+    //     }
+    //   },
 
 
   });
@@ -217,7 +218,7 @@ useEffect(() => {
     const getAllOhc = async () => {
         try {
             const response = await axiosClientPrivate.get('roles', { signal: controller.signal });
-            const items = response.data;
+            const items = response.data.content;
 
             if (items.length > 0) {
                 const columns = Object.keys(items[0]).map(key => ({
