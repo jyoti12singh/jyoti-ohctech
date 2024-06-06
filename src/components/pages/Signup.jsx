@@ -1,5 +1,7 @@
+
 import ohcimg from "../../assets/images/ohc.jpg";
-import google from "../../assets/images/google.png";
+import AddIcon from '@mui/icons-material/Add';
+import GoogleIcon from '@mui/icons-material/Google';
 
 import { InputAdornment, Stack } from "@mui/material";
 import Container from "@mui/material/Container";
@@ -143,15 +145,14 @@ import { useNavigate } from "react-router-dom";
               />
             </Typography>
 
-            <Typography variant="h6" gutterBottom>
-              <Box sx={{ '@media (max-width:600px)': {
-                // marginLeft:'-13.5rem'
+            <Typography variant="h6" gutterBottom
+               sx={{ '@media (max-width:600px)': {
+         
                 display:"block",
                 textAlign:'center',
               }}}
-              //  display={'block'}
-              //  textAlign={'center'}
-               >Sign into Your Account</Box>
+            
+               >Sign into Your Account
             </Typography>
 
             <Box
@@ -222,7 +223,7 @@ import { useNavigate } from "react-router-dom";
                     name="signedin"
                   />
                 </FormGroup>
-                <Link href="" style={{ textDecoration: "none" }}>
+                <Link href="#" style={{ textDecoration: "none" }}>
                   Forget Email or Password
                 </Link>
               </div>
@@ -245,60 +246,63 @@ import { useNavigate } from "react-router-dom";
                   Sign Up
                 </Link>
               </Typography>
-              <Typography
+              {/* <Typography
                 margin={"1rem"}
                 position={"relative"}
                 textAlign={"center"}
                 display={"flex"}
                 justifyContent={"center"}
                 alignItems={"center"}
-              >
+              > */}
                 <div
                   style={{
                     width: "30vw",
-                    marginTop: "1rem",
+                    margin: "1rem auto",
                     height: "1px",
                     backgroundColor: "#dadde0",
                   }}
                 ></div>
-                <p
-                  style={{
-                    alignItems: "center",
-                    paddingTop: "1rem",
-                    textAlign: "center",
-                    font: "black",
-                    position: "absolute",
-                  }}
+                <Typography display={'block'} textAlign={'center'}
+                //   style={{
+                //     textAlign: "center",
+                //     font: "black",
+                //     position: "absolute",
+                //   }}
                 >
                   Or
-                </p>
-              </Typography>
-              <Typography
+                </Typography>
+              {/* </Typography> */}
+              {/* <Typography
                 margin={"1rem"}
                 position={"relative"}
                 textAlign={"center"}
                 display={"flex"}
                 justifyContent={"center"}
                 alignItems={"center"}
-              >
+              > */}
                 <div
                  
                     style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignContent: "center",
+                    //   display: "flex",
+                    //   // flexDirection:'row',
+                    //   justifyContent: "center",
+                    //   alignContent: "center",
                       textAlign: "center",
-                      width: "8%",
-                      height: "8%",
-                      marginTop:'1.5rem',
+                    //   width: "8%",
+                    //   height: "8%",
+                      marginTop:'1rem',
                       // marginLeft: "15vw",
                       cursor:'pointer'
                 
                   }}
                 >
-                  <Link >
-                  <img src={google} alt="" />
-                  </Link>
+                  {/* <Link display={'flex'} flexDirection={'row'}> */}
+                  {/* <img src={google} alt="" /> */}
+                  <GoogleIcon sx={{color:'red' ,fontSize:'3'}}>
+                  
+                  </GoogleIcon>
+                  <AddIcon sx={{color:'red' ,fontSize:'2',marginLeft: '-0.3rem'}}/>
+                  {/* </Link> */}
                     
                 </div>
                 {/* <p
@@ -312,7 +316,7 @@ import { useNavigate } from "react-router-dom";
                 >
                   Or
                 </p> */}
-              </Typography>
+              {/* </Typography> */}
               
               
               
