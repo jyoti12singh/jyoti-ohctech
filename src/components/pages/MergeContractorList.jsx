@@ -7,8 +7,8 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import AmbulanceCategoryForm from './AmbulanceCategoryForm';
-import { AmbulanceValidationForm } from './Validationform';
+import MergeContractorForm from './MergeContractorForm';
+import { MergeContractorValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,7 +19,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
 
-const AmbulanceCategoryList = () => {
+const MergeContractorList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -39,7 +39,8 @@ const AmbulanceCategoryList = () => {
 
     const initialValues = {
        
-        AmbulanceCategory:""
+        ContractorRecordUsed:"",
+        ContractorRecordMerged:"",
       };
 
 
@@ -54,7 +55,7 @@ const AmbulanceCategoryList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: AmbulanceValidationForm,
+        validationSchema: MergeContractorValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
@@ -205,13 +206,11 @@ const AmbulanceCategoryList = () => {
     const exportpdf = async () => {
         
         const doc = new jsPDF();
-        const header = [['Id', "AmbulanceCategory"]];
+        const header = [['Id', 'ContractorRecordUsed',"ContractorRecordMerged",]];
         const tableData = rowData.map(item => [
           item.Id,
-          item.AmbulanceCategory,
-          //item.buHeadName,
-          //item.buEmail,
-          
+          item.ComplaintRecordUsed,
+          item.ComplaintRecordMerged
         ]);
         doc.autoTable({
           head: header,
@@ -222,14 +221,14 @@ const AmbulanceCategoryList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("AmbulanceCategoryList.pdf");
+        doc.save("MergeContractorList.pdf");
     };
 
 
     const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-        
+  
         const headerStyle = {
           // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
@@ -239,26 +238,23 @@ const AmbulanceCategoryList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            id: 10,
-            AmbulanceCategory: 20,
-            //buHeadName: 15,
-           // buEmail: 25,
+            Id: 10,
+            ComplaintRecordUsed: 20,
+            ComplaintRecordMerged: 15,
       };
   
         sheet.columns = [
-          { header: "id", key: 'id', width: columnWidths.buId, style: headerStyle },
-          { header: "AmbulanceCategory", key: 'AmbulanceCategory', width: columnWidths.AmbulanceCategory, style: headerStyle },
-          //{ header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          //{ header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "Id", key: 'Id', width: columnWidths.buId, style: headerStyle },
+          { header: "ContractorRecordUsed", key: 'ContractorRecordUsed', width: columnWidths.buName, style: headerStyle },
+          { header: "ContractorRecordMerged", key: 'ContractorRecordMerged', width: columnWidths.buHeadName, style: headerStyle },
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                Id: product.id,
-                AmbulanceCategory: product.AmbulanceCategory,
-               // buHeadName: product.buHeadName,
-                //buEmail: product.buEmail,
+                Id: product.Id,
+                ContractorRecordUsed: product.ContractorRecordUsed,
+                ContractorRecordMerged: product.ContractorRecordMerged,
             })
         });
   
@@ -269,7 +265,7 @@ const AmbulanceCategoryList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'AmbulanceCategoryList.xlsx';
+            anchor.download = 'MergeContractorList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -302,14 +298,13 @@ const AmbulanceCategoryList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Add Ambulance Category Details">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Merge Contractor">
 
-                <AmbulanceCategoryForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <MergeContractorForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default AmbulanceCategoryList;
- 
+export default MergeContractorList;
