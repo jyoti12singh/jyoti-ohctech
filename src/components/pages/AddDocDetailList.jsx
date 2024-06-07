@@ -125,12 +125,19 @@ const AddDocDetailList = () => {
                     // console.log(items);
                 
                 if (items.length > 0) {
+
+                    const headerMappings = {
+                        doctorName: "Doctor Name",
+                        doctorEmpId : "Doctor Emp Id",
+                        doctorDesc : "Doctor Description",
+                     };
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName: key.charAt(0).toUpperCase() + key.slice(1),
+                        headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),             
                         filter: true,
                         floatingFilter: true,
-                        sortable: true
+                        sortable: true,
+                        width: key === 'id' ? 100 : undefined,
                     }));
 
                     columns.unshift({

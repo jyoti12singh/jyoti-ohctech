@@ -209,12 +209,41 @@ const CheckupParameterList = () => {
                     // console.log(items);
                 setRowData(items);
                 if (items.length > 0) {
+
+                    const headerMappings = {
+                        cpname: "Checkup Name",
+                        healthkeyname : "Health key name",
+                        startingrange : "Starting range",
+                        endingrange : "Ending range",
+                        lessrisk : "Lessrisk",
+                        morerisk : "Morerisk",
+                        lessadvice : "Less advice",
+                        moreadvice : "More advice",
+                        section : "Section",
+                        columnorder : "Columnorder",
+                        parametervaluename : "Parameter value name",
+                        inputtype : "Input type",
+                        status : "Status",
+                        edit : "Edit",
+                        selectunit : "Select Unit",
+                        refrange : "Ref Range",
+                        opd : "Opd",
+                        daycare : "Day care",
+                        injury : "Injury",
+                        rangerule : "Rangerule",
+                        parent : "Parent",
+                        mandatory : "Mandatory",
+                        default : "Default",
+                        lastModified : "LastModified",
+                        modifiedBy : "Modified By",
+                    };
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName: key.charAt(0).toUpperCase() + key.slice(1),
+                        headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
                         filter: true,
                         floatingFilter: true,
-                        sortable: true
+                        sortable: true,
+                        width: key === 'id' ? 100 : undefined,
                     }));
 
                     columns.unshift({

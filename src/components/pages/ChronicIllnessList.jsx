@@ -176,12 +176,27 @@ const ChronicIllnessList = () => {
                     // console.log(items);
                 setRowData(items);
                 if (items.length > 0) {
+                    const headerMappings = {
+                        cillness: "Chronic Illness",
+                        pname: "Patient name",
+                        date : "Date",
+                        duedate : "due date",
+                        remark : "remark",
+                        medicine : "medicine",
+                        frequency : "frequency",
+                        timing : "timing",
+                        adminroute : "admin route",
+                        duration : "duration",
+                        lastModified : "last Modified",
+                        modifiedBy : "modified By",
+                    };
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName: key.charAt(0).toUpperCase() + key.slice(1),
+                        headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
                         filter: true,
                         floatingFilter: true,
-                        sortable: true
+                        sortable: true,
+                        width: key === 'id' ? 100 : undefined,
                     }));
 
                     columns.unshift({

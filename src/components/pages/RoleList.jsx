@@ -220,13 +220,25 @@ useEffect(() => {
             const items = response.data;
 
             if (items.length > 0) {
-                const columns = Object.keys(items[0]).map(key => ({
-                    field: key,
-                    headerName: key.charAt(0).toUpperCase() + key.slice(1),
-                    filter: true,
-                    floatingFilter: true,
-                    sortable: true
-                }));
+
+                const headerMappings = {
+                        id: "id",
+                        roleName : "roleName",
+                        roleDescription : "roleDescription",
+                        roleHomePage : "roleHomePage",
+                        roleCode : "roleCode",
+                        iconColor : "iconColor",
+                        iconText : "iconText",
+                    };
+
+                   const  columns = Object.keys(items[0]).map(key => ({
+                        field: key,
+                        headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
+                        filter: true,
+                        floatingFilter: true,
+                        sortable: true,
+                        width: key === 'id' ? 100 : undefined,
+                    }));
 
                 columns.unshift({
                   // field: "Actions", cellRenderer: CustomActionComponent
