@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Root from "./components/pages/Root";
 import ErrorPage from "./components/pages/ErrorPage";
-import Ohcs from "./components/pages/Ohcs";
+// import Ohcs from "./components/pages/Ohcs";
 // import Roles from "./components/pages/Roles";
 import ProtectedRoute from "./utils/ProtectedRoute";
 // import Login from "./components/pages/Login";
