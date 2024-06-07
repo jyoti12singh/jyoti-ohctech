@@ -1,7 +1,7 @@
 import { Stack, Box } from "@mui/material";
 import Input from "../common/Input";
 import PropTypes from "prop-types";
-import Ohclogo from "./Ohclogo";
+// import Ohclogo from "./Ohclogo";
 
  const RoleForm = ({values,
   touched,
@@ -39,7 +39,7 @@ import Ohclogo from "./Ohclogo";
       onSubmit={handleSubmit}
     >
 
-    <Ohclogo setFieldValue={setFieldValue} />
+    
 
     <Stack direction="row" spacing={2}>
         <Input 

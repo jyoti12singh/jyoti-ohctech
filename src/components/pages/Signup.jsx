@@ -21,6 +21,7 @@ import { Link } from "@mui/material";
 import { useState } from "react";
 import { useAuth } from "../security/AuthContext";
 import { useNavigate } from "react-router-dom";
+import LinearProgress from "@mui/material/LinearProgress";
 
 
  const Login = ()=> {
@@ -227,6 +228,7 @@ import { useNavigate } from "react-router-dom";
                   Forget Email or Password
                 </Link>
               </div>
+              {!isLoading && (
               <Button
                 type="submit"
                 style={{ backgroundColor: "#42a7f5" ,textTransform:'unset' }}
@@ -237,6 +239,8 @@ import { useNavigate } from "react-router-dom";
               >
                 Sign In
               </Button>
+            )}
+            {isLoading && <LinearProgress />}
               <Typography variant="h10" gutterBottom
                textAlign={'center'}
                display={'block'}
