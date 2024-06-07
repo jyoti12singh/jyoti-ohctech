@@ -208,12 +208,41 @@ const MedicalItemList = () => {
                     // console.log(items);
                 setRowData(items);
                 if (items.length > 0) {
+                   
+                    const headerMappings = {
+                        itemName: "item Name",
+                        itemCode : "item Code",
+                        category : "category",
+                        itemform : "item form",
+                        relatedAilmentSystem : "related Ailment System",
+                        vaccineusageCategoryDesc : "usage Category",
+                        subClassification : "sub Classification",
+                        salt : "salt",
+                        indication : "indication",
+                        contraindication : "contraindication",
+                        sideEffect : "side Effect",
+                        interaction : "interaction",
+                        medicineprecaution : "medicine precaution",
+                        reorderstorelevel : "reorder store level",
+                        ministorelevel : "mini store level",
+                        minindentlevel : "min indent level",
+                        maxiindentlevel : "maxi indent level",
+                        reorderpercentagelevel : "reorder percentage level",
+                        isprescription : "is prescription",
+                        stauts : "stauts",
+                        unitofmesurement : "unit of mesurement",
+                        remark : "remark",
+                        lastModified : "last Modified",
+                        modifiedBy : "modified By",
+                    };
+
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName: key.charAt(0).toUpperCase() + key.slice(1),
+                        headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
                         filter: true,
                         floatingFilter: true,
-                        sortable: true
+                        sortable: true,
+                        width: key === 'id' ? 100 : undefined,
                     }));
 
                     columns.unshift({

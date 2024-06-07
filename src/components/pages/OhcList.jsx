@@ -138,13 +138,35 @@ useEffect(() => {
                 console.log(items);
                 setRowData(items);
                 setPaginationTotalRowCount(items.length);
+
           if (items.length > 0) {
-              const columns = Object.keys(items[0]).map(key => ({
-                  field: key,
-                  headerName: key.charAt(0).toUpperCase() + key.slice(1),
-                  filter: true,
-                  floatingFilter: true,
-                  sortable: true
+              const headerMappings = {
+                ohcName: "Ohc Name",
+                ohcCode : "Ohc Code",
+                ohcDescription : "Ohc Description",
+                address : "Address",
+                state : "State",
+                fax : "Fax",
+                primaryPhone : "Primary Phone",
+                primaryEmail : "Primary Email",
+                pinCode : "PinCode",
+                ohcType : "Ohc Type",
+                ohcLogo : "Ohc Logo",
+                ohcLogoType : "Ohc Logo Type",
+                iconColor : "Icon Color",
+                iconText : "Icon Text",
+                ohcCategory : "Ohc Category",
+                lastModified : "Last Modified",
+                modifiedBy : "Modified By",
+              };
+
+              const  columns = Object.keys(items[0]).map(key => ({
+                    field: key,
+                    headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
+                    filter: true,
+                    floatingFilter: true,
+                    sortable: true,
+                    width: key === 'id' ? 100 : undefined,
               }));
 
               columns.unshift({

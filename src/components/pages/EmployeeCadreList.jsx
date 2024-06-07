@@ -125,12 +125,20 @@ useEffect(() => {
             const items = response.data.content;
               console.log("after",items);
             if (items.length > 0) {
+
+  
+                const headerMappings = {
+                  empCadre: "Employee Cadre",
+                  medicalClaimLimit : "Medical Claim Limit",
+                  remarks : "Remarks",
+                };
                 const columns = Object.keys(items[0]).map(key => ({
-                    field: key,
-                    headerName: key.charAt(0).toUpperCase() + key.slice(1),
-                    filter: true,
-                    floatingFilter: true,
-                    sortable: true
+                      field: key,
+                      headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
+                      filter: true,
+                      floatingFilter: true,
+                      sortable: true,
+                      width: key === 'id' ? 100 : undefined,
                 }));
 
                 columns.unshift({
