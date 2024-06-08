@@ -15,12 +15,12 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import SlotsListForm from './SlotsListForm';
+import BioMedicalForm from './BioMedicalForm';
 import PropTypes from "prop-types";
 //import MultipleSelect from '../common/MultipleSelect';
 //import TextField from '@mui/material';
-import { SlotsListform } from './Validationform';
-const SlotslistList = () => {
+import { BioMedicalform } from './Validationform';
+const BioMedicalList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -38,12 +38,13 @@ const SlotslistList = () => {
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
     const initialValues = {
-         date:"",
-        doctorname:"",
-        casetype:"" 
+        agency:"",
+        collected:"",
+        surveillance:"",
+        remark:"",
       };
 
-   const {
+      const {
         values,
         touched,
         errors,
@@ -54,7 +55,7 @@ const SlotslistList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: SlotsListform,
+        validationSchema: BioMedicalform,
         onSubmit: async (values, {resetForm}) => {
         try {
             const response = await axiosClientPrivate.post('/medicallist', values);
@@ -84,9 +85,11 @@ const SlotslistList = () => {
           const response = await axiosClientPrivate.get(`/business-units/${id}`);
             console.log(response.data);
             setFieldValue("id",response.data.id);
-            setFieldValue("date",response.data.date);
-            setFieldValue("casetype",response.data.casetype);
-            setFieldValue("doctorname",response.data.doctorname);
+       
+            setFieldValue("agency", response.data.agency);
+            setFieldValue("collected",response.data.collected);
+            setFieldValue("surveillance", response.data.surveillance);
+            setFieldValue("remark",response.data.remark);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
          
@@ -144,11 +147,13 @@ const SlotslistList = () => {
     const pagination = true;
     const paginationPageSize = 50;
     const paginationPageSizeSelector = [50, 100, 200, 500];
+    
     const headerMappings = {
-        date: "Date",
-        doctorname : "Doctor Name",
-        casetype : "Case Type",
-    };
+        agency: "Agency ",
+        collected : "Collected",
+        surveillance : "Surveillance",
+        remark : "Remark",
+    };      
 
     useEffect(() => {
         const controller = new AbortController();
@@ -162,7 +167,7 @@ const SlotslistList = () => {
                 if (items.length > 0) {
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName:headerMappings[key] ||  key.charAt(0).toUpperCase() + key.slice(1),
+                        headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
                         filter: true,
                         floatingFilter: true,
                         sortable: true,
@@ -172,7 +177,7 @@ const SlotslistList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.id;
+                            const id = params.data.buId;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -196,12 +201,13 @@ const SlotslistList = () => {
     const exportpdf = async () => {
        
         const doc = new jsPDF();
-        const header = [['Id',"date","casetype","doctorname",]];
+        const header = [['Id',"agency","collected","surveillance","remark"]];
         const tableData = rowData.map(item => [
             item.id,
-            item.date,
-            item.casetype,
-            item.doctorname,
+            item.agency,
+            item.collected,
+            item.surveillance,
+            item.remark,
         ]);
         doc.autoTable({
           head: header,
@@ -212,13 +218,13 @@ const SlotslistList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("Slotlist.pdf");
+        doc.save("BioMedicalList.pdf");
     };
-     const exportExcelfile = async () => {
+    const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-       const headerStyle = {
-       alignment: { horizontal: 'center' }
+         const headerStyle = {
+        alignment: { horizontal: 'center' }
           
       };
   
@@ -226,26 +232,34 @@ const SlotslistList = () => {
         
         const columnWidths = {
             Id: 10,
-           date:20,
-            casetype: 20,
-            doctorname: 20, 
-      };
+             agency: 20,
+            collected: 20,
+            surveillance: 20,
+            remark: 20,
+         };
   
         sheet.columns = [
           { header: "Id", key: 'Id', width: columnWidths.Id, style: headerStyle },
-          { header: "Date", key: 'date', width: columnWidths.date, style: headerStyle },
        
-          { header: "Case Type", key: 'casetype', width: columnWidths.casetype, style: headerStyle },
-          { header: "Doctor Name", key: 'doctorname', width: columnWidths.doctorname, style: headerStyle },
-    ];
+          { header: "agency", key: 'agency', width: columnWidths.agency, style: headerStyle },
+         
+          { header: "collected", key: 'collected', width: columnWidths.collected, style: headerStyle },
+        
+          { header: "surveillance", key: 'surveillance', width: columnWidths.surveillance, style: headerStyle },
+          { header: "remark", key: 'remark', width: columnWidths.remark, style: headerStyle },
+        ];
   
         rowData.map(product =>{
             sheet.addRow({
                 Id: product.id,
-              date:product.date,
-                casetype: product.casetype,
-                doctorname: product.doctorname,
-
+               
+                agency: product. agency,
+                
+                collected: product. collected,
+                
+                surveillance: product. surveillance,
+                remark: product.remark,
+              
             })
         });
   
@@ -256,7 +270,7 @@ const SlotslistList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'Slotlist.xlsx';
+            anchor.download = 'BiomedicalList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -288,13 +302,13 @@ const SlotslistList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Slots List Form">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Bio Medical Waste Management Form">
 
-                <SlotsListForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                < BioMedicalForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default  SlotslistList;
+export default  BioMedicalList;
