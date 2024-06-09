@@ -15,12 +15,12 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import SlotsListForm from './SlotsListForm';
+import TrainingScheduleForm from './TrainingScheduleForm';
 import PropTypes from "prop-types";
 //import MultipleSelect from '../common/MultipleSelect';
 //import TextField from '@mui/material';
-import { SlotsListform } from './Validationform';
-const SlotslistList = () => {
+import { TrainingScheduleform } from './Validationform';
+const TrainingScheduleList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -38,12 +38,16 @@ const SlotslistList = () => {
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
     const initialValues = {
-         date:"",
-        doctorname:"",
-        casetype:"" 
+        programName:"",
+        fromDate:"",
+        toDate:"",
+        trainerName:"",
+        location:"",
+        status:"",
+        remark:""
       };
 
-   const {
+      const {
         values,
         touched,
         errors,
@@ -54,7 +58,7 @@ const SlotslistList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: SlotsListform,
+        validationSchema: TrainingScheduleform,
         onSubmit: async (values, {resetForm}) => {
         try {
             const response = await axiosClientPrivate.post('/medicallist', values);
@@ -84,9 +88,14 @@ const SlotslistList = () => {
           const response = await axiosClientPrivate.get(`/business-units/${id}`);
             console.log(response.data);
             setFieldValue("id",response.data.id);
-            setFieldValue("date",response.data.date);
-            setFieldValue("casetype",response.data.casetype);
-            setFieldValue("doctorname",response.data.doctorname);
+       
+            setFieldValue("programName", response.data.programName);
+            setFieldValue("fromDate",response.data.fromDate);
+            setFieldValue("toDate", response.data.toDate);
+            setFieldValue("trainerName",response.data.trainerName);
+            setFieldValue("location",response.data.location);
+            setFieldValue("status",response.data.status);
+            setFieldValue("remark",response.data.remark);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
          
@@ -144,7 +153,8 @@ const SlotslistList = () => {
     const pagination = true;
     const paginationPageSize = 50;
     const paginationPageSizeSelector = [50, 100, 200, 500];
-   
+    
+    
 
     useEffect(() => {
         const controller = new AbortController();
@@ -157,13 +167,18 @@ const SlotslistList = () => {
                 setRowData(items);
                 if (items.length > 0) {
                     const headerMappings = {
-                        date: "Date",
-                        doctorname : "Doctor Name",
-                        casetype : "Case Type",
-                    };
+                        programName: "Program Name ",
+                        fromDate : "From Date",
+                        toDate : "To Date",
+                        trainerName : "Traine rName",
+                        location : "Location",
+                        status : "Status",
+                        remark:"Remark",
+                    };  
+
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName:headerMappings[key] ||  key.charAt(0).toUpperCase() + key.slice(1),
+                        headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
                         filter: true,
                         floatingFilter: true,
                         sortable: true,
@@ -173,7 +188,7 @@ const SlotslistList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.id;
+                            const id = params.data.buId;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -197,12 +212,16 @@ const SlotslistList = () => {
     const exportpdf = async () => {
        
         const doc = new jsPDF();
-        const header = [['Id',"date","casetype","doctorname",]];
+        const header = [['Id',"programName","fromDate","toDate","trainerName","location","status","remark"]];
         const tableData = rowData.map(item => [
             item.id,
-            item.date,
-            item.casetype,
-            item.doctorname,
+            item.programName,
+            item.fromDate,
+            item.toDate,
+            item.trainerName,
+            item.location,
+            item.status,
+            item.remark,
         ]);
         doc.autoTable({
           head: header,
@@ -213,13 +232,13 @@ const SlotslistList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("Slotlist.pdf");
+        doc.save("TrainingScheduleList.pdf");
     };
-     const exportExcelfile = async () => {
+    const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-       const headerStyle = {
-       alignment: { horizontal: 'center' }
+         const headerStyle = {
+        alignment: { horizontal: 'center' }
           
       };
   
@@ -227,26 +246,43 @@ const SlotslistList = () => {
         
         const columnWidths = {
             Id: 10,
-           date:20,
-            casetype: 20,
-            doctorname: 20, 
-      };
+             programName: 20,
+            fromDate: 20,
+            toDate: 20,
+            trainerName: 20,
+            location:20,
+            status:20,
+            remark:20,
+         };
   
         sheet.columns = [
           { header: "Id", key: 'Id', width: columnWidths.Id, style: headerStyle },
-          { header: "Date", key: 'date', width: columnWidths.date, style: headerStyle },
        
-          { header: "Case Type", key: 'casetype', width: columnWidths.casetype, style: headerStyle },
-          { header: "Doctor Name", key: 'doctorname', width: columnWidths.doctorname, style: headerStyle },
-    ];
+          { header: "Program Name", key: 'programName', width: columnWidths.programName, style: headerStyle },
+         
+          { header: "From Date", key: 'fromDate', width: columnWidths.fromDate, style: headerStyle },
+        
+          { header: "To Date", key: 'toDate', width: columnWidths.toDate, style: headerStyle },
+          { header: "Trainer Name", key: 'trainerName', width: columnWidths.trainerName, style: headerStyle },
+          { header: "Location", key: 'location', width: columnWidths.location, style: headerStyle },
+          { header: "Status", key: 'status', width: columnWidths.status, style: headerStyle },
+          { header: "Remark", key: 'remark', width: columnWidths.remark, style: headerStyle },
+        ];
   
         rowData.map(product =>{
             sheet.addRow({
                 Id: product.id,
-              date:product.date,
-                casetype: product.casetype,
-                doctorname: product.doctorname,
-
+               
+                programName: product. programName,
+                
+                fromDate: product. fromDate,
+                
+                toDate: product. toDate,
+                trainerName: product.trainerName,
+                location:product.location,
+                status:product.status,
+                remark:product.remark,
+              
             })
         });
   
@@ -257,7 +293,7 @@ const SlotslistList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'Slotlist.xlsx';
+            anchor.download = 'TrainingScheduleList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -289,13 +325,13 @@ const SlotslistList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Slots List Form">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Training Schedule Form">
 
-                <SlotsListForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                < TrainingScheduleForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default  SlotslistList;
+export default  TrainingScheduleList;
