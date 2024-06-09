@@ -59,12 +59,12 @@ const SlotsListForm = ({
              <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center"> <SingleSelect
                     arr={record}
                     label="Select Doctor Name"
-                    name="doctorname"
-                    value={values.doctorname}
+                    name="name"
+                    value={values.name}
                     onChange={(event, newValue) => {
                       const syntheticEvent = {
                         target: {
-                          name: "doctorname",
+                          name: "name",
                           value: newValue,
                         },
                       };
@@ -73,8 +73,8 @@ const SlotsListForm = ({
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                      errors.doctorname && touched.doctorname ? (
-                        <span style={{ color: "red" }}>{errors.doctorname}</span>
+                      errors.name && touched.name ? (
+                        <span style={{ color: "red" }}>{errors.name}</span>
                       ) : null
                     }
                   />
@@ -88,12 +88,12 @@ const SlotsListForm = ({
                 
                     arr={CaseType}
                     label="Select Case Type"
-                    name="casetype"
-                    value={values.casetype}
+                    name="type"
+                    value={values.type}
                     onChange={(event, newValue) => {
                       const syntheticEvent = {
                         target: {
-                          name: "casetype",
+                          name: "type",
                           value: newValue,
                         },
                       };
@@ -103,9 +103,9 @@ const SlotsListForm = ({
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                      errors.casetype && touched.casetype ? (
+                      errors.type && touched.type ? (
                         <span style={{ color: "red" }}>
-                          {errors.casetype}
+                          {errors.type}
                         </span>
                       ) : null
                     }
