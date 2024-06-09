@@ -6,7 +6,7 @@ import SingleSelect from "../common/SingleSelect";
 
 //import TextArea from "../TextArea";
 
-const SlotsListForm =({
+const SlotsListForm = ({
   values,
   touched,
   handleBlur,
