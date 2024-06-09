@@ -34,12 +34,16 @@ const CanteenLocationList = () => {
 
     const [showupdate,setShowupdate] = useState(false);
 
+    const [fetchTrigger, setFetchTrigger] = useState(0);
+
     const initialValues = {
         location: "",
         code: "",
-        type: ""
+        type: "",
+        lastModified: "",
+        modifiedBy: ""
       };
-
+   
 
       const {
         values,
@@ -53,41 +57,39 @@ const CanteenLocationList = () => {
       } = useFormik({
         initialValues: initialValues,
         validationSchema: CanteenLocationValidationForm,
-         onSubmit: (values, action) => {
-             console.log(values);
-             action.resetForm();
-          },
-        // onSubmit: async (values, {resetForm}) => {
-        // try {
-        //     const response = await axiosClientPrivate.post('/business-units', values);
-        //     toast.success("Saved Successfully!",{
-        //         position:"top-center"
-        //      }); 
-        //            // getting id(key,value) of last index
-        //         const id = rowData[rowData.length-1].id;
-        //         const obj = {
-        //             id : id+1,
-        //             ...values
-        //         }
-        //      console.log(obj);
-        //      setRowData(rowData => [...rowData, obj]);
-        //     console.log('Response:', response.data);
-        //     resetForm();
-        //   } catch (error) {
-        //     console.log(values);
-        //     console.error('Error:', error);
-        //   }
-        // },
-      });
+        onSubmit: async (values, {resetForm}) => {
+            try {
+                const response = await axiosClientPrivate.post('/medicallist', values);
+                toast.success("Saved Successfully!",{
+                    position:"top-center"
+                 }); 
+                       // getting id(key,value) of last index
+                   // const id = rowData[rowData.length-1].Id;
+                   // const obj = {
+                      //  Id : id+1,
+                      //  ...values
+                  //  }
+                 //console.log(obj);
+                // setRowData(rowData => [...rowData, obj]);
+                setFetchTrigger(prev => prev+1);
+                console.log('Response:', response.data);
+                resetForm();
+              } catch (error) {
+                console.log(values);
+                console.error('Error:', error);
+              }
+            },
+          });
+    
     const handleEdit = async (id) => {
         alert(id);
         try {
           const response = await axiosClientPrivate.get(`/business-units/${id}`);
             console.log(response.data);
-            setFieldValue("buEmail",response.data.buEmail);
-            setFieldValue("buHeadName",response.data.buHeadName);
-            setFieldValue("buId",response.data.buId);
-            setFieldValue("buName",response.data.buName);
+            setFieldValue("id",response.data.id);
+            setFieldValue(" location",response.data.location);
+            setFieldValue("code",response.data.code);
+            setFieldValue("type",response.data.type);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -110,6 +112,7 @@ const CanteenLocationList = () => {
              });
              resetForm();
              //setRowData(rowData => [...rowData,values]);
+             setFetchTrigger(prev => prev+1);
         }
         catch(err){
             console.log(values);
@@ -124,7 +127,8 @@ const CanteenLocationList = () => {
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
            await axiosClientPrivate.delete(`/business-units/${id}`);
-           setRowData(prevData => prevData.filter(row => row.buId !== id));
+          // setRowData(prevData => prevData.filter(row => row.buId !== id));
+          setFetchTrigger(prev => prev+1);
        } catch (error) {
            console.error('Error deleting row:', error);
        }
@@ -164,7 +168,7 @@ const CanteenLocationList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.id;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -186,19 +190,19 @@ const CanteenLocationList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [fetchTrigger]);
 
 
      
 
     const exportpdf = async () => {
         const doc = new jsPDF();
-        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const header = [['id','location',"code","type"]];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.buName,
-          item.buHeadName,
-          item.buEmail,
+          item.id,
+          item.location,
+          item.code,
+          item.type,
           
         ]);
         doc.autoTable({
@@ -210,7 +214,7 @@ const CanteenLocationList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("AddCityList.pdf");
+        doc.save("CanteenLocationList.pdf");
     };
 
 
@@ -227,26 +231,26 @@ const CanteenLocationList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            Id: 10,
-            buName: 20,
-            buHeadName: 15,
-            buEmail: 25,
+            id: 10,
+            location: 20,
+            code: 15,
+            type: 25,
       };
   
         sheet.columns = [
-          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
-          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "id", key: 'id', width: columnWidths.id, style: headerStyle },
+          { header: "location", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "code", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
+          { header: "type", key: 'buName', width: columnWidths.buName, style: headerStyle },
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
-                buName: product.buName,
-                buHeadName: product.buHeadName,
-                buEmail: product.buEmail,
+                id: product.id,
+                location: product.location,
+                code: product.code,
+                type: product.type,
             })
         });
   
@@ -257,7 +261,7 @@ const CanteenLocationList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'CanteenLocationList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
