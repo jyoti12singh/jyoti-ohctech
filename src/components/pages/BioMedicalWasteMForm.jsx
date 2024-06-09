@@ -6,7 +6,7 @@ import SingleSelect from "../common/SingleSelect";
 
 //import TextArea from "../TextArea";
 
-const BioMedicalWasteMForm =({
+const BioMedicalWasteMForm = ({
   values,
   touched,
   handleBlur,

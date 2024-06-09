@@ -23,7 +23,7 @@ import PropTypes from "prop-types";
 const SlotslistList = () => {
 
 
-    const [rowData, setRowData] = useState([]);
+    const [rowData, setRowData] =useState([]);
 
     const [colDefs, setColDefs] = useState([]);
 
