@@ -15,12 +15,12 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import SlotsListForm from './SlotsListForm';
+import TrainingDetailForm from './TrainingDetailForm';
 import PropTypes from "prop-types";
 //import MultipleSelect from '../common/MultipleSelect';
 //import TextField from '@mui/material';
-import { SlotsListform } from './Validationform';
-const SlotslistList = () => {
+import { TrainingDetailform } from './Validationform';
+const TrainingDetailList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -38,12 +38,15 @@ const SlotslistList = () => {
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
     const initialValues = {
-         date:"",
-        doctorname:"",
-        casetype:"" 
+        programName:"",
+        programdescription:"",
+        programDuration:"",
+        programMode:"",
+        programType:"",
+        keyHealthParamSection:""
       };
 
-   const {
+      const {
         values,
         touched,
         errors,
@@ -54,7 +57,7 @@ const SlotslistList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: SlotsListform,
+        validationSchema: TrainingDetailform,
         onSubmit: async (values, {resetForm}) => {
         try {
             const response = await axiosClientPrivate.post('/medicallist', values);
@@ -84,9 +87,13 @@ const SlotslistList = () => {
           const response = await axiosClientPrivate.get(`/business-units/${id}`);
             console.log(response.data);
             setFieldValue("id",response.data.id);
-            setFieldValue("date",response.data.date);
-            setFieldValue("casetype",response.data.casetype);
-            setFieldValue("doctorname",response.data.doctorname);
+       
+            setFieldValue("programName", response.data.programName);
+            setFieldValue("programdescription",response.data.programdescription);
+            setFieldValue("programDuration", response.data.programDuration);
+            setFieldValue("programMode",response.data.programMode);
+            setFieldValue("programType",response.data.programType);
+            setFieldValue("keyHealthParamSection",response.data.keyHealthParamSection);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
          
@@ -144,11 +151,12 @@ const SlotslistList = () => {
     const pagination = true;
     const paginationPageSize = 50;
     const paginationPageSizeSelector = [50, 100, 200, 500];
-   
+    
+       
 
     useEffect(() => {
         const controller = new AbortController();
-  
+       
         const getAllOhc = async () => {
             try {
                 const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
@@ -157,13 +165,17 @@ const SlotslistList = () => {
                 setRowData(items);
                 if (items.length > 0) {
                     const headerMappings = {
-                        date: "Date",
-                        doctorname : "Doctor Name",
-                        casetype : "Case Type",
-                    };
+                        programName: "Program Name ",
+                        programdescription : "Program Description",
+                        programDuration : "Program Duration",
+                        programMode : "Program Mode",
+                        programType : "Program Type",
+                        prokeyHealthParamSectiongramMode : "Key Health Param Section",
+                    };   
+            
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName:headerMappings[key] ||  key.charAt(0).toUpperCase() + key.slice(1),
+                        headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
                         filter: true,
                         floatingFilter: true,
                         sortable: true,
@@ -197,12 +209,15 @@ const SlotslistList = () => {
     const exportpdf = async () => {
        
         const doc = new jsPDF();
-        const header = [['Id',"Date","Doctor Name","Case Type",]];
+        const header = [['Id',"Program Name","Program Description","Program Duration","Program Mode","Program Type","Key Health Param Section"]];
         const tableData = rowData.map(item => [
             item.id,
-            item.date,
-            item.casetype,
-            item.doctorname,
+            item.programName,
+            item.programdescription,
+            item.programDuration,
+            item.programMode,
+            item.programType,
+            item.keyHealthParamSection,
         ]);
         doc.autoTable({
           head: header,
@@ -213,13 +228,13 @@ const SlotslistList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("Slotlist.pdf");
+        doc.save("TrainingDetailList.pdf");
     };
-     const exportExcelfile = async () => {
+    const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-       const headerStyle = {
-       alignment: { horizontal: 'center' }
+         const headerStyle = {
+        alignment: { horizontal: 'center' }
           
       };
   
@@ -227,26 +242,40 @@ const SlotslistList = () => {
         
         const columnWidths = {
             Id: 10,
-           date:20,
-            casetype: 20,
-            doctorname: 20, 
-      };
+             programName: 20,
+            programdescription: 20,
+            programDuration: 20,
+            programMode: 20,
+            programType:20,
+            keyHealthParamSection:20,
+         };
   
         sheet.columns = [
           { header: "Id", key: 'Id', width: columnWidths.Id, style: headerStyle },
-          { header: "Date", key: 'date', width: columnWidths.date, style: headerStyle },
        
-          { header: "Case Type", key: 'casetype', width: columnWidths.casetype, style: headerStyle },
-          { header: "Doctor Name", key: 'doctorname', width: columnWidths.doctorname, style: headerStyle },
-    ];
+          { header: "Program Name", key: 'programName', width: columnWidths.programName, style: headerStyle },
+         
+          { header: "Program Description", key: 'programdescription', width: columnWidths.programdescription, style: headerStyle },
+        
+          { header: "Program Duration", key: 'programDuration', width: columnWidths.programDuration, style: headerStyle },
+          { header: "Program Mode", key: 'programMode', width: columnWidths.programMode, style: headerStyle },
+          { header: "Program Type", key: 'programType', width: columnWidths.programType, style: headerStyle },
+          { header: "Key Health Param Section", key: 'keyHealthParamSection', width: columnWidths.keyHealthParamSection, style: headerStyle },
+        ];
   
         rowData.map(product =>{
             sheet.addRow({
                 Id: product.id,
-              date:product.date,
-                casetype: product.casetype,
-                doctorname: product.doctorname,
-
+               
+                programName: product. programName,
+                
+                programdescription: product. programdescription,
+                
+                programDuration: product. programDuration,
+                programMode: product.programMode,
+                programType:product.programType,
+                keyHealthParamSection:product.keyHealthParamSection,
+              
             })
         });
   
@@ -257,7 +286,7 @@ const SlotslistList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'Slotlist.xlsx';
+            anchor.download = 'TrainingDetailList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -289,13 +318,13 @@ const SlotslistList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Slots List Form">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Training & Wellness Program Details Form">
 
-                <SlotsListForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                < TrainingDetailForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default  SlotslistList;
+export default  TrainingDetailList;
