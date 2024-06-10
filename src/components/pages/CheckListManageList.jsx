@@ -53,9 +53,10 @@ const CheckListManageList = () => {
         itemtype:"",
         item:"",
         qty:"",
-       
         unit:"",
         delete:"",
+        lastModified:"",
+        modifiedBy:""
        
       };
 
@@ -105,16 +106,14 @@ const CheckListManageList = () => {
             console.log(response.data);
             setFieldValue("id",response.data.id);
             setFieldValue("issueto",response.data.issueto);
-           
             setFieldValue("ohclocation",response.data.ohclocation);
             setFieldValue("itemtype",response.data.itemtype);
             setFieldValue("item", response.data.item);
-            
-
             setFieldValue("qty",response.data.qty);
-            
             setFieldValue("unit",response.data.unit);
             setFieldValue("delete",response.data.delete);
+            setFieldValue("lastModified", response.data.lastModified);
+            setFieldValue("modifiedBy", response.data.modifiedBy);
             setId(id);
           setShowupdate(true);
           setOpenPopup(true);
@@ -191,7 +190,7 @@ const CheckListManageList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.id;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -221,22 +220,18 @@ const CheckListManageList = () => {
     const exportpdf = async () => {
        
         const doc = new jsPDF();
-        const header = [['Id','issueto', "ohclocation","itemtype","item","qty","unit","delete"
+        const header = [['id','issueto', "ohclocation","itemtype","item","qty","unit","delete"
         ]];
         const tableData = rowData.map(item => [
+            item.id,
             item.issueto,
-          
             item.ohclocation,
             item.itemtype,
             item.item,
-            
             item.qty,
-            
             item.unit,
             item.delete,
          
-          
-          
         ]);
         doc.autoTable({
           head: header,
@@ -247,33 +242,25 @@ const CheckListManageList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("RulegenerationList.pdf");
+        doc.save("CheckListManageList.pdf");
     };
-
 
     const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-       
-  
         const headerStyle = {
-      
           alignment: { horizontal: 'center' }
-          
       };
   
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            Id: 10,
+            id: 10,
             issueto: 20,
-        
             ohclocation: 20,
             itemtype: 20,
             item: 20,
-          
             qty: 20,
-            
             unit: 20,
             delete: 20,
            
@@ -283,39 +270,28 @@ const CheckListManageList = () => {
       };
   
         sheet.columns = [
-          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "issueto", key: 'issueto', width: columnWidths.issueto, style: headerStyle },
-          { header: "ohclocation", key: 'ohclocation', width: columnWidths.ohclocation, style: headerStyle },
-
-          { header: "itemtype", key: 'itemtype', width: columnWidths.itemtype, style: headerStyle },
-          { header: "item", key: 'item', width: columnWidths.item, style: headerStyle },
-          { header: "qty", key: 'qty', width: columnWidths.qty, style: headerStyle },
-
-          { header: "unit", key: 'unit', width: columnWidths.unit, style: headerStyle },
-          { header: "delete", key: 'delete', width: columnWidths.delete, style: headerStyle },
+          { header: "id", key: 'buId', width: columnWidths.buId, style: headerStyle },
+          { header: "issueto", key: 'buName', width: columnWidths.buName, style: headerStyle },
+          { header: "ohclocation", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
+          { header: "itemtype", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "item", key: 'buName', width: columnWidths.buName, style: headerStyle },
+          { header: "qty", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
+          { header: "unit", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "delete", key: 'buName', width: columnWidths.buName, style: headerStyle },
          
           
-
-         
       ];
   
         rowData.map(product =>{
             sheet.addRow({
                 buId: product.buId,
                 issueto: product.issueto,
-                ohclocation: product. ohclocation,
+                ohclocation: product.ohclocation,
                 itemtype: product.itemtype,
-                item: product. item,
-             
-                qty: product. qty,
-      
-                unit: product. unit,
+                item: product.item,
+                qty: product.qty,
+                unit: product.unit,
                 delete: product.delete,
-             
-
-              
-
-
 
             })
         });
@@ -327,7 +303,7 @@ const CheckListManageList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'CheckListManageList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })

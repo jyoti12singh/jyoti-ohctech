@@ -45,6 +45,9 @@ const CheckupSectionMasterList = () => {
         ApplicableRules:[],
         SectionSequence:"",
         Interpretation:"",
+        lastModified:"",
+        modifiedBy:""
+
       };
 
 
@@ -60,10 +63,6 @@ const CheckupSectionMasterList = () => {
       } = useFormik({
         initialValues: initialValues,
         validationSchema: CheckupSectionMasterValidationForm,
-        // onSubmit: (values, action) => {
-        //     console.log(values);
-        //     action.resetForm();
-        //   },
         onSubmit: async (values, {resetForm}) => {
         try {
             const response = await axiosClientPrivate.post('/business-units', values);
@@ -96,10 +95,15 @@ const CheckupSectionMasterList = () => {
         try {
           const response = await axiosClientPrivate.get(`/business-units/${id}`);
             console.log(response.data);
-            setFieldValue("buEmail",response.data.buEmail);
-            setFieldValue("buHeadName",response.data.buHeadName);
-            setFieldValue("buId",response.data.buId);
-            setFieldValue("buName",response.data.buName);
+            setFieldValue("id",response.data.id);
+            setFieldValue("CheckupSectionName",response.data.CheckupSectionName);
+            setFieldValue("Description",response.data.Description);
+            setFieldValue("Notes",response.data.Notes);
+            setFieldValue("Comments",response.data.Comments);
+            setFieldValue("SetStatus",response.data.SetStatus);
+            setFieldValue("ApplicableRules",response.data.ApplicableRules);
+            setFieldValue("SectionSequence",response.data.SectionSequence);
+            setFieldValue("Interpretation",response.data.Interpretation);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -179,7 +183,7 @@ const CheckupSectionMasterList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.id;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -203,17 +207,22 @@ const CheckupSectionMasterList = () => {
 
     }, [fetchTrigger]);
 
-
+   
      
 
     const exportpdf = async () => {
         const doc = new jsPDF();
-        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const header = [['id', 'CheckupSectionName',"Description","Notes","Comments","SetStatus","ApplicableRules","SectionSequence","Interpretation"]];
         const tableData = rowData.map(item => [
           item.id,
-          item.buName,
-          item.buHeadName,
-          item.buEmail,
+          item.CheckupSectionName,
+          item.Description,
+          item.Notes,
+          item.Comments,
+          item.SetStatus,
+          item.ApplicableRules,
+          item.SectionSequence,
+          item.Interpretation,
           
         ]);
         doc.autoTable({
@@ -242,26 +251,42 @@ const CheckupSectionMasterList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            Id: 10,
-            buName: 20,
-            buHeadName: 15,
-            buEmail: 25,
+            id: 10,
+            CheckupSectionName: 15,
+            Description: 20,
+            Notes: 20,
+            Comments: 15,
+            SetStatus: 15,
+            ApplicableRules: 20,
+            SectionSequence: 15,
+            Interpretation: 15,
+          
       };
   
         sheet.columns = [
-          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
-          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "id", key: 'id', width: columnWidths.id, style: headerStyle },
+          { header: "CheckupSectionName", key: 'buName', width: columnWidths.buName, style: headerStyle },
+          { header: "Description", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
+          { header: "Notes", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "Comments", key: 'buId', width: columnWidths.buId, style: headerStyle },
+          { header: "SetStatus", key: 'buName', width: columnWidths.buName, style: headerStyle },
+          { header: "ApplicableRules", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
+          { header: "SectionSequence", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "Interpretation", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
-                buName: product.buName,
-                buHeadName: product.buHeadName,
-                buEmail: product.buEmail,
+                id: product.id,
+                CheckupSectionName: product.CheckupSectionName,
+                Description: product.Description,
+                Notes: product.Notes,
+                Comments: product.Comments,
+                SetStatus: product.SetStatus,
+                ApplicableRules: product.ApplicableRules,
+                SectionSequence: product.SectionSequence,
+                Interpretation: product.Interpretation,
             })
         });
   
@@ -272,7 +297,7 @@ const CheckupSectionMasterList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'CheckupSectionMasterList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
