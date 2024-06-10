@@ -15,7 +15,7 @@ const SlotsListForm = ({
   // setFieldValue,
   handleSubmit,
 }) => {
-    SlotsListForm.propTypes = {
+    SlotsListForm.propTypes ={
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,

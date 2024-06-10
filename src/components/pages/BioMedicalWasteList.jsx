@@ -23,7 +23,7 @@ import { BioMedicalwasteform } from './Validationform';
 const BioMedicalWasteList = () => {
 
 
-    const [rowData, setRowData] = useState([]);
+    const [rowData, setRowData] =useState([]);
 
     const [colDefs, setColDefs] = useState([]);
 

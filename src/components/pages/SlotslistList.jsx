@@ -167,7 +167,7 @@ const SlotslistList = () => {
                         filter: true,
                         floatingFilter: true,
                         sortable: true,
-                        width: key === 'id' ? 100 : undefined,
+                        width: key === 'id' ? 100 :undefined,
 
                     }));
 

@@ -15,7 +15,7 @@ const BioMedicalWasteForm = ({
   // setFieldValue,
   handleSubmit,
 }) => {
-    BioMedicalWasteForm.propTypes = {
+    BioMedicalWasteForm.propTypes ={
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,

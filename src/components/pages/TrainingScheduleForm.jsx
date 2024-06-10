@@ -9,7 +9,7 @@ import { useState } from "react";
 import MultiCheckbox from "./MultiCheckbox";
 import TrainingScheduleList from "./TrainingScheduleList";
 
-const TrainingScheduleForm = ({
+const TrainingScheduleForm =({
   values,
   touched,
   handleBlur,

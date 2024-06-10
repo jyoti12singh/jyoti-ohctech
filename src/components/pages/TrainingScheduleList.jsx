@@ -23,7 +23,7 @@ import { TrainingScheduleform } from './Validationform';
 const TrainingScheduleList = () => {
 
 
-    const [rowData, setRowData] = useState([]);
+    const [rowData, setRowData] =useState([]);
 
     const [colDefs, setColDefs] = useState([]);
 
