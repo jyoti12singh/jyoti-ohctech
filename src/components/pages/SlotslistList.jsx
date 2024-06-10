@@ -7,6 +7,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
+import { SlotsListform } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,7 +20,6 @@ import SlotsListForm from './SlotsListForm';
 import PropTypes from "prop-types";
 //import MultipleSelect from '../common/MultipleSelect';
 //import TextField from '@mui/material';
-import { SlotsListform } from './Validationform';
 const SlotslistList = () => {
 
 
@@ -38,12 +38,15 @@ const SlotslistList = () => {
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
     const initialValues = {
-         date:"",
-        doctorname:"",
-        casetype:"" 
+      
+        type:"",
+        name:"",
+        date:""
+       
       };
 
-   const {
+
+      const {
         values,
         touched,
         errors,
@@ -78,6 +81,9 @@ const SlotslistList = () => {
           }
         },
       });
+
+
+
       const handleEdit = async (id) => {
         alert(id);
         try {
@@ -85,11 +91,9 @@ const SlotslistList = () => {
             console.log(response.data);
             setFieldValue("id",response.data.id);
             setFieldValue("date",response.data.date);
-            setFieldValue("casetype",response.data.casetype);
-            setFieldValue("doctorname",response.data.doctorname);
-            setFieldValue("lastModified", response.data.lastModified);
-            setFieldValue("modifiedBy", response.data.modifiedBy);
-         
+            setFieldValue("type",response.data.type);
+            setFieldValue("name",response.data.name);
+       
             setId(id);
           setShowupdate(true);
           setOpenPopup(true);
@@ -119,6 +123,7 @@ const SlotslistList = () => {
         }
       }
 
+
      // to delete a row
      const handleDeleteRow = async (id) => {
         alert(id)
@@ -144,11 +149,10 @@ const SlotslistList = () => {
     const pagination = true;
     const paginationPageSize = 50;
     const paginationPageSizeSelector = [50, 100, 200, 500];
-   
 
     useEffect(() => {
         const controller = new AbortController();
-  
+
         const getAllOhc = async () => {
             try {
                 const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
@@ -156,30 +160,26 @@ const SlotslistList = () => {
                     // console.log(items);
                 setRowData(items);
                 if (items.length > 0) {
-                    const headerMappings = {
-                        date: "Date",
-                        doctorname : "Doctor Name",
-                        casetype : "Case Type",
-                    };
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName:headerMappings[key] ||  key.charAt(0).toUpperCase() + key.slice(1),
+                        headerName: key.charAt(0).toUpperCase() + key.slice(1),
                         filter: true,
                         floatingFilter: true,
-                        sortable: true,
-                        width: key === 'id' ? 100 : undefined,
-
+                        sortable: true
                     }));
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.id;
+                            const id = params.data.buId;
                             return <CustomActionComponent id={id} />
                         }
                     });
 
                     setColDefs(columns);
                 }
+
+                
+
             } catch (err) {
                 console.error("Failed to fetch data: ", err);
                 setRowData([]);
@@ -194,15 +194,21 @@ const SlotslistList = () => {
 
     }, [fetchTrigger]);
 
+
+     
+
     const exportpdf = async () => {
        
         const doc = new jsPDF();
-        const header = [['Id',"date","casetype","doctorname",]];
+        const header = [['Id',"type","name","date"]];
         const tableData = rowData.map(item => [
-            item.id,
+            item.bracket,
             item.date,
-            item.casetype,
-            item.doctorname,
+            item.type,
+            item.name,
+          
+          
+          
         ]);
         doc.autoTable({
           head: header,
@@ -213,13 +219,18 @@ const SlotslistList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("Slotlist.pdf");
+        doc.save("RulegenerationList.pdf");
     };
-     const exportExcelfile = async () => {
+
+
+    const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-       const headerStyle = {
-       alignment: { horizontal: 'center' }
+       
+  
+        const headerStyle = {
+      
+          alignment: { horizontal: 'center' }
           
       };
   
@@ -228,24 +239,31 @@ const SlotslistList = () => {
         const columnWidths = {
             Id: 10,
            date:20,
-            casetype: 20,
-            doctorname: 20, 
+            type: 20,
+            name: 20,
+  
+         
+           
+            
       };
   
         sheet.columns = [
           { header: "Id", key: 'Id', width: columnWidths.Id, style: headerStyle },
-          { header: "Date", key: 'date', width: columnWidths.date, style: headerStyle },
+          { header: "date", key: 'date', width: columnWidths.date, style: headerStyle },
        
-          { header: "Case Type", key: 'casetype', width: columnWidths.casetype, style: headerStyle },
-          { header: "Doctor Name", key: 'doctorname', width: columnWidths.doctorname, style: headerStyle },
-    ];
+          { header: "type", key: 'type', width: columnWidths.type, style: headerStyle },
+          { header: "name", key: 'name', width: columnWidths.name, style: headerStyle },
+    
+
+         
+      ];
   
         rowData.map(product =>{
             sheet.addRow({
-                Id: product.id,
+                Id: product.Id,
               date:product.date,
-                casetype: product.casetype,
-                doctorname: product.doctorname,
+                type: product.type,
+                name: product.name,
 
             })
         });
@@ -257,12 +275,13 @@ const SlotslistList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'Slotlist.xlsx';
+            anchor.download = 'download.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
     }
    
+
     return (
         <>
         <ToastContainer />
