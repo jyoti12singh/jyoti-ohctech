@@ -109,9 +109,9 @@ import {
   
   const NewHeader = () => {
    
-    const axiosClientPrivate = useAxiosPrivate();
-    const [data,setData] = useState([]);
-    const { sessionData,updateSessionData } = useSessionStorage("sessionData");
+    // const axiosClientPrivate = useAxiosPrivate();
+    // const [data,setData] = useState([]);
+    // const { sessionData,updateSessionData } = useSessionStorage("sessionData");
     // const roleId = sessionData?.roleId;
 
     const [open, setOpen] = useState(false);
@@ -140,6 +140,7 @@ import {
     const handleDrawerClose = () => {
       setToggleDrawer(false);
     };
+    
 
       const drawer = (
         <div>
@@ -292,9 +293,9 @@ import {
         </Drawer>
         
       </nav>
-      <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+      {/*<Box sx={{ display: { xs: 'none', sm: 'block' } }}>
         <SideBar1 />
-      </Box>
+      </Box>*/}
     </div>
       
     );
