@@ -18,7 +18,9 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
-
+// new
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 
 const VaccineList = () => {
@@ -187,9 +189,10 @@ const VaccineList = () => {
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
                         headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
-                        filter: true,
+                        // filter: true,
                         floatingFilter: true,
                         sortable: true,
+                        filter: 'agTextColumnFilter' ,
                         width: key === 'id' ? 100 : undefined,
                     }));
 
@@ -223,53 +226,7 @@ const VaccineList = () => {
      
 
     const exportpdf = async () => {
-        // const headers = createHeaders([
-        //     "id",
-        //     "ohcName",
-        //     // "ohcCode",
-        //     // "OhcDescription",
-        //     // "Address",
-        //     // "State",
-        //     // "Fax",
-        //     // "PrimaryPhone",
-        //     // "PrimaryEmail",
-        //     // "PinCode",
-        //     // "OhcType",
-        //     // "IconColor",
-        //     // "IconText",
-        //     // "OhcCategory",
-        // ]);
-        // const doc = new jsPDF({orientation: "landscape"});
-        // console.log(rowData[0].id);
-        // const tableData = rowData.map((row)=>(
-        //     console.log(row.id),
-        //   {
-             
-          // console.log(row.id),
-            // ...row,
-            // id: row.id,
-            // ohcName: row.ohcName,
-            // ohcCode: row.ohcCode.toString(),
-            // ohcDescription: row.ohcDescription.toString(),
-            // address: row.address.toString(),
-            // state: row.state.toString(),
-            // fax: row.fax.toString(),
-            // primaryPhone: row.primaryPhone.toString(),
-            // primaryEmail: row.primaryEmail.toString(),
-            // pinCode: row.pinCode.toString(),
-            // ohcType: row.ohcType.toString(),
-            // iconColor: row.iconColor.toString(),
-            // iconText: row.iconText.toString(),
-            // OhcCategory: row.ohcCategory.toString(),
-        // }))
-        // const tableData = {
-        //     id : rowData[0].id,
-        //     ohcName : rowData[0].ohcName,
-        // }
-        // doc.table(1,1,tableData,headers, {autoSize:true});
-        // vaccineName:"",
-        // vaccineCompany:"",
-        // vaccineDesc:""
+        
         const doc = new jsPDF();
         const header = [['Id', 'Vaccine Name',"Company","Description"]];
         const tableData = rowData.map(item => [
@@ -295,64 +252,6 @@ const VaccineList = () => {
     const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-        // sheet.columns = [
-        //     {
-        //         header: "Id",
-        //         key: 'id',
-        //     },
-        //     {
-        //         header: "OhcName",
-        //         key: 'ohcName',
-        //     },
-        //     {
-        //         header: "OhcCode",
-        //         key: 'ohcCode',
-        //     },
-        //     {
-        //         header: "OhcDescription",
-        //         key: 'ohcDescription',
-        //     },
-        //     {
-        //       header : "Address",
-        //       key : "address",
-        //     },
-        //     {
-        //         header: "State",
-        //         key: 'state',
-        //     },
-        //     {
-        //         header: "Fax",
-        //         key: 'fax',
-        //     },
-        //     {
-        //       header: "PrimaryPhone",
-        //       key: 'primaryPhone',
-        //   },
-        //   {
-        //       header: "PrimaryEmail",
-        //       key: 'primaryEmail',
-        //   },
-        //   {
-        //       header : "PinCode",
-        //       key : "pinCode",
-        //   },
-        //   {
-        //       header: "OhcType",
-        //       key: 'ohcType',
-        //   },
-        //   {
-        //       header: "IconColor",
-        //       key: 'iconColor',
-        //   },
-        //   {
-        //     header: "IconText",
-        //     key: 'iconText',
-        // },
-        // {
-        //     header: "OhcCategory",
-        //     key: 'OhcCategory',
-        // }
-        // ];
   
         const headerStyle = {
           // font: { bold: true, size: 12 },
@@ -400,6 +299,15 @@ const VaccineList = () => {
         })
     }
    
+    const [temp,setTemp] = useState("");
+
+    const onFilterChanged = (params) => {
+        const filterModel = params.api.getFilterModel();
+        console.log("search string",filterModel);
+        // fetchFilteredData(filterModel);
+    };
+
+    console.log("tempppp",temp);
 
     return (
         <>
@@ -428,6 +336,20 @@ const VaccineList = () => {
                     onPaginationChanged={(event) => {
                         setPaginationPageSize(event.api.paginationGetPageSize());
                     }}
+                    onFilterChanged={onFilterChanged}
+                    // onFilterChanged={(params) => {
+                    //     const filterModel = params.api.getFilterModel();
+                    //     const filterInput = filterModel[colDefs[1].field]; // assuming you want to filter on the first column
+                    //     setTemp(filterInput);
+                    //     console.log(filterInput);
+                    //     // if (filterInput) {
+                    //     //   // send the filter input to your server
+                    //     //   fetchFilteredData(filterInput).then((data) => {
+                    //     //     // update the rowData with the filtered data
+                    //     //     setRowData(data);
+                    //     //   });
+                    //     // }
+                    //   }}
                 />
 
             </Box>

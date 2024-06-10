@@ -163,7 +163,7 @@ const BussinessList = () => {
             try {
                 const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
                 const items = response.data.content;
-                    // console.log(items);
+                    // console.log("business",items);
                 setRowData(items);
                 if (items.length > 0) {
   
@@ -185,7 +185,7 @@ const BussinessList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.id;
                             return <CustomActionComponent id={id} />
                         }
                     });
