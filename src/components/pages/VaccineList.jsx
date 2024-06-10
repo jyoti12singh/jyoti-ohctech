@@ -1,5 +1,5 @@
 import { Box, Button, ButtonGroup, Stack } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useCallback } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
@@ -44,7 +44,7 @@ const VaccineList = () => {
 
     // const [change, setChange] = useState("";)
 
-    console.log("check",paginationPageSize);
+    // console.log("check",paginationPageSize);
 
     const initialValues = {
         vaccineName:"",
@@ -299,15 +299,50 @@ const VaccineList = () => {
         })
     }
    
+
+    // filter
     const [temp,setTemp] = useState("");
 
     const onFilterChanged = (params) => {
         const filterModel = params.api.getFilterModel();
-        console.log("search string",filterModel);
+        setTemp(filterModel)
+        // console.log("search string",filterModel);
         // fetchFilteredData(filterModel);
     };
 
-    console.log("tempppp",temp);
+    console.log("tempppp filter",temp);
+
+
+
+//  index page
+const [index,setIndex] = useState();
+
+// const gridOptions = useMemo(() => ({
+    
+//     // pagination: true,
+//     // paginationPageSize: 10,
+//     // rowModelType: 'serverSide',
+//     // cacheBlockSize: 10,
+//     // serverSideStoreType: 'partial',
+//     paginationNumberFormatter: (params) => {
+//       return `Page ${params.value + 1}`;
+//     },
+//     // onGridReady: params => {
+//     //   params.api.setServerSideDatasource(serverSideDatasource());
+//     // },
+//     onRowClicked: (event) => {
+//         setIndex(event.node.rowIndex);
+//     },
+//   }), []);
+
+
+//   const paginationNumberFormatter = useCallback((params) => {
+//     return "[" + params.value.toLocaleString() + "]";  
+//   }, []);
+
+  console.log("index for next page : ",index);
+  
+//   console.log("grid api");
 
     return (
         <>
@@ -335,21 +370,17 @@ const VaccineList = () => {
                     paginationPageSizeSelector={pageSizeOptions}
                     onPaginationChanged={(event) => {
                         setPaginationPageSize(event.api.paginationGetPageSize());
+                        setIndex(event.api.paginationGetCurrentPage());
                     }}
+                    
                     onFilterChanged={onFilterChanged}
-                    // onFilterChanged={(params) => {
-                    //     const filterModel = params.api.getFilterModel();
-                    //     const filterInput = filterModel[colDefs[1].field]; // assuming you want to filter on the first column
-                    //     setTemp(filterInput);
-                    //     console.log(filterInput);
-                    //     // if (filterInput) {
-                    //     //   // send the filter input to your server
-                    //     //   fetchFilteredData(filterInput).then((data) => {
-                    //     //     // update the rowData with the filtered data
-                    //     //     setRowData(data);
-                    //     //   });
-                    //     // }
-                    //   }}
+                    // paginationNumberFormatter={paginationNumberFormatter}
+                    // onGridReady={(params) => {
+                    //     params.api.paginationGoToPage(currentPageIndex);
+                    // }}
+                    // paginationTotalRowCount = {200}
+                    // paginationGetPageSize = {200}
+                    
                 />
 
             </Box>
