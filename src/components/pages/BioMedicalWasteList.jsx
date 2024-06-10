@@ -37,7 +37,7 @@ const BioMedicalWasteList = () => {
 
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
-    const initialValues = {
+    const initialValues ={
         agency:"",
         collected:"",
         surveillance:"",
