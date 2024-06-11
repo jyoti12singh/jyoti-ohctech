@@ -166,7 +166,7 @@ import {
       lineHeight: theme.breakpoints.between('md', 'lg') ? '1' : '1',
       fontWeight: theme.breakpoints.down('xs') ? 'bold' : 'normal',
     }}>
-      <AppBar position="sticky" sx={{ backgroundColor: "white" }}>
+      <AppBar position="sticky" sx={{ backgroundColor: "white" }} elevation={0}>
 
         
         <StyledToolBar sx={{ height: '75px' }}>
