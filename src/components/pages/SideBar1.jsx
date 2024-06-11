@@ -51,14 +51,62 @@ import useAxiosPrivate from "../../utils/useAxiosPrivate";
 // import { useNavigate } from "react-router-dom";
 import { useSessionStorage } from "../../utils/useSessionStorage";
 import { useEffect } from "react";
+import MuiDrawer from '@mui/material/Drawer';
 
+const drawerWidth = 240;
+const openedMixin = (theme) => ({
+  width: drawerWidth,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+});
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
+const closedMixin = (theme) => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up('sm')]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
+
+// const DrawerHeader = styled("div")(({ theme }) => ({
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "flex-end",
+//   padding: theme.spacing(0, 1),
+// }));
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
 }));
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    width: drawerWidth,
+    // flexShrink: 0,
+    // whiteSpace: 'nowrap',
+    // boxSizing: 'border-box',
+    ...(open && {
+      ...openedMixin(theme),
+      '& .MuiDrawer-paper': openedMixin(theme),
+    }),
+    ...(!open && {
+      ...closedMixin(theme),
+      '& .MuiDrawer-paper': closedMixin(theme),
+    }),
+  }),
+);
 
 const SideBar1 = () => {
 
@@ -75,6 +123,17 @@ const SideBar1 = () => {
   const handleOpen = (index) => {
     setIsOpen((prevOpen) => (prevOpen === index ? null : index));
   };
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
   // const sidebararr = [
   //   {
   //     images: DutyRooster,
@@ -239,6 +298,7 @@ const SidebarMap = {
         border: "10px",
       }}
     >
+    <Drawer variant="permanent" open={open}>
       <Divider />
       <List>
       {data.map((item, index) => (
@@ -297,26 +357,22 @@ const SidebarMap = {
           )}
         </React.Fragment>
       ))}
-    </List>
+     </List>
 
-      <DrawerHeader>
-        <IconButton onClick={() => setIsOpen(isopen)} edge="start">
-          {theme.direction === "rtl" ? (
-            <ChevronRightIcon />
-          ) : (
-            <ChevronLeftIcon />
-          )}
-        </IconButton>
-      </DrawerHeader>
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </DrawerHeader>
       <Toolbar>
         <IconButton
           color="inherit"
           aria-label="open drawer"
-          onClick={() => setOpen(0)}
+          onClick={handleDrawerOpen}
           edge="start"
           sx={{
             marginRight: 5,
-            ...(open !== null && { display: "none" }),
+            ...(open && { display: 'none' }),
           }}
         >
           <ChevronRightIcon />
@@ -333,6 +389,7 @@ const SidebarMap = {
           </ListItemButton>
         </ListItem>
       </List>
+    </Drawer>
     </Box>
   );
 };
