@@ -6,7 +6,6 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-// import { PatientInfoValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,6 +17,26 @@ import 'jspdf-autotable';
 import PatientInfoForm from "./PatientProfileForm"
 import PropTypes from "prop-types";
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import * as Yup from 'yup';
+
+
+const PatientValidationForm = Yup.object({
+    selectpatientcategory: Yup.string().required("Please choose patient category "),
+  pname: Yup.string().required("Please enter patient name"),
+  fhname: Yup.string().required("Please enter father anme "),
+  date: Yup.string().required("Please enter birth date"),
+  genderchoose: Yup.string().required("Please  genderchoose"),
+  blood: Yup.string().required("Please enter  blood"),
+  aadhar: Yup.string().required("Please enter aadhar"),
+  phone: Yup.string().required("Please enter phone number"),
+  village: Yup.string().required("Please enter village"),
+  post: Yup.string().required("Please enter post"),
+  ps: Yup.string().required("Please enter ps"),
+  tehsil:Yup.string().required("Please enter tehsil "),
+  district:Yup.string().required("Please enter district "),
+  state:Yup.string().required("Please enter sat"),
+  pin:Yup.string().required("Please enter pin"),
+});
 
 const PatientProfileList = () => {
     const [rowData, setRowData] = useState([]);
@@ -61,7 +80,7 @@ const PatientProfileList = () => {
         resetForm
     } = useFormik({
         initialValues: initialValues,
-        // validationSchema: PatientInfoValidationForm,
+         validationSchema: PatientValidationForm,
         onSubmit: async (values, { resetForm }) => {
             try {
                 const response = await axiosClientPrivate.post('/patients', values);

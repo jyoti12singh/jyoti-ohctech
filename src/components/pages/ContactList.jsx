@@ -41,7 +41,7 @@ const ContactForm = ({ values, touched, handleBlur, errors, handleChange, handle
     return (
         <div style={{ display: "flex", justifyContent: "center" }}>
             <form onSubmit={handleSubmit}>
-                <Grid container spacing={5} justifyContent="center" alignItems="center" sx={{ maxWidth: 800 }}>
+                <Grid container spacing={4} justifyContent="center" alignItems="center" sx={{ maxWidth: 900 }}>
                     <Grid item xs={12} sm={6}>
                         <Input
                             label="Email"
@@ -329,7 +329,7 @@ const ContactList = () => {
                         Patient Profile
                     </Button>
                      </Link>
-                    <Button
+                    {/* <Button
                         variant="contained"
                         startIcon={<PictureAsPdfIcon />}
                         onClick={exportpdf}
@@ -342,7 +342,7 @@ const ContactList = () => {
                         onClick={exportexcel}
                     >
                         Export Excel
-                    </Button>
+                    </Button> */}
                 </ButtonGroup>
             </Stack>
             {showForm && (
@@ -358,7 +358,7 @@ const ContactList = () => {
                                 handleSubmit={handleSubmit}
                             />
                         </FormControl>
-                        <Box mt={2} display="flex" justifyContent="center">
+                        <Box mt={6} display="flex" ml={59} mr={2} >
                             <Button type="submit" variant="contained">Submit</Button>
                         </Box>
                     </form>
