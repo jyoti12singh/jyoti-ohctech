@@ -166,7 +166,7 @@ import {
       lineHeight: theme.breakpoints.between('md', 'lg') ? '1' : '1',
       fontWeight: theme.breakpoints.down('xs') ? 'bold' : 'normal',
     }}>
-      <AppBar position="sticky" sx={{ backgroundColor: "white" }}>
+      <AppBar position="sticky" sx={{ backgroundColor: "white" }} elevation={0}>
 
         
         <StyledToolBar sx={{ height: '75px' }}>
@@ -178,7 +178,7 @@ import {
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display:{ sm: 'none' } }}
           >
-            <MenuIcon onClick={handleDrawerToggle} color='black'/>
+            <MenuIcon/>
           </IconButton>
         </Box>
           <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" },color: "blue" }}>
@@ -202,7 +202,7 @@ import {
           </Search>
           <Typography variant="h7" sx={{ display: { xs: "none", sm: "block" },color: "#41B06E" }}>
             Occupational Health Center
-            <Typography variant="h7" sx={{color: "#45474B" }}>
+            <Typography variant="h7" component="span" sx={{color: "#45474B" }}>
                (Delhi, Plant OHC)
           </Typography>
           </Typography>
@@ -225,7 +225,7 @@ import {
             />
             <Typography variant="subtitle1" sx={{ color: "#45474B"}} onClick={(e) => setOpen(true)}>
               ADMIN1,
-              <Typography variant="subtitle2" sx={{ color: "#45474B",fontSize:"12px"}} onClick={(e) => setOpen(true)}>
+              <Typography variant="subtitle2" component="span" sx={{ color: "#45474B",fontSize:"12px"}} onClick={(e) => setOpen(true)}>
                 Application Admin
               </Typography>
             </Typography>
@@ -238,7 +238,7 @@ import {
             />
             <Typography variant="subtitle1" sx={{ color: "#45474B",fontSize:"10px"}} onClick={(e) => setOpen(true)}>
               ADMIN1,
-              <Typography variant="subtitle2" sx={{ color: "#45474B",fontSize:"7px"}} onClick={(e) => setOpen(true)}>
+              <Typography variant="subtitle2" component="span" sx={{ color: "#45474B",fontSize:"7px"}} onClick={(e) => setOpen(true)}>
                 Application Admin
               </Typography>
             </Typography>
