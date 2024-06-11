@@ -22,7 +22,7 @@ const PatientProfileForm = ({
     handleSubmit: PropTypes.func.isRequired,
   };
 
- const genderselect=["Femail","Mail","Third Gender"]
+ const genderselect=["Female","Male","Third Gender"]
  const bloodgroupselect=["A+","AB+","B+","B-","O+","O-"]
  const Patientselect=["A Grade","B Grade","A + Grade"]
  
@@ -61,16 +61,16 @@ const PatientProfileForm = ({
                 <Grid item  xs={12} sm={4} container spacing={1} justifyContent="center"   alignItems="center">
                 <Input
                     label="Patient Name"
-                    name="pname"
+                    name="patientName"
                     type="text"
                     size="large"
-                    value={values.pname}
+                    value={values.patientName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.pname && touched.pname ? (
+                      errors.patientName && touched.patientName ? (
                         <span style={{ color: "red" }}>
-                          {errors.pname}
+                          {errors.patientName}
                         </span>
                       ) : null
                     }
@@ -79,16 +79,16 @@ const PatientProfileForm = ({
                 <Grid item  xs={12} sm={4} container spacing={1} justifyContent="center"  alignItems="center">
                 <Input
                     label="Father's/Husband Name"
-                    name="fhname"
+                    name="fatherName"
                     type="text"
                     size="large"
-                    value={values.fhname}
+                    value={values.fatherName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.fhname && touched.fhname ? (
+                      errors.fatherName && touched.fatherName ? (
                         <span style={{ color: "red" }}>
-                          {errors.fhname}
+                          {errors.fatherName}
                         </span>
                       ) : null
                     }
@@ -97,16 +97,16 @@ const PatientProfileForm = ({
                 <Grid item xs={12} sm={4} container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label=""
-                    name="date"
+                    name="dob"
                     type="date"
                     size="large"
-                    value={values.date}
+                    value={values.dob}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.date && touched.date ? (
+                      errors.dob && touched.dob ? (
                         <span style={{ color: "red" }}>
-                          {errors.date}
+                          {errors.dob}
                         </span>
                       ) : null
                     }
@@ -117,12 +117,12 @@ const PatientProfileForm = ({
                 <SingleSelect
                     arr={genderselect}
                     label="Gender"
-                    name="genderchoose"
-                    value={values.genderchoose}
+                    name="gender"
+                    value={values.gender}
                     onChange={(event, newValue) => {
                       const syntheticEvent = {
                         target: {
-                          name: "genderchoose",
+                          name: "gender",
                           value: newValue,
                         },
                       };
@@ -131,7 +131,7 @@ const PatientProfileForm = ({
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                      errors.genderchoose && touched.genderchoose ? (
+                      errors.gender && touched.gender ? (
                         <span style={{ color: "red" }}>{errors.genderchoose}</span>
                       ) : null
                     }
@@ -141,12 +141,12 @@ const PatientProfileForm = ({
                 <SingleSelect
                     arr={bloodgroupselect}
                     label="Blood Group"
-                    name="blood"
-                    value={values.blood}
+                    name="bloodGroup"
+                    value={values.bloodGroup}
                     onChange={(event, newValue) => {
                       const syntheticEvent = {
                         target: {
-                          name: "blood",
+                          name: "bloodGroup",
                           value: newValue,
                         },
                       };
@@ -155,8 +155,8 @@ const PatientProfileForm = ({
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                      errors.blood && touched.blood ? (
-                        <span style={{ color: "red" }}>{errors.blood}</span>
+                      errors.bloodGroup && touched.bloodGroup ? (
+                        <span style={{ color: "red" }}>{errors.bloodGroup}</span>
                       ) : null
                     }
                   />
@@ -165,16 +165,16 @@ const PatientProfileForm = ({
                 <Grid item xs={12} sm={4} container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Aadhar Number"
-                    name="aadhar"
+                    name="aadharNo"
                     type="text"
                     size="large"
-                    value={values.aadhar}
+                    value={values.aadharNo}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.aadhar && touched.aadhar ? (
+                      errors.aadharNo && touched.aadharNo ? (
                         <span style={{ color: "red" }}>
-                          {errors.aadhar}
+                          {errors.aadharNo}
                         </span>
                       ) : null
                     }
@@ -183,16 +183,16 @@ const PatientProfileForm = ({
                 <Grid item xs={12} sm={4} container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Phone Number"
-                    name="phone"
+                    name="primaryPhone"
                     type="text"
                     size="large"
-                    value={values.phone}
+                    value={values.primaryPhone}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.phone && touched.phone ? (
+                      errors.primaryPhone && touched.primaryPhone ? (
                         <span style={{ color: "red" }}>
-                          {errors.phone}
+                          {errors.primaryPhone}
                         </span>
                       ) : null
                     }
@@ -311,16 +311,16 @@ const PatientProfileForm = ({
                 <Grid item xs={12} sm={4} container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Pin Code"
-                    name="pin"
+                    name="pinCode"
                     type="text"
                     size="large"
-                    value={values.pin}
+                    value={values.pinCode}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.pin && touched.pin ? (
+                      errors.pinCode && touched.pinCode ? (
                         <span style={{ color: "red" }}>
-                          {errors.pin}
+                          {errors.pinCode}
                         </span>
                       ) : null
                     }

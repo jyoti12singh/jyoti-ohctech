@@ -6,7 +6,7 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import { PatientInfoValidationForm } from './Validationform';
+// import { PatientInfoValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,22 +29,23 @@ const PatientProfileList = () => {
     const [showupdate, setShowupdate] = useState(false);
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
+    // public record PatientDto(Long id, String patientName, String fatherName, LocalDate dob, String gender, String bloodGroup, String aadharNo, String primaryPhone, String village, String post, String ps, String tehsil, String district, String state, Integer pinCode, Integer modifiedBy) {
     const initialValues = {
         selectpatientcategory: "",
-        pname: "",
-        fhname: "",
-        date: "",
-        genderchoose: "",
-        blood: "",
-        aadhar: "",
-        phone: "",
+        patientName: "",
+        fatherName: "",
+        dob: "",
+        gender: "",
+        bloodGroup: "",
+        aadharNo: "",
+        primaryPhone: "",
         village: "",
         post: "",
         ps: "",
         tehsil: "",
         district: "",
         state: "",
-        pin: "",
+        pinCode: "",
         lastModified: "",
         modifiedBy: ""
     };
@@ -60,10 +61,10 @@ const PatientProfileList = () => {
         resetForm
     } = useFormik({
         initialValues: initialValues,
-        validationSchema: PatientInfoValidationForm,
+        // validationSchema: PatientInfoValidationForm,
         onSubmit: async (values, { resetForm }) => {
             try {
-                const response = await axiosClientPrivate.post('/medicallist', values);
+                const response = await axiosClientPrivate.post('/patients', values);
                 toast.success("Saved Successfully!", {
                     position: "top-center"
                 });
@@ -80,24 +81,24 @@ const PatientProfileList = () => {
     const handleEdit = async (id) => {
         alert(id);
         try {
-            const response = await axiosClientPrivate.get(`/business-units/${id}`);
+            const response = await axiosClientPrivate.get(`/patients/${id}`);
             console.log(response.data);
             setFieldValue("id", response.data.id);
             setFieldValue("selectpatientcategory", response.data.selectpatientcategory);
-            setFieldValue("pname", response.data.pname);
-            setFieldValue("fhname", response.data.fhname);
-            setFieldValue("date", response.data.date);
-            setFieldValue("genderchoose", response.data.genderchoose);
-            setFieldValue("blood", response.data.blood);
-            setFieldValue("aadhar", response.data.aadhar);
-            setFieldValue("phone", response.data.phone);
+            setFieldValue("patientName", response.data.patientName);
+            setFieldValue("fatherName", response.data.fatherName);
+            setFieldValue("dob", response.data.dob);
+            setFieldValue("gender", response.data.gender);
+            setFieldValue("bloodGroup", response.data.bloodGroup);
+            setFieldValue("aadharNo", response.data.aadharNo);
+            setFieldValue("primaryPhone", response.data.primaryPhone);
             setFieldValue("village", response.data.village);
             setFieldValue("post", response.data.post);
             setFieldValue("ps", response.data.ps);
             setFieldValue("tehsil", response.data.tehsil);
             setFieldValue("district", response.data.district);
             setFieldValue("state", response.data.state);
-            setFieldValue("pin", response.data.pin);
+            setFieldValue("pinCode", response.data.pinCode);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
             setId(id);
@@ -111,27 +112,28 @@ const PatientProfileList = () => {
     const handleView = async (id) => {
         alert(id);
         try {
-            const response = await axiosClientPrivate.get(`/business-units/${id}`);
+            const response = await axiosClientPrivate.get(`/patients/${id}`);
             console.log(response.data);
             setFieldValue("id", response.data.id);
             setFieldValue("selectpatientcategory", response.data.selectpatientcategory);
-            setFieldValue("pname", response.data.pname);
-            setFieldValue("fhname", response.data.fhname);
-            setFieldValue("date", response.data.date);
-            setFieldValue("genderchoose", response.data.genderchoose);
-            setFieldValue("blood", response.data.blood);
-            setFieldValue("aadhar", response.data.aadhar);
-            setFieldValue("phone", response.data.phone);
+            setFieldValue("patientName", response.data.patientName);
+            setFieldValue("fatherName", response.data.fatherName);
+            setFieldValue("dob", response.data.dob);
+            setFieldValue("gender", response.data.gender);
+            setFieldValue("bloodGroup", response.data.bloodGroup);
+            setFieldValue("aadharNo", response.data.aadharNo);
+            setFieldValue("primaryPhone", response.data.primaryPhone);
             setFieldValue("village", response.data.village);
             setFieldValue("post", response.data.post);
             setFieldValue("ps", response.data.ps);
             setFieldValue("tehsil", response.data.tehsil);
             setFieldValue("district", response.data.district);
             setFieldValue("state", response.data.state);
-            setFieldValue("pin", response.data.pin);
+            setFieldValue("pinCode", response.data.pinCode);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
             setId(id);
+
             setViewMode(true);
             setOpenPopup(true);
         } catch (error) {
@@ -144,7 +146,7 @@ const PatientProfileList = () => {
         const update = values;
         try {
             console.log(values);
-            await axiosClientPrivate.put(`/medicalitem/${id}`, update);
+            await axiosClientPrivate.put(`/patients/${id}`, update);
             toast.success("Updated Successfully!", {
                 position: "top-center",
                 autoClose: 3000,
@@ -161,7 +163,7 @@ const PatientProfileList = () => {
         alert(id)
         if (window.confirm('Are you sure you want to delete this data?')) {
             try {
-                await axiosClientPrivate.delete(`/business-units/${id}`);
+                await axiosClientPrivate.delete(`/patients/${id}`);
                 setFetchTrigger(prev => prev + 1);
             } catch (error) {
                 console.error('Error deleting row:', error);
@@ -189,8 +191,9 @@ const PatientProfileList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
+                const response = await axiosClientPrivate.get(`http://localhost:8080/patients?page=0&size=${paginationPageSize}`, { signal: controller.signal });
                 const items = response.data.content;
+                console.log("patient info : ",items);
                 setRowData(items);
                 if (items.length > 0) {
                     const headerMappings = {
@@ -246,24 +249,24 @@ const PatientProfileList = () => {
 
     const exportpdf = async () => {
         const doc = new jsPDF();
-        const header = [['id', 'selectpatientcategory', 'pname', "fhname", "date", "genderchoose", "blood", "aadhar", "phone", "village", "post", "ps", "tehsil", "district", "state", "status", "pin"]];
+        const header = [['id', 'pname', "fhname", "date", "genderchoose", "blood", "aadhar", "phone", "village", "post", "ps", "tehsil", "district", "state", "pin"]];
         const tableData = rowData.map(item => [
             item.id,
-            item.selectpatientcategory,
-            item.pname,
-            item.fhname,
-            item.date,
-            item.genderchoose,
-            item.blood,
-            item.aadhar,
-            item.phone,
+            // item.selectpatientcategory,
+            item.patientName,
+            item.fatherName,
+            item.dob,
+            item.gender,
+            item.bloodGroup,
+            item.aadharNo,
+            item.primaryPhone,
             item.village,
             item.post,
             item.ps,
             item.tehsil,
             item.district,
             item.state,
-            item.pin,
+            item.pinCode,
         ]);
         doc.autoTable({
             head: header,
@@ -273,6 +276,23 @@ const PatientProfileList = () => {
             margin: { top: 30 },
             styles: { fontSize: 5 },
             columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
+        //     columnStyles: {
+        //     0: { cellWidth: 5 },   // id
+        //     2: { cellWidth: 20 },   // pname
+        //     3: { cellWidth: 20 },   // fhname
+        //     4: { cellWidth: 15 },   // date
+        //     5: { cellWidth: 20 },   // genderchoose
+        //     6: { cellWidth: 5 },   // blood
+        //     7: { cellWidth: 25 },   // aadhar
+        //     8: { cellWidth: 15 },   // phone
+        //     9: { cellWidth: 15 },   // village
+        //     10: { cellWidth: 25 },  // post
+        //     11: { cellWidth: 25 },  // ps
+        //     12: { cellWidth: 15 },  // tehsil
+        //     13: { cellWidth: 15 },  // district
+        //     14: { cellWidth: 25 },  // state
+        //     // 15: { cellWidth: 15 }   // pin
+        // }
         });
         doc.save("PatientProfileList.pdf");
     };
@@ -289,60 +309,60 @@ const PatientProfileList = () => {
 
         const columnWidths = {
             id: 10,
-            selectpatientcategory: 20,
-            pname: 20,
-            fhname: 20,
-            date: 20,
-            genderchoose: 20,
-            blood: 20,
-            aadhar: 20,
-            phone: 20,
+            // selectpatientcategory: 20,
+            patientName: 20,
+            fatherName: 20,
+            dob: 20,
+            gender: 20,
+            bloodGroup: 20,
+            aadharNo: 20,
+            primaryPhone: 20,
             village: 20,
             post: 20,
             ps: 20,
             tehsil: 20,
             district: 20,
             state: 20,
-            pin: 20,
+            pinCode: 20,
         };
 
         sheet.columns = [
-            { header: "id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-            { header: "selectpatientcategory", key: 'cpname', width: columnWidths.cpname, style: headerStyle },
-            { header: "pname", key: 'healthkeyname', width: columnWidths.healthkeyname, style: headerStyle },
-            { header: "fhname", key: 'startingrange', width: columnWidths.startingrange, style: headerStyle },
-            { header: "date", key: 'endingrange', width: columnWidths.endingrange, style: headerStyle },
-            { header: "genderchoose", key: 'lessrisk', width: columnWidths.lessrisk, style: headerStyle },
-            { header: "blood", key: 'morerisk', width: columnWidths.morerisk, style: headerStyle },
-            { header: "aadhar", key: 'lessadvice', width: columnWidths.lessadvice, style: headerStyle },
-            { header: "phone", key: 'moreadvice', width: columnWidths.moreadvice, style: headerStyle },
-            { header: "village", key: 'section', width: columnWidths.section, style: headerStyle },
-            { header: "post", key: 'columnorder', width: columnWidths.columnorder, style: headerStyle },
-            { header: "ps", key: 'placeholder', width: columnWidths.placeholder, style: headerStyle },
-            { header: "tehsil", key: 'parametervaluename', width: columnWidths.parametervaluename, style: headerStyle },
-            { header: "district", key: 'inputtype', width: columnWidths.inputtype, style: headerStyle },
-            { header: "state", key: 'checkuptype', width: columnWidths.checkuptype, style: headerStyle },
-            { header: "pin", key: 'status', width: columnWidths.status, style: headerStyle },
+            { header: "id", key: 'id', width: columnWidths.id, style: headerStyle },
+            // { header: "selectpatientcategory", key: 'cpname', width: columnWidths.cpname, style: headerStyle },
+            { header: "pname", key: 'patientName', width: columnWidths.patientName, style: headerStyle },
+            { header: "fhname", key: 'fatherName', width: columnWidths.fatherName, style: headerStyle },
+            { header: "date", key: 'dob', width: columnWidths.dob, style: headerStyle },
+            { header: "genderchoose", key: 'gender', width: columnWidths.gender, style: headerStyle },
+            { header: "blood", key: 'bloodGroup', width: columnWidths.bloodGroup, style: headerStyle },
+            { header: "aadhar", key: 'aadharNo', width: columnWidths.aadharNo, style: headerStyle },
+            { header: "phone", key: 'primaryPhone', width: columnWidths.primaryPhone, style: headerStyle },
+            { header: "village", key: 'village', width: columnWidths.village, style: headerStyle },
+            { header: "post", key: 'post', width: columnWidths.post, style: headerStyle },
+            { header: "ps", key: 'ps', width: columnWidths.ps, style: headerStyle },
+            { header: "tehsil", key: 'tehsil', width: columnWidths.tehsil, style: headerStyle },
+            { header: "district", key: 'district', width: columnWidths.district, style: headerStyle },
+            { header: "state", key: 'state', width: columnWidths.state, style: headerStyle },
+            { header: "pin", key: 'pinCode', width: columnWidths.pinCode, style: headerStyle },
         ];
 
         rowData.map(product => {
             sheet.addRow({
                 id: product.id,
-                selectpatientcategory: product.selectpatientcategory,
-                pname: product.pname,
-                fhname: product.fhname,
-                date: product.date,
-                genderchoose: product.genderchoose,
-                blood: product.blood,
-                aadhar: product.aadhar,
-                phone: product.phone,
+                // selectpatientcategory: product.selectpatientcategory,
+                patientName: product.patientName,
+                fatherName: product.fatherName,
+                dob: product.dob,
+                gender: product.gender,
+                bloodGroup: product.bloodGroup,
+                aadharNo: product.aadharNo,
+                primaryPhone: product.primaryPhone,
                 village: product.village,
                 post: product.post,
                 ps: product.ps,
                 tehsil: product.tehsil,
                 district: product.district,
                 state: product.state,
-                pin: product.pin,
+                pinCode: product.pinCode,
             })
         });
 

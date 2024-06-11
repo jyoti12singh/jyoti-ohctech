@@ -44,6 +44,8 @@ import PlantList from "./components/pages/PlantList";
 import VaccineList from "./components/pages/VaccineList";
 import RoleSelection from "./components/pages/RoleSelection";
 import OhcSelection from "./components/pages/OhcSelection";
+import PatientProfileList from "./components/pages/PatientProfileList";
+
 
 const router = createBrowserRouter([
   {
@@ -217,6 +219,10 @@ const router = createBrowserRouter([
               {
                 path : "/VaccineList",
                 element : <VaccineList />
+              },
+              {
+                path : "/PatientProfileList",
+                element : <PatientProfileList />
               }
               
             ],
