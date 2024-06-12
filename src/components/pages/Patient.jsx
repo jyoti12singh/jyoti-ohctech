@@ -58,7 +58,7 @@ const PatientForm = ({ values, touched, handleBlur, errors, handleChange, handle
             
               <Grid itemxs={3} sm={12}  justifyContent="center" alignItems="center">
                 <FormControl  fullWidth>
-                  <Grid container spacing={2} justifyContent="center" alignItems="center">
+                  <Grid container spacing={3} justifyContent="center" alignItems="center">
                     <Grid item xs={12} sm={4} container spacing={1} justifyContent="center" alignItems="center">
                     <SingleSelect
                         arr={Patientselect}
@@ -121,7 +121,7 @@ const PatientForm = ({ values, touched, handleBlur, errors, handleChange, handle
                     </Grid>
                     <Grid item xs={12} sm={4} container spacing={1} justifyContent="center" alignItems="center">
                       <Input
-                        label=""
+                        label="D.O.B"
                         name="date"
                         type="date"
                         size="large"
@@ -593,7 +593,7 @@ const Patient = () => {
                         Contact
                     </Button>
                      </Link>
-                    <Button
+                    {/* <Button
                         variant="contained"
                         startIcon={<PictureAsPdfIcon />}
                         onClick={exportpdf}
@@ -606,7 +606,7 @@ const Patient = () => {
                         onClick={exportexcel}
                     >
                         Export Excel
-                    </Button>
+                    </Button> */}
                 </ButtonGroup>
             </Stack>
             {showForm && (
@@ -622,7 +622,7 @@ const Patient = () => {
                                 handleSubmit={handleSubmit}
                             />
                         </FormControl>
-                        <Box mt={2} display="flex" justifyContent="center">
+                        <Box mt={6} display="flex" justifyContent="center">
                             <Button type="submit" variant="contained">Submit</Button>
                         </Box>
                     </form>
