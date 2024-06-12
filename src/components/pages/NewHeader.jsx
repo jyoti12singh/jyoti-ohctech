@@ -37,7 +37,6 @@ import {
   import ArrowBackIcon from '@mui/icons-material/ArrowBack';
   import ListItemButton from '@mui/material/ListItemButton';
   import SideBar1 from "./SideBar1";
-
   const drawerWidth = 240;
   
   const StyledToolBar = styled(Toolbar)({
