@@ -41,13 +41,14 @@ import {
   const drawerWidth = 240;
   
   const StyledToolBar = styled(Toolbar)({
-    // // display: "flex",
-    // justifyContent: "space-between",
+  
     display: "flex",
     justifyContent: "space-between",
-    // backgroundColor: "white",
-    // color: "black",
-    padding: "3"
+    padding: "3",
+    border: "1px solid #ccc", // Add a border to the toolbar
+    "@media (max-width: 700px)": {
+    padding: "3",
+  },
   });
   
   const Icons = styled(Box)(({ theme }) => ({
@@ -57,6 +58,9 @@ import {
     cursor: "pointer",
     [theme.breakpoints.up("sm")]: {
       display: "flex",
+    },
+    "@media (max-width: 700px)": {
+    gap: "10px",
     },
   }));
   
@@ -68,6 +72,9 @@ import {
     [theme.breakpoints.up("sm")]: {
       display: "none",
     },
+    "@media (max-width: 700px)": {
+    gap: "5px",
+  },
   }));
 
   const Search = styled('div')(({ theme }) => ({
@@ -79,7 +86,10 @@ import {
     },
     marginRight: theme.spacing(1),
     marginLeft: 0,
-    width: '500px'
+    width: '500px',
+    "@media (max-width: 700px)": {
+        width: "300px",
+    },
   }));
   
   const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -104,6 +114,9 @@ import {
       [theme.breakpoints.up('md')]: {
         width: '20ch',
       },
+      "@media (max-width: 700px)": {
+      width: "10ch",
+    },
     },
   }));
   
@@ -142,20 +155,20 @@ import {
     };
     
 
-      const drawer = (
-        <div>
-           <ListItem>
-              <ListItemIcon>
-              <img src={"/ohctech_logo.jpeg"} width="150" height="20" />
-              </ListItemIcon>
-              <ListItemText/>
-            </ListItem>
-          <Divider />
-          <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-            {/* <ListMenu handleClick={handleClick} openItem={openItem} /> */}
-          </Box>
-        </div>
-      );
+      // const drawer = (
+      //   <div>
+      //      <ListItem>
+      //         <ListItemIcon>
+      //         <img src={"/ohctech_logo.jpeg"} width="150" height="20" />
+      //         </ListItemIcon>
+      //         <ListItemText/>
+      //       </ListItem>
+      //     <Divider />
+      //     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+      //       {/* <ListMenu handleClick={handleClick} openItem={openItem} /> */}
+      //     </Box>
+      //   </div>
+      // );
     
       const container = window !== undefined ? () => window.document.body : undefined;
     
@@ -166,6 +179,7 @@ import {
       lineHeight: theme.breakpoints.between('md', 'lg') ? '1' : '1',
       fontWeight: theme.breakpoints.down('xs') ? 'bold' : 'normal',
     }}>
+    
       <AppBar position="sticky" sx={{ backgroundColor: "white" }} elevation={0}>
 
         
@@ -200,9 +214,11 @@ import {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-          <Typography variant="h7" sx={{ display: { xs: "none", sm: "block" },color: "#41B06E" }}>
+          <Typography variant="h7" sx={{ display: { xs: "none", sm: "block" },color: "#41B06E" ,"@media (max-width: 790px)": {
+              fontSize:"13px"}}}>
             Occupational Health Center
-            <Typography variant="h7" component="span" sx={{color: "#45474B" }}>
+            <Typography component="span" sx={{color: "#45474B" ,"@media (max-width: 790px)": {
+              fontSize:"12px"}}}>
                (Delhi, Plant OHC)
           </Typography>
           </Typography>
@@ -225,7 +241,7 @@ import {
             />
             <Typography variant="subtitle1" sx={{ color: "#45474B"}} onClick={(e) => setOpen(true)}>
               ADMIN1,
-              <Typography variant="subtitle2" component="span" sx={{ color: "#45474B",fontSize:"12px"}} onClick={(e) => setOpen(true)}>
+              <Typography variant="subtitle2" sx={{ color: "#45474B",fontSize:"12px"}} onClick={(e) => setOpen(true)}>
                 Application Admin
               </Typography>
             </Typography>
@@ -238,14 +254,14 @@ import {
             />
             <Typography variant="subtitle1" sx={{ color: "#45474B",fontSize:"10px"}} onClick={(e) => setOpen(true)}>
               ADMIN1,
-              <Typography variant="subtitle2" component="span" sx={{ color: "#45474B",fontSize:"7px"}} onClick={(e) => setOpen(true)}>
+              <Typography variant="subtitle2" sx={{ color: "#45474B",fontSize:"7px"}} onClick={(e) => setOpen(true)}>
                 Application Admin
               </Typography>
             </Typography>
           </UserBox>
         </StyledToolBar>
         <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: '60px'}}
               id="menu-appbar"
               aria-labelledby="demo-positioned-button"
               open={open}
@@ -269,7 +285,7 @@ import {
         </Menu>
       </AppBar>
       
-      <nav>
+      {/* <nav> */}
         <Drawer
           container={container}
           variant='temporary'
@@ -279,23 +295,26 @@ import {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: 'block', sm: 'none' },
+            // display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
-              backgroundColor:"white"
+              backgroundColor:"white",
+              "@media (max-width: 599px)": {
+              width: "200px",
+              },
             },
           }}
         >
-        {drawer}
+        {/* {drawer} */}
           
-        <SideBar1 />
+          <SideBar1 />
         </Drawer>
         
-      </nav>
-      {/*<Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+      {/* </nav> */}
+      {/* <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
         <SideBar1 />
-      </Box>*/}
+      </Box> */}
     </div>
       
     );
