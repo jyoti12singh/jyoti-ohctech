@@ -38,7 +38,7 @@ import {
   import ListItemButton from '@mui/material/ListItemButton';
   import SideBar1 from "./SideBar1";
   const drawerWidth = 240;
-  
+  import { Link } from "react-router-dom";
   const StyledToolBar = styled(Toolbar)({
   
     display: "flex",
@@ -277,7 +277,7 @@ import {
               }}
             >
               <MenuItem><AccountCircleIcon/>Profile</MenuItem>
-              <MenuItem><SwapHorizIcon/>Switch Role</MenuItem>
+              <MenuItem><SwapHorizIcon/><Link to="/roleSelection">Switch Role</Link></MenuItem>
               <MenuItem><VpnKeyIcon/>Change Password</MenuItem>
               <MenuItem><LibraryBooksRoundedIcon/>Read Manual</MenuItem>
               <MenuItem><PowerSettingsNewRoundedIcon/>Logout</MenuItem>

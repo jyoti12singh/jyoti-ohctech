@@ -18,7 +18,7 @@ import PatientInfoForm from "./PatientProfileForm"
 import PropTypes from "prop-types";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import * as Yup from 'yup';
-
+import { Link } from 'react-router-dom';
 
 const PatientValidationForm = Yup.object({
     selectpatientcategory: Yup.string().required("Please choose patient category "),
@@ -196,7 +196,9 @@ const PatientProfileList = () => {
         };
         return <div>
             <Button onClick={() => handleView(id)}><VisibilityIcon /></Button>
-            <Button onClick={() => handleEdit(id)}><EditNoteRoundedIcon /></Button>
+            <Link to={`/Patient/${id}`}>
+            <Button ><EditNoteRoundedIcon /></Button>
+            </Link>
             <Button color="error" onClick={() => handleDeleteRow(id)}><DeleteSweepRoundedIcon /></Button>
         </div>
     };
@@ -212,7 +214,7 @@ const PatientProfileList = () => {
             try {
                 const response = await axiosClientPrivate.get(`http://localhost:8080/patients?page=0&size=${paginationPageSize}`, { signal: controller.signal });
                 const items = response.data.content;
-                console.log("patient info : ",items);
+                // console.log("patient info : ",items);
                 setRowData(items);
                 if (items.length > 0) {
                     const headerMappings = {

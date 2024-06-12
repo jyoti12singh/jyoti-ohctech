@@ -7,7 +7,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import MedicineTimingForm from './MedicineTimingForm';
+import MedicineTimingForm from './MedTimingForm';
 import PropTypes from "prop-types";
 import { MedTimeValidationForm } from './Validationform';
 import { useFormik } from "formik";

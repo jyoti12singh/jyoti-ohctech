@@ -45,7 +45,8 @@ import VaccineList from "./components/pages/VaccineList";
 import RoleSelection from "./components/pages/RoleSelection";
 import OhcSelection from "./components/pages/OhcSelection";
 import PatientProfileList from "./components/pages/PatientProfileList";
-
+import Patient from "./components/pages/Patient";
+import MedFreqList from "./components/pages/MedFreqList";
 
 const router = createBrowserRouter([
   {
@@ -223,8 +224,15 @@ const router = createBrowserRouter([
               {
                 path : "/PatientProfileList",
                 element : <PatientProfileList />
+              },
+              {
+                path : "/Patient/:id",
+                element : <Patient />
+              },
+              {
+                path : "/MedFreqList",
+                element : <MedFreqList/ >
               }
-              
             ],
           },
         ],

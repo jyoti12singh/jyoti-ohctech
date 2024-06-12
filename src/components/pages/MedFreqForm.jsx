@@ -1,13 +1,7 @@
-import Ohclogo from "./Ohclogo";
-import { FormControl, Grid, TextField } from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
 import SingleSelect from "../common/SingleSelect"
-import MultipleSelect from "../common/MultipleSelect";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useState } from "react";
-import MultiCheckbox from "./MultiCheckbox";
 
 
 const MedFreqForm = ({
@@ -16,7 +10,7 @@ const MedFreqForm = ({
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
   MedFreqForm.propTypes = {
@@ -45,15 +39,15 @@ const MedFreqForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter Medicine frequency"
-                    name="MedicineFrequency"
+                    name="medicineFrequency"
                     type="text"
                     size="large"
-                    value={values.MedicineFrequency}
+                    value={values.medicineFrequency}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.MedicineFrequency && touched.MedicineFrequency? (
-                        <span style={{ color: "red" }}>{errors.MedicineFrequency}</span>
+                      errors.medicineFrequency && touched.medicineFrequency? (
+                        <span style={{ color: "red" }}>{errors.medicineFrequency}</span>
                       ) : null
                     }
                   />
@@ -61,16 +55,16 @@ const MedFreqForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Description"
-                    name="MedicineDescription"
+                    name="frequencyDescription"
                     type="text"
                     size="large"
-                    value={values.MedicineDescription}
+                    value={values.frequencyDescription}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.MedicineDescription && touched.MedicineDescription ? (
+                      errors.frequencyDescription && touched.frequencyDescription ? (
                         <span style={{ color: "red" }}>
-                          {errors.MedicineDescription}
+                          {errors.frequencyDescription}
                         </span>
                       ) : null
                     }
@@ -79,15 +73,15 @@ const MedFreqForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="calculatedCity"
-                    name="calculatedCity"
+                    name="qty"
                     type="text"
                     size="large"
-                    value={values.calculatedCity}
+                    value={values.qty}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.calculatedCity && touched.calculatedCity ? (
-                        <span style={{ color: "red" }}>{errors.calculatedCity}</span>
+                      errors.qty && touched.qty ? (
+                        <span style={{ color: "red" }}>{errors.qty}</span>
                       ) : null
                     }
                   />
@@ -113,12 +107,12 @@ const MedFreqForm = ({
                   <SingleSelect
                     arr={Medselect}
                     label="status"
-                    name="statusType"
-                    value={values.statusType}
+                    name="active"
+                    value={values.active}
                     onChange={(event, newValue) => {
                       const syntheticEvent = {
                         target: {
-                          name: "statusType",
+                          name: "active",
                           value: newValue,
                         },
                       };
@@ -127,8 +121,8 @@ const MedFreqForm = ({
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                      errors.statusType && touched.statusType ? (
-                        <span style={{ color: "red" }}>{errors.statusType}</span>
+                      errors.active && touched.active ? (
+                        <span style={{ color: "red" }}>{errors.active}</span>
                       ) : null
                     }
                   />
