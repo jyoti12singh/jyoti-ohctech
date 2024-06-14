@@ -310,7 +310,7 @@ const ContactList = () => {
         <Box m="20px">
             <ToastContainer />
             <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2} flexWrap="wrap">
-                <ButtonGroup>
+                <ButtonGroup >
                     { /*<Button
                         variant="contained"
                         startIcon={<AddCircleOutlineRoundedIcon />}
@@ -319,7 +319,7 @@ const ContactList = () => {
                         {showForm ? 'Cancel' : 'Contact'}
     </Button> */}
                     
-                    <Link to="/Patient">
+                    <Link to="/Patient/:id">
                     <Button
                         variant="contained"
                         startIcon={<AddCircleOutlineRoundedIcon />}
@@ -327,6 +327,16 @@ const ContactList = () => {
                     >
                         {/* {showForm ? 'Cancel' : 'Patient'} */}
                         Patient Profile
+                    </Button>
+                     </Link>
+                     <Link to="/ContactList">
+                    <Button
+                        variant="contained"
+                        startIcon={<AddCircleOutlineRoundedIcon />}
+                        // onClick={() => setShowForm(!showForm)}
+                    >
+                        {/* {showForm ? 'Cancel' : 'Patient'} */}
+                        Contact
                     </Button>
                      </Link>
                     {/* <Button

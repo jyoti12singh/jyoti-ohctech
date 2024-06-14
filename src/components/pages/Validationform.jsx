@@ -30,14 +30,7 @@ export const userValidationForm = Yup.object({
 });
 
 
-export const menuValidationForm = Yup.object({
-  menuid: Yup.number().required("Please enter Menu Id"),
-  menuname: Yup.string().min(2).max(25).required("Please enter Menu Name"),
-  menudescription : Yup.string().max(50).required("Please enter Menu Description"),
-  menuurl : Yup.string().required("Please enter Menu Url"),
-  parentmanu: Yup.string().required("Please enter Parent Menu"),
-  displaysequence: Yup.string().required("Please enter Display Sequence"),
-});
+
 
 
 export const roleValidationForm = Yup.object({

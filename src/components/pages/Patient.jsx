@@ -6,7 +6,6 @@ import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import PropTypes from "prop-types";
 import Input from '../common/Input';
 import SingleSelect from "../common/SingleSelect";
 import * as Yup from 'yup';
@@ -180,21 +179,24 @@ const Patient = () => {
       handleEdit(id);
     }
 
-    
+    // /Patient/:id
 
     return (
         <Box m="20px">
             <ToastContainer />
             <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2} flexWrap="wrap">
-                <ButtonGroup>
+                <ButtonGroup spacing={2}>
+                <Link to="/Patient/:id">
                     <Button
                         variant="contained"
+                        // sx={{ marginRight: 1 }}
                         startIcon={<AddCircleOutlineRoundedIcon />}
                         // onClick={() => setShowForm(!showForm)}
                     >
                         {/* {showForm ? 'Cancel' : 'Patient'} */}
                         Patient Profile
                     </Button>
+                  </Link>
                     <Link to="/ContactList">
                     <Button
                         variant="contained"
