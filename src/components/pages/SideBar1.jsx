@@ -52,6 +52,7 @@ import useAxiosPrivate from "../../utils/useAxiosPrivate";
 import { useSessionStorage } from "../../utils/useSessionStorage";
 import { useEffect } from "react";
 import MuiDrawer from '@mui/material/Drawer';
+import DateTime from "./DateTime";
 
 const drawerWidth = 240;
 const openedMixin = (theme) => ({
@@ -75,38 +76,29 @@ const closedMixin = (theme) => ({
   },
 });
 
-// const DrawerHeader = styled("div")(({ theme }) => ({
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "flex-end",
-//   padding: theme.spacing(0, 1),
-// }));
-
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
+  // ...theme.mixins.toolbar,
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    // flexShrink: 0,
-    // whiteSpace: 'nowrap',
-    // boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
+const MiniDrawer = styled("div")(({ theme, open }) => ({
+  width: theme.spacing(7),
+  backgroundColor:"white",
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  border: "2px solid #dedede", // Add a 1px solid border
+ ...(open && {
+   ...openedMixin(theme),
   }),
-);
+ ...(!open && {
+   ...closedMixin(theme),
+  }),
+}));
 
 const SideBar1 = () => {
 
@@ -287,19 +279,16 @@ const SidebarMap = {
 
 
   return (
-    <Box  
-      sx={{
-        width: isMobile ? "100%" : 250,
-        height: "100vh",
-        backgroundColor: "white",
-        color: "#45474B",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        transition: "width 0.2s ease-in-out",
-        border: "10px",
-      }}
-    >
-    <Drawer variant="permanent" open={open}>
-      <Divider />
+      <Box>
+      <MiniDrawer open={open}>
+      {/* <Divider /> */}
+      {/* <ListItem>
+              <ListItemIcon>
+              <img src={"/ohctech_logo.jpeg"} width="150" height="20" />
+              </ListItemIcon>
+              <ListItemText/>
+      </ListItem>
+      <Divider /> */}
       <List>
       {data.map((item, index) => (
         <React.Fragment key={item.Id}>
@@ -389,7 +378,7 @@ const SidebarMap = {
           </ListItemButton>
         </ListItem>
       </List>
-    </Drawer>
+    </MiniDrawer>
     </Box>
   );
 };
