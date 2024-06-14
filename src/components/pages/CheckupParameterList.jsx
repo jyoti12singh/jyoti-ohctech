@@ -248,7 +248,7 @@ const CheckupParameterList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.id;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -278,10 +278,11 @@ const CheckupParameterList = () => {
     const exportpdf = async () => {
        
         const doc = new jsPDF();
-        const header = [['Id','cpname', 'healthkeyname',"startingrange","endingrange","lessrisk","morerisk","lessadvice","moreadvice","section","columnorder"
+        const header = [['id','cpname', 'healthkeyname',"startingrange","endingrange","lessrisk","morerisk","lessadvice","moreadvice","section","columnorder"
         ,"placeholder","parametervaluename","inputtype","checkuptype","status","edit","selectunit","refrange","opd","daycare","injury"
       ,"rangerule","parent","mandatory","default" ]];
         const tableData = rowData.map(item => [
+            item.id,
             item.cpname,
             item.healthkeyname,
             item.startingrange,
@@ -336,7 +337,7 @@ const CheckupParameterList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            Id: 10,
+            id: 10,
             cpname: 20,
             healthkeyname: 20,
             startingrange: 20,
@@ -367,7 +368,7 @@ const CheckupParameterList = () => {
       };
   
         sheet.columns = [
-          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
+          { header: "id", key: 'buId', width: columnWidths.buId, style: headerStyle },
           { header: "cpname", key: 'cpname', width: columnWidths.cpname, style: headerStyle },
           { header: "healthkeyname", key: 'healthkeyname', width: columnWidths.healthkeyname, style: headerStyle },
           { header: "startingrange", key: 'startingrange', width: columnWidths.startingrange, style: headerStyle },
@@ -403,30 +404,30 @@ const CheckupParameterList = () => {
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
+                id: product.id,
                 cpname: product.cpname,
-                healthkeyname: product. healthkeyname,
-                startingrange: product. startingrange,
+                healthkeyname: product.healthkeyname,
+                startingrange: product.startingrange,
                 endingrange: product.endingrange,
-                lessrisk: product. lessrisk,
-                morerisk: product. morerisk,
-                lessadvice: product. lessadvice,
-                moreadvice: product. moreadvice,
-                section: product. section,
+                lessrisk: product.lessrisk,
+                morerisk: product.morerisk,
+                lessadvice: product.lessadvice,
+                moreadvice: product.moreadvice,
+                section: product.section,
                 columnorder: product.columnorder,
-                placeholder: product. placeholder,
-                parametervaluename: product. parametervaluename,
+                placeholder: product.placeholder,
+                parametervaluename: product.parametervaluename,
                 inputtype: product.inputtype,
-                checkuptype: product. checkuptype,
+                checkuptype: product.checkuptype,
                 status: product.status,
-                edit: product. edit,
+                edit: product.edit,
                 selectunit: product.selectunit,
-                refrange: product.  refrange,
-                opd: product. opd,
+                refrange: product.refrange,
+                opd: product.opd,
                 daycare: product.daycare,
                 injury: product.injury,
                 rangerule: product.rangerule,
-                parent: product. parent,
+                parent: product.parent,
                 mandatory: product.mandatory,
                 default: product.default,
                 
@@ -445,7 +446,7 @@ const CheckupParameterList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'ChekupParameterList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -457,7 +458,7 @@ const CheckupParameterList = () => {
         <ToastContainer />
             <Box
                 className="ag-theme-quartz" 
-                style={{ height: 500 }}
+                style={{ height: 660 }}
             >
 
                 <Stack sx={{ display: 'flex', flexDirection: 'row' }} marginY={1} paddingX={1}>
