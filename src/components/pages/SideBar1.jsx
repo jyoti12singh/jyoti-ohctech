@@ -366,6 +366,7 @@ const SidebarMap = {
         >
           <ChevronRightIcon />
         </IconButton>
+        <center><DateTime/></center>
       </Toolbar>
       <Divider />
       <List>
