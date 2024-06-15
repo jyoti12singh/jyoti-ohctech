@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { useSessionStorage } from "../../utils/useSessionStorage";
 import { Card, CardActionArea, CardMedia, Typography } from "@mui/material";
 import logo from '../../../public/Ohctech-logo-white.png'
+
 const RoleSelection = () => {
   const [icons] = useState([
     { image: medicalExamination, name: "Medical Examination" },
@@ -25,18 +26,6 @@ const RoleSelection = () => {
     { image: employee, name: "Employee" },
     { image: pharmacy, name: "Pharmacy" },
   ]);
-
-const RoleSelection = () => {
-  // const [icons] = useState([
-  //   { image: medicalExamination, name: "Medical Examination" },
-  //   { image: reception, name: "Reception" },
-  //   { image: applicationadmin, name: "Application Admin" },
-  //   { image: chiefmedoff, name: "Chief Medical Officer" },
-  //   { image: employee, name: "Employee" },
-  //   { image: pharmacy, name: "Pharmacy" },
-  // ]);
-
-
   
 
   // from old starting
@@ -49,7 +38,6 @@ const RoleSelection = () => {
   const navigate = useNavigate();
 
 
-  
   
 
   useEffect(() => {
@@ -179,7 +167,7 @@ const RoleSelection = () => {
            justifyContent: "center",
            alignItems: "center",
            alignContent:'center'
-            display: "flex",
+            // display: "flex",
             flexDirection: "column",
             // alignItems: "center",
             justifyContent: "center",

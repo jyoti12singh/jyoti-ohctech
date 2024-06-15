@@ -27,20 +27,20 @@ import SingleSelect from "../common/SingleSelect";
   return (
           <form onSubmit={handleSubmit}>
               <Grid container spacing={2} justifyContent="center" alignItems="center">
-              <Grid item  xs={12} sm={12} spacing={1}  container  justifyContent="center"   alignItems="center">
+              <Grid item  xs={12} sm={5} spacing={1}  container  justifyContent="center"   alignItems="center">
               <Input
                   label="Food Name"
-                  name="foodName"
+                  name="foodId"
                   type="text"
                   size="large"
                   sx={{ width: "300px" }}
-                  value={values.foodName}
+                  value={values.foodId}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   helperText={
-                    errors.foodName && touched.foodName ? (
+                    errors.foodId && touched.foodId ? (
                       <span style={{ color: "red" }}>
-                        {errors.foodName}
+                        {errors.foodId}
                       </span>
                     ) : null
                   }
@@ -50,16 +50,16 @@ import SingleSelect from "../common/SingleSelect";
               <Grid item  xs={12} sm={5}  container spacing={1} justifyContent="center"   alignItems="center">
                 <Input
                     label="Quantity in grams"
-                    name="patientName"
+                    name="quantityInGrams"
                     type="text"
                     size="large"
-                    value={values.patientName}
+                    value={values.quantityInGrams}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.patientName && touched.patientName ? (
+                      errors.quantityInGrams && touched.quantityInGrams ? (
                         <span style={{ color: "red" }}>
-                          {errors.patientName}
+                          {errors.quantityInGrams}
                         </span>
                       ) : null
                     }
@@ -68,16 +68,16 @@ import SingleSelect from "../common/SingleSelect";
                 <Grid item  xs={12} sm={5}  container spacing={1} justifyContent="center"  alignItems="center">
                 <Input
                     label="Calories"
-                    name="fatherName"
+                    name="calories"
                     type="text"
                     size="large"
-                    value={values.fatherName}
+                    value={values.calories}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.fatherName && touched.fatherName ? (
+                      errors.calories && touched.calories ? (
                         <span style={{ color: "red" }}>
-                          {errors.fatherName}
+                          {errors.calories}
                         </span>
                       ) : null
                     }
@@ -86,16 +86,16 @@ import SingleSelect from "../common/SingleSelect";
                 <Grid item xs={12} sm={5}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Protein"
-                    name="dob"
+                    name="proteins"
                     type="text"
                     size="large"
-                    value={values.dob}
+                    value={values.proteins}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.dob && touched.dob ? (
+                      errors.proteins && touched.proteins ? (
                         <span style={{ color: "red" }}>
-                          {errors.dob}
+                          {errors.proteins}
                         </span>
                       ) : null
                     }
@@ -105,16 +105,16 @@ import SingleSelect from "../common/SingleSelect";
                 <Grid item  xs={12} sm={5} container spacing={1} justifyContent="center"   alignItems="center">
                 <Input
                     label="Added sugar"
-                    name="patientName"
+                    name="addedSugar"
                     type="text"
                     size="large"
-                    value={values.patientName}
+                    value={values.addedSugar}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.patientName && touched.patientName ? (
+                      errors.addedSugar && touched.addedSugar ? (
                         <span style={{ color: "red" }}>
-                          {errors.patientName}
+                          {errors.addedSugar}
                         </span>
                       ) : null
                     }
@@ -124,12 +124,12 @@ import SingleSelect from "../common/SingleSelect";
                 <SingleSelect
                 arr={DeepFry}
                 label="Deep fried"
-                name="selectpatientcategory"
-                value={values.selectpatientcategory}
+                name="deepFried"
+                value={values.deepFried}
                 onChange={(event, newValue) => {
                   const syntheticEvent = {
                     target: {
-                      name: "selectpatientcategory",
+                      name: "deepFried",
                       value: newValue,
                     },
                   };
@@ -138,8 +138,8 @@ import SingleSelect from "../common/SingleSelect";
                 onBlur={handleBlur}
                 type="text"
                 helperText={
-                  errors.selectpatientcategory && touched.selectpatientcategorye ? (
-                    <span style={{ color: "red" }}>{errors.selectpatientcategory}</span>
+                  errors.deepFried && touched.deepFriede ? (
+                    <span style={{ color: "red" }}>{errors.deepFried}</span>
                   ) : null
                 }
               />
@@ -148,17 +148,17 @@ import SingleSelect from "../common/SingleSelect";
                 <Grid item xs={12} sm={5} container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Maida"
-                    name="aadharNo"
+                    name="maida"
                     type="text"
                     sx = {{width:'100%'}}
                     size="large"
-                    value={values.aadharNo}
+                    value={values.maida}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.aadharNo && touched.aadharNo ? (
+                      errors.maida && touched.maida ? (
                         <span style={{ color: "red" }}>
-                          {errors.aadharNo}
+                          {errors.maida}
                         </span>
                       ) : null
                     }
@@ -167,17 +167,17 @@ import SingleSelect from "../common/SingleSelect";
                 <Grid item xs={12} sm={5} container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Saturated fats"
-                    name="primaryPhone"
+                    name="saturatedFats"
                     sx = {{width:'100%'}}
                     type="text"
                     size="large"
-                    value={values.primaryPhone}
+                    value={values.saturatedFats}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.primaryPhone && touched.primaryPhone ? (
+                      errors.saturatedFats && touched.saturatedFats ? (
                         <span style={{ color: "red" }}>
-                          {errors.primaryPhone}
+                          {errors.saturatedFats}
                         </span>
                       ) : null
                     }

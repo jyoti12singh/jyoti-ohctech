@@ -1,11 +1,10 @@
 
 import { Stack } from "@mui/material";
-import { Box, Container } from "@mui/material";
 // import ohcimg from "../../../public/ohc.jpg";
 import group from "../../../public/Group.jpg";
 // import RoleCard from "./RoleCard";
 
-import { Stack, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { Box, Container } from "@mui/material";
 // import ohcimg from "../../../public/ohc.jpg";
 import ohcimg from "../../assets/images/ohc.jpg";
@@ -23,8 +22,11 @@ import useAxiosPrivate from "../../utils/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSessionStorage } from "../../utils/useSessionStorage";
-import { Card, CardActionArea, CardMedia, Typography } from "@mui/material";
+import { Card, CardActionArea, CardMedia } from "@mui/material";
 import logo from '../../../public/Ohctech-logo-white.png'
+
+// import LocalPharmacyRoundedIcon from "@mui/icons-material/LocalPharmacyRounded";
+
 const RoleSelection = () => {
   const [icons] = useState([
     { image: medicalExamination, name: "OHC dwarka" },
@@ -73,12 +75,7 @@ const RoleSelection = () => {
 
     getRoles();
 
-import { useEffect, useState } from "react";
-// import LocalPharmacyRoundedIcon from "@mui/icons-material/LocalPharmacyRounded";
-import useAxiosPrivate from "../../utils/useAxiosPrivate";
-import { useNavigate } from "react-router-dom";
-import { useSessionStorage } from "../../utils/useSessionStorage";
-import { Card, CardActionArea, CardMedia } from "@mui/material";
+
 
 
 
@@ -362,6 +359,4 @@ const  OhcSelection = ()=> {
 };
 
 export default RoleSelection;
-}
 
-export default OhcSelection;

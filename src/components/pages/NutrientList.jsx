@@ -1,5 +1,5 @@
 import { Box, Button, ButtonGroup, Stack } from '@mui/material';
-import { useEffect, useState,useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
@@ -46,10 +46,19 @@ const NutrientList = () => {
 
     // console.log("check",paginationPageSize);
 
+    // Long id, Long foodId, String calories, String addedSugar, String maida,
+    //                             String quantityInGrams, String proteins, String deepFried, String saturatedFats) {
+
     const initialValues = {
-        vaccineName:"",
-        vaccineCompany:"",
-        vaccineDesc:""
+        foodId:"",
+        calories:"",
+        addedSugar:"",
+        maida:"",
+        quantityInGrams:"",
+        proteins:"",
+        deepFried:"",
+        saturatedFats:"",
+        
       };
 
 
@@ -71,7 +80,7 @@ const NutrientList = () => {
         //   },
         onSubmit: async (values, {resetForm}) => {
         try {
-            const response = await axiosClientPrivate.post('/vaccines', values);
+            const response = await axiosClientPrivate.post('/nutrients', values);
             toast.success("Saved Successfully!",{
                 position:"top-center"
              }); 
@@ -99,12 +108,17 @@ const NutrientList = () => {
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/vaccines/${id}`);
+          const response = await axiosClientPrivate.get(`/nutrients/${id}`);
             console.log(response.data);
             setFieldValue("id",response.data.id);
-            setFieldValue("vaccineName",response.data.vaccineName);
-            setFieldValue("vaccineCompany",response.data.vaccineCompany);
-            setFieldValue("vaccineDesc",response.data.vaccineDesc);
+            setFieldValue("foodId",response.data.foodId);
+            setFieldValue("calories",response.data.calories);
+            setFieldValue("addedSugar",response.data.addedSugar);
+            setFieldValue("maida",response.data.maida);
+            setFieldValue("quantityInGrams",response.data.quantityInGrams);
+            setFieldValue("proteins",response.data.proteins);
+            setFieldValue("deepFried",response.data.deepFried);
+            setFieldValue("saturatedFats",response.data.saturatedFats);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -120,7 +134,7 @@ const NutrientList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(`/vaccines/${id}`,update);
+             await axiosClientPrivate.put(`/nutrients/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -142,7 +156,7 @@ const NutrientList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(`/vaccines/${id}`);
+           await axiosClientPrivate.delete(`/nutrients/${id}`);
         //    setRowData(prevData => prevData.filter(row => row.buId !== id));
         setFetchTrigger(prev => prev+1);
 
@@ -173,7 +187,7 @@ const NutrientList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get(`http://localhost:8080/vaccines?page=0&size=${paginationPageSize}`, { signal: controller.signal });
+                const response = await axiosClientPrivate.get(`http://localhost:8080/nutrients?page=0&size=${paginationPageSize}`, { signal: controller.signal });
                 const items = response.data.content;
                     // console.log("new",items);
                 setRowData(items);
@@ -228,12 +242,18 @@ const NutrientList = () => {
     const exportpdf = async () => {
         
         const doc = new jsPDF();
-        const header = [['Id', 'Vaccine Name',"Company","Description"]];
+        const header = [['Id', 'Food name',"Quantity in grams","Calories","Protein","Added sugar","Deep fried","Maida","Saturated fats"]];
         const tableData = rowData.map(item => [
           item.id,
-          item.vaccineName,
-          item.vaccineCompany,
-          item.vaccineDesc,
+          item.foodId,
+          item.quantityInGrams,
+          item.calories,
+          item.proteins,
+          item.addedSugar,
+          item.deepFried,
+          item.maida,
+          item.saturatedFats,
+          
           
         ]);
         doc.autoTable({
@@ -262,27 +282,41 @@ const NutrientList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            Id: 10,
-            vaccineName: 20,
-            vaccineCompany: 20,
-            vaccineDesc: 25,
+            id: 10,
+            foodId: 20,
+            quantityInGrams: 20,
+            calories: 25,
+            proteins: 20,
+            addedSugar: 25,
+            deepFried: 25,
+            maida: 20,
+            saturatedFats: 25,
       };
       
   
         sheet.columns = [
-          { header: "Id", key: 'Id', width: columnWidths.Id, style: headerStyle },
-          { header: "Vaccine Name", key: 'vaccineName', width: columnWidths.vaccineName, style: headerStyle },
-          { header: "Company", key: 'vaccineCompany', width: columnWidths.vaccineCompany, style: headerStyle },
-          { header: "Description", key: 'vaccineDesc', width: columnWidths.vaccineDesc, style: headerStyle },
-          
+          { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
+          { header: "Food name", key: 'foodId', width: columnWidths.foodId, style: headerStyle },
+          { header: "Quantity in grams", key: 'quantityInGrams', width: columnWidths.quantityInGrams, style: headerStyle },
+          { header: "Calories", key: 'calories', width: columnWidths.calories, style: headerStyle },
+          { header: "Protein", key: 'proteins', width: columnWidths.proteins, style: headerStyle },
+          { header: "Added sugar", key: 'addedSugar', width: columnWidths.addedSugar, style: headerStyle },
+          { header: "Deep fried", key: 'deepFried', width: columnWidths.deepFried, style: headerStyle },
+          { header: "Maida", key: 'maida', width: columnWidths.maida, style: headerStyle },
+          { header: "Saturated fats", key: 'saturatedFats', width: columnWidths.saturatedFats, style: headerStyle },          
       ];
   
         rowData.map(product =>{
             sheet.addRow({
                 id: product.id,
-                vaccineName: product.vaccineName,
-                vaccineCompany: product.vaccineCompany,
-                vaccineDesc: product.vaccineDesc,
+                foodId: product.foodId,
+                quantityInGrams: product.quantityInGrams,
+                calories: product.calories,
+                proteins: product.proteins,
+                addedSugar: product.addedSugar,
+                deepFried: product.deepFried,
+                maida: product.maida,
+                saturatedFats: product.saturatedFats,
             })
         });
   
