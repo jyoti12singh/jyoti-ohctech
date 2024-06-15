@@ -4,7 +4,7 @@ import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
-import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import AmbulanceForm from './AmbulanceForm';
@@ -17,6 +17,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import PropTypes from "prop-types";
 
 const AmbulanceList = () => {
 
@@ -32,6 +33,9 @@ const AmbulanceList = () => {
     const [id,setId] = useState(1);
 
     const [showupdate,setShowupdate] = useState(false);
+
+    const [fetchTrigger, setFetchTrigger] = useState(0);
+
 
     const initialValues = {
        
@@ -73,6 +77,8 @@ const AmbulanceList = () => {
         //         }
         //      console.log(obj);
         //      setRowData(rowData => [...rowData, obj]);
+        // setFetchTrigger(prev => prev+1);
+
         //     console.log('Response:', response.data);
         //     resetForm();
         //   } catch (error) {
@@ -114,7 +120,8 @@ const AmbulanceList = () => {
                 autoClose: 3000,
              });
              resetForm();
-             setRowData(rowData => [...rowData,values]);
+            //  setRowData(rowData => [...rowData,values]);
+            setFetchTrigger(prev => prev+1);
         }
         catch(err){
             console.log(values);
@@ -129,18 +136,22 @@ const AmbulanceList = () => {
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
            await axiosClientPrivate.delete(`/business-units/${id}`);
-           setRowData(prevData => prevData.filter(row => row.buId !== id));
-       } catch (error) {
+        //    setRowData(prevData => prevData.filter(row => row.buId !== id));
+        setFetchTrigger(prev => prev+1);   
+    } catch (error) {
            console.error('Error deleting row:', error);
        }
    }
    };
 
-    const CustomActionComponent = (props) => {
-          
-        return <> <Button onClick={() =>  handleEdit(props.id)}> <EditNoteRoundedIcon /></Button>
-            <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
-    };
+   const CustomActionComponent = ({id}) => {
+    CustomActionComponent.propTypes = {
+        id: PropTypes.number.isRequired,
+      };
+    return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
+       <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+
+};
 
     const pagination = true;
     const paginationPageSize = 50;
@@ -188,7 +199,7 @@ const AmbulanceList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [fetchTrigger]);
 
 
      

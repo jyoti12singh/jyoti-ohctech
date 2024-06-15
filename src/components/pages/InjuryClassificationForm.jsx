@@ -1,13 +1,8 @@
 
-import { FormControl, Grid, TextField } from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
-import SingleSelect from "../common/SingleSelect";
-import MultipleSelect from "../common/MultipleSelect";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useinjurycode } from "react";
-import MultiCheckbox from "./MultiCheckbox";
+
 
 const InjuryClassificationForm = ({
   values,
@@ -15,7 +10,7 @@ const InjuryClassificationForm = ({
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
   InjuryClassificationForm.propTypes = {
@@ -40,32 +35,32 @@ const InjuryClassificationForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Injury Name"
-                    name="InjuryName"
+                    name="injClassName"
                     type="text"
                     size="large"
-                    value={values.InjuryName}
+                    value={values.injClassName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.InjuryName && touched.InjuryName ? (
-                        <span style={{ color: "red" }}>{errors.InjuryName}</span>
+                      errors.injClassName && touched.injClassName ? (
+                        <span style={{ color: "red" }}>{errors.injClassName}</span>
                       ) : null
                     }
                   />
                 </Grid>
                 <Grid item xs={12} container spacing={1} justifyContent="center" alignItems="center">
                   <Input
-                    label=" Injury discription"
-                    name="injurydiscri"
+                    label=" Injury Description"
+                    name="injClassDesc"
                     type="text"
                     size="large"
-                    value={values.injurydiscri}
+                    value={values.injClassDesc}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.injurydiscri && touched.injurydiscri ? (
+                      errors.injClassDesc && touched.injClassDesc ? (
                         <span style={{ color: "red" }}>
-                          {errors.injurydiscri}
+                          {errors.injClassDesc}
                         </span>
                       ) : null
                     }
@@ -75,15 +70,15 @@ const InjuryClassificationForm = ({
                 <Grid item xs={12} container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Injury Code"
-                    name="injurycode"
-                    type="number"
+                    name="injClassCode"
+                    type="text"
                     size="large"
-                    value={values.injurycode}
+                    value={values.injClassCode}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.injurycode && touched.injurycode ? (
-                        <span style={{ color: "red" }}>{errors.injurycode}</span>
+                      errors.injClassCode && touched.injClassCode ? (
+                        <span style={{ color: "red" }}>{errors.injClassCode}</span>
                       ) : null
                     }
                   />

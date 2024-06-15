@@ -10,7 +10,8 @@ import Popup from './Popup';
 import MedicalForm from './MedicalForm';
 import { medicalform } from './Validationform';
 import { useFormik } from "formik";
-import { WidthFull } from '@mui/icons-material';
+// import { WidthFull } from '@mui/icons-material';
+import PropTypes from "prop-types";
 
 
 const MedicalList = () => {
@@ -44,6 +45,8 @@ const MedicalList = () => {
         // try {
         //     const response = await axiosClientPrivate.post('/ohcs', values);
         //     console.log('Response:', response.data);
+        // setFetchTrigger(prev => prev+1);
+
         //     resetForm();
         //   } catch (error) {
         //     console.log(values);
@@ -58,7 +61,9 @@ const MedicalList = () => {
             await axiosClientPrivate.delete(`/ohcs/${id}`);
 
             const newData = rowData.filter(row => row.id !== id);
-            setRowData(newData);
+            // setRowData(newData);
+            setFetchTrigger(prev => prev+1);
+
         } catch (error) {
             console.error('Error deleting row:', error);
         }
@@ -70,10 +75,16 @@ const MedicalList = () => {
 
     const [openPopup, setOpenPopup] = useState(false);
 
-    const CustomActionComponent = (props) => {
-          
-        return <> <Button onClick={() => console.log(props.data)}> <EditNoteRoundedIcon /></Button>
-            <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
+    const [fetchTrigger, setFetchTrigger] = useState(0);
+
+
+    const CustomActionComponent = ({id}) => {
+        CustomActionComponent.propTypes = {
+            id: PropTypes.number.isRequired,
+          };
+        return <div> <Button  > <EditNoteRoundedIcon /></Button>
+           <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+    
     };
 
     const pagination = true;
@@ -123,7 +134,7 @@ const MedicalList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [fetchTrigger]);
 
     return (
         <>

@@ -1,12 +1,7 @@
-import { FormControl, Grid, TextField } from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
-import SingleSelect from "../common/SingleSelect";
-import MultipleSelect from "../common/MultipleSelect";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useState } from "react";
-import MultiCheckbox from "./MultiCheckbox";
+
 
 const SectionForm = ({
   values,
@@ -14,7 +9,7 @@ const SectionForm = ({
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
   SectionForm.propTypes = {
@@ -39,15 +34,15 @@ const SectionForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Bussiness Unit"
-                    name="BussinessUnit"
+                    name="buId"
                     type="text"
                     size="large"
-                    value={values.BussinessUnit}
+                    value={values.buId}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.BussinessUnit && touched.BussinessUnit ? (
-                        <span style={{ color: "red" }}>{errors.BussinessUnit}</span>
+                      errors.buId && touched.buId ? (
+                        <span style={{ color: "red" }}>{errors.buId}</span>
                       ) : null
                     }
                   />
@@ -55,16 +50,16 @@ const SectionForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Department Name"
-                    name="DeptName"
+                    name="deptId"
                     type="text"
                     size="large"
-                    value={values.DeptName}
+                    value={values.deptId}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.DeptName && touched.DeptName ? (
+                      errors.deptId && touched.deptId ? (
                         <span style={{ color: "red" }}>
-                          {errors.DeptName}
+                          {errors.deptId}
                         </span>
                       ) : null
                     }
@@ -74,15 +69,15 @@ const SectionForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Section Name"
-                    name="SectionName"
+                    name="sectionName"
                     type="text"
                     size="large"
-                    value={values.SectionName}
+                    value={values.sectionName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.SectionName && touched.SectionName ? (
-                        <span style={{ color: "red" }}>{errors.SectionName}</span>
+                      errors.sectionName && touched.sectionName ? (
+                        <span style={{ color: "red" }}>{errors.sectionName}</span>
                       ) : null
                     }
                   />
@@ -90,15 +85,15 @@ const SectionForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Section Head"
-                    name="SectionHead"
+                    name="sectionHeadName"
                     type="text"
                     size="large"
-                    value={values.SectionHead}
+                    value={values.sectionHeadName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.SectionHead && touched.SectionHead ? (
-                        <span style={{ color: "red" }}>{errors.SectionHead}</span>
+                      errors.sectionHeadName && touched.sectionHeadName ? (
+                        <span style={{ color: "red" }}>{errors.sectionHeadName}</span>
                       ) : null
                     }
                   />
@@ -108,16 +103,16 @@ const SectionForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Email "
-                    name="Email"
+                    name="sectionHeadEmail"
                     type="text"
                     size="large"
-                    value={values.Email}
+                    value={values.sectionHeadEmail}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.Email && touched.Email ? (
+                      errors.sectionHeadEmail && touched.sectionHeadEmail ? (
                         <span style={{ color: "red" }}>
-                          {errors.Email}
+                          {errors.sectionHeadEmail}
                         </span>
                       ) : null
                     }

@@ -12,10 +12,14 @@ import { useFormik } from "formik";
 import { useState,useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from "prop-types";
+
 const RoleList = () => {
 
     const [id,setId] = useState(1);
     const [showupdate,setShowupdate] = useState(false);
+    const [fetchTrigger, setFetchTrigger] = useState(0);
+
 
   const initialValues = {
     id:"",
@@ -25,6 +29,7 @@ const RoleList = () => {
     roleCode: "",
     iconColor: "",
     iconText: "",
+
     // lastModified: "",
     // modifiedBy: ""
   };
@@ -43,24 +48,26 @@ const RoleList = () => {
     resetForm,
   } = useFormik({
     initialValues: initialValues,
-    validationSchema: roleValidationForm,
-    // onSubmit: (values, action) => {
-    //   console.log(values);
-    //   action.resetForm();
-    // },
-    onSubmit: async (values, {resetForm}) => {
-      try {
-           await axiosClientPrivate.post('/roles', values);
-          toast.success("Saved Successfully!",{
-            position:"top-center"
-         });
-          setRowData(prevRowData => [...prevRowData, values]);
-          resetForm();
-        } catch (error) {
-          console.log(values);
-          console.error('Error:', error);
-        }
-      },
+    // validationSchema: roleValidationForm,
+    onSubmit: (values, action) => {
+      console.log(values);
+      action.resetForm();
+    },
+    // onSubmit: async (values, {resetForm}) => {
+    //   try {
+    //        await axiosClientPrivate.post('/roles', values);
+    //       toast.success("Saved Successfully!",{
+    //         position:"top-center"
+    //      });
+    //       // setRowData(prevRowData => [...prevRowData, values]);
+    //       setFetchTrigger(prev => prev+1);
+
+    //       resetForm();
+    //     } catch (error) {
+    //       console.log(values);
+    //       console.error('Error:', error);
+    //     }
+    //   },
 
 
   });
@@ -110,6 +117,8 @@ const RoleList = () => {
        });
         
          resetForm();
+         setFetchTrigger(prev => prev+1);
+
     }
     catch(err){
         console.log(err);
@@ -178,7 +187,9 @@ const RoleList = () => {
      if(window.confirm('Are you sure you want to delete this data?')){
      try {
          await axiosClientPrivate.delete(`/roles/${id}`);
-         setRowData(prevData => prevData.filter(row => row.id !== id));
+        //  setRowData(prevData => prevData.filter(row => row.id !== id));
+        setFetchTrigger(prev => prev+1);
+
      } catch (error) {
          console.error('Error deleting row:', error);
      }
@@ -188,9 +199,13 @@ const RoleList = () => {
 
 
   
-  const CustomActionComponent = (props) => {
-    return <> <Button onClick={() =>  handleEdit(props.id)}> <EditNoteRoundedIcon /></Button>
-        <Button color="error" onClick={()=>handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
+ const CustomActionComponent = ({id}) => {
+  CustomActionComponent.propTypes = {
+      id: PropTypes.number.isRequired,
+    };
+  return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
+     <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+
 };
 
 const pagination = true;
@@ -203,16 +218,28 @@ useEffect(() => {
     const getAllOhc = async () => {
         try {
             const response = await axiosClientPrivate.get('roles', { signal: controller.signal });
-            const items = response.data;
+            const items = response.data.content;
 
             if (items.length > 0) {
-                const columns = Object.keys(items[0]).map(key => ({
-                    field: key,
-                    headerName: key.charAt(0).toUpperCase() + key.slice(1),
-                    filter: true,
-                    floatingFilter: true,
-                    sortable: true
-                }));
+
+                const headerMappings = {
+                        id: "id",
+                        roleName : "roleName",
+                        roleDescription : "roleDescription",
+                        roleHomePage : "roleHomePage",
+                        roleCode : "roleCode",
+                        iconColor : "iconColor",
+                        iconText : "iconText",
+                    };
+
+                   const  columns = Object.keys(items[0]).map(key => ({
+                        field: key,
+                        headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
+                        filter: true,
+                        floatingFilter: true,
+                        sortable: true,
+                        width: key === 'id' ? 100 : undefined,
+                    }));
 
                 columns.unshift({
                   // field: "Actions", cellRenderer: CustomActionComponent
@@ -239,10 +266,11 @@ useEffect(() => {
         controller.abort();
     };
 
-}, []);
+}, [fetchTrigger]);
 
   return (
     <>
+    <ToastContainer />
       <Box
         className="ag-theme-quartz" // applying the grid theme
         style={{ height: 500 }} // adjust width as necessary

@@ -4,7 +4,7 @@ import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
-import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import BussinessForm from './BussinessForm';
@@ -17,6 +17,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import PropTypes from "prop-types";
 
 const BussinessList = () => {
 
@@ -32,6 +33,8 @@ const BussinessList = () => {
     const [id,setId] = useState(1);
 
     const [showupdate,setShowupdate] = useState(false);
+
+    const [fetchTrigger, setFetchTrigger] = useState(0)
 
     const initialValues = {
        
@@ -67,13 +70,14 @@ const BussinessList = () => {
                 position:"top-center"
              }); 
                    // getting id(key,value) of last index
-                const id = rowData[rowData.length-1].buId;
-                const obj = {
-                    buId : id+1,
-                    ...values
-                }
-             console.log(obj);
-             setRowData(rowData => [...rowData, obj]);
+            //     const id = rowData[rowData.length-1].buId;
+            //     const obj = {
+            //         buId : id+1,
+            //         ...values
+            //     }
+            //  console.log(obj);
+            //  setRowData(rowData => [...rowData, obj]);
+            setFetchTrigger(prev => prev+1);
             console.log('Response:', response.data);
             resetForm();
           } catch (error) {
@@ -115,7 +119,8 @@ const BussinessList = () => {
                 autoClose: 3000,
              });
              resetForm();
-             setRowData(rowData => [...rowData,values]);
+             //setRowData(rowData => [...rowData,values]);
+             setFetchTrigger(prev => prev+1);
         }
         catch(err){
             console.log(values);
@@ -130,18 +135,22 @@ const BussinessList = () => {
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
            await axiosClientPrivate.delete(`/business-units/${id}`);
-           setRowData(prevData => prevData.filter(row => row.buId !== id));
+           //setRowData(prevData => prevData.filter(row => row.buId !== id));
+           setFetchTrigger(prev => prev+1);
        } catch (error) {
            console.error('Error deleting row:', error);
        }
    }
    };
 
-    const CustomActionComponent = (props) => {
-          
-        return <> <Button onClick={() =>  handleEdit(props.id)}> <EditNoteRoundedIcon /></Button>
-            <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
-    };
+   const CustomActionComponent = ({id}) => {
+    CustomActionComponent.propTypes = {
+        id: PropTypes.number.isRequired,
+      };
+    return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
+       <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+
+};
 
     const pagination = true;
     const paginationPageSize = 50;
@@ -153,21 +162,30 @@ const BussinessList = () => {
         const getAllOhc = async () => {
             try {
                 const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
-                const items = response.data;
-                    // console.log(items);
+                const items = response.data.content;
+                    // console.log("business",items);
                 setRowData(items);
                 if (items.length > 0) {
+  
+                    const headerMappings = {
+                        buName: "Bussiness Name",
+                        buHeadName : "Bussiness Head Name",
+                        buEmail : "Bussiness Email",
+                        lastModified : "Last Modified",
+                        modifiedBy : "Modified By",
+                    };
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName: key.charAt(0).toUpperCase() + key.slice(1),
+                        headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
                         filter: true,
                         floatingFilter: true,
-                        sortable: true
+                        sortable: true,
+                        width: key === 'id' ? 100 : undefined,
                     }));
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.id;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -189,7 +207,7 @@ const BussinessList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [fetchTrigger]);
 
 
      

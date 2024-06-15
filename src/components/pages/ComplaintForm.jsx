@@ -1,5 +1,5 @@
 
-import { FormControl, Grid, TextField } from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
 import SingleSelect from "../common/SingleSelect";
@@ -11,7 +11,7 @@ const ComplaintForm = ({
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
   ComplaintForm.propTypes = {
@@ -54,16 +54,16 @@ const ComplaintForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter the Complaint Details"
-                    name="details"
+                    name="complaintDesc"
                     type="text"
                     size="large"
-                    value={values.details}
+                    value={values.complaintDesc}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.details && touched.details ? (
+                      errors.complaintDesc && touched.complaintDesc ? (
                         <span style={{ color: "red" }}>
-                          {errors.details}
+                          {errors.complaintDesc}
                         </span>
                       ) : null
                     }
@@ -75,12 +75,12 @@ const ComplaintForm = ({
                   <SingleSelect
                     arr={active}
                     label="Is Active"
-                    name="active"
-                    value={values.active}
+                    name="isActive"
+                    value={values.isActive}
                     onChange={(event, newValue) => {
                       const syntheticEvent = {
                         target: {
-                          name: "active",
+                          name: "isActive",
                           value: newValue,
                         },
                       };
@@ -89,8 +89,8 @@ const ComplaintForm = ({
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                      errors.active && touched.active ? (
-                        <span style={{ color: "red" }}>{errors.active}</span>
+                      errors.isActive && touched.isActive ? (
+                        <span style={{ color: "red" }}>{errors.isActive}</span>
                       ) : null
                     }
                   />

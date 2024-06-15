@@ -4,7 +4,7 @@ import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
-import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import CalibrationEquipmentForm from './CalibrationEquipmentForm';
@@ -17,6 +17,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import PropTypes from "prop-types";
 
 const CalibrationEquipmentList = () => {
 
@@ -32,6 +33,7 @@ const CalibrationEquipmentList = () => {
     const [id,setId] = useState(1);
 
     const [showupdate,setShowupdate] = useState(false);
+    const [fetchTrigger, setFetchTrigger] = useState(0);
 
     const initialValues = {
        
@@ -42,7 +44,10 @@ const CalibrationEquipmentList = () => {
         location: "",
         date: "",
         duedate:"",
-        docupdate:""
+        docupdate:"",
+        lastModified:"",
+        modifiedBy:""
+
       };
 
 
@@ -58,32 +63,30 @@ const CalibrationEquipmentList = () => {
       } = useFormik({
         initialValues: initialValues,
         validationSchema: calibrationform,
-        onSubmit: (values, action) => {
-            console.log(values);
-            action.resetForm();
-          },
-        // onSubmit: async (values, {resetForm}) => {
-        // try {
-        //     const response = await axiosClientPrivate.post('/business-units', values);
-        //     toast.success("Saved Successfully!",{
-        //         position:"top-center"
-        //      }); 
-        //            // getting id(key,value) of last index
-        //         const id = rowData[rowData.length-1].buId;
-        //         const obj = {
-        //             buId : id+1,
-        //             ...values
-        //         }
-        //      console.log(obj);
-        //      setRowData(rowData => [...rowData, obj]);
-        //     console.log('Response:', response.data);
-        //     resetForm();
-        //   } catch (error) {
-        //     console.log(values);
-        //     console.error('Error:', error);
-        //   }
-        // },
-      });
+        onSubmit: async (values, {resetForm}) => {
+            try {
+                const response = await axiosClientPrivate.post('/medicallist', values);
+                toast.success("Saved Successfully!",{
+                    position:"top-center"
+                 }); 
+                       // getting id(key,value) of last index
+                   // const id = rowData[rowData.length-1].Id;
+                   // const obj = {
+                      //  Id : id+1,
+                      //  ...values
+                  //  }
+                 //console.log(obj);
+                // setRowData(rowData => [...rowData, obj]);
+                setFetchTrigger(prev => prev+1);
+                console.log('Response:', response.data);
+                resetForm();
+              } catch (error) {
+                console.log(values);
+                console.error('Error:', error);
+              }
+            },
+          });
+    
 
 
 
@@ -92,10 +95,14 @@ const CalibrationEquipmentList = () => {
         try {
           const response = await axiosClientPrivate.get(`/business-units/${id}`);
             console.log(response.data);
-            setFieldValue("buEmail",response.data.buEmail);
-            setFieldValue("buHeadName",response.data.buHeadName);
-            setFieldValue("buId",response.data.buId);
-            setFieldValue("buName",response.data.buName);
+            setFieldValue("id",response.data.id);
+            setFieldValue("calibration",response.data.calibration);
+            setFieldValue(" modelbrand",response.data.modelbrand);
+            setFieldValue("idnumber",response.data.idnumber);
+            setFieldValue("location",response.data.location);
+            setFieldValue("date",response.data.date);
+            setFieldValue("duedate",response.data.duedate);
+            setFieldValue("docupdate",response.data.docupdate);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -117,7 +124,9 @@ const CalibrationEquipmentList = () => {
                 autoClose: 3000,
              });
              resetForm();
-             setRowData(rowData => [...rowData,values]);
+            //  setRowData(rowData => [...rowData,values]);/
+            setFetchTrigger(prev => prev+1);
+
         }
         catch(err){
             console.log(values);
@@ -132,18 +141,22 @@ const CalibrationEquipmentList = () => {
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
            await axiosClientPrivate.delete(`/business-units/${id}`);
-           setRowData(prevData => prevData.filter(row => row.buId !== id));
-       } catch (error) {
+        //    setRowData(prevData => prevData.filter(row => row.buId !== id));
+        setFetchTrigger(prev => prev+1);
+    } catch (error) {
            console.error('Error deleting row:', error);
        }
    }
    };
 
-    const CustomActionComponent = (props) => {
-          
-        return <> <Button onClick={() =>  handleEdit(props.id)}> <EditNoteRoundedIcon /></Button>
-            <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
-    };
+   const CustomActionComponent = ({id}) => {
+    CustomActionComponent.propTypes = {
+        id: PropTypes.number.isRequired,
+      };
+    return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
+       <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+
+};
 
     const pagination = true;
     const paginationPageSize = 50;
@@ -169,7 +182,7 @@ const CalibrationEquipmentList = () => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.id;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -191,63 +204,23 @@ const CalibrationEquipmentList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [fetchTrigger]);
 
-
+   
      
 
     const exportpdf = async () => {
-        // const headers = createHeaders([
-        //     "id",
-        //     "ohcName",
-        //     // "ohcCode",
-        //     // "OhcDescription",
-        //     // "Address",
-        //     // "State",
-        //     // "Fax",
-        //     // "PrimaryPhone",
-        //     // "PrimaryEmail",
-        //     // "PinCode",
-        //     // "OhcType",
-        //     // "IconColor",
-        //     // "IconText",
-        //     // "OhcCategory",
-        // ]);
-        // const doc = new jsPDF({orientation: "landscape"});
-        // console.log(rowData[0].id);
-        // const tableData = rowData.map((row)=>(
-        //     console.log(row.id),
-        //   {
-             
-          // console.log(row.id),
-            // ...row,
-            // id: row.id,
-            // ohcName: row.ohcName,
-            // ohcCode: row.ohcCode.toString(),
-            // ohcDescription: row.ohcDescription.toString(),
-            // address: row.address.toString(),
-            // state: row.state.toString(),
-            // fax: row.fax.toString(),
-            // primaryPhone: row.primaryPhone.toString(),
-            // primaryEmail: row.primaryEmail.toString(),
-            // pinCode: row.pinCode.toString(),
-            // ohcType: row.ohcType.toString(),
-            // iconColor: row.iconColor.toString(),
-            // iconText: row.iconText.toString(),
-            // OhcCategory: row.ohcCategory.toString(),
-        // }))
-        // const tableData = {
-        //     id : rowData[0].id,
-        //     ohcName : rowData[0].ohcName,
-        // }
-        // doc.table(1,1,tableData,headers, {autoSize:true});
         const doc = new jsPDF();
-        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const header = [['id', 'calibration',"modelbrand","idnumber","location","date","duedate","docupdate"]];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.buName,
-          item.buHeadName,
-          item.buEmail,
+          item.id,
+          item.calibration,
+          item.modelbrand,
+          item.idnumber,
+          item.location,
+          item.date,
+          item.duedate,
+          item.docupdate,
           
         ]);
         doc.autoTable({
@@ -266,65 +239,6 @@ const CalibrationEquipmentList = () => {
     const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-        // sheet.columns = [
-        //     {
-        //         header: "Id",
-        //         key: 'id',
-        //     },
-        //     {
-        //         header: "OhcName",
-        //         key: 'ohcName',
-        //     },
-        //     {
-        //         header: "OhcCode",
-        //         key: 'ohcCode',
-        //     },
-        //     {
-        //         header: "OhcDescription",
-        //         key: 'ohcDescription',
-        //     },
-        //     {
-        //       header : "Address",
-        //       key : "address",
-        //     },
-        //     {
-        //         header: "State",
-        //         key: 'state',
-        //     },
-        //     {
-        //         header: "Fax",
-        //         key: 'fax',
-        //     },
-        //     {
-        //       header: "PrimaryPhone",
-        //       key: 'primaryPhone',
-        //   },
-        //   {
-        //       header: "PrimaryEmail",
-        //       key: 'primaryEmail',
-        //   },
-        //   {
-        //       header : "PinCode",
-        //       key : "pinCode",
-        //   },
-        //   {
-        //       header: "OhcType",
-        //       key: 'ohcType',
-        //   },
-        //   {
-        //       header: "IconColor",
-        //       key: 'iconColor',
-        //   },
-        //   {
-        //     header: "IconText",
-        //     key: 'iconText',
-        // },
-        // {
-        //     header: "OhcCategory",
-        //     key: 'OhcCategory',
-        // }
-        // ];
-  
         const headerStyle = {
           // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
@@ -334,26 +248,41 @@ const CalibrationEquipmentList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            Id: 10,
-            buName: 20,
-            buHeadName: 15,
-            buEmail: 25,
+            id: 10,
+            calibration: 20,
+            modelbrand: 15,
+            idnumber: 15,
+            location: 20,
+            date: 15,
+            duedate: 15,
+            docupdate: 20,
+            
       };
   
         sheet.columns = [
-          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
-          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "id", key: 'id', width: columnWidths.id, style: headerStyle },
+          { header: " calibration", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "modelbrand", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
+          { header: "idnumber", key: 'buName', width: columnWidths.buName, style: headerStyle },
+          { header: " location", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "date", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
+          { header: "duedate", key: 'buName', width: columnWidths.buName, style: headerStyle },
+          { header: "docupdate", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+        
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
-                buName: product.buName,
-                buHeadName: product.buHeadName,
-                buEmail: product.buEmail,
+                id:product.id,
+                calibration:product.calibration ,
+                modelbrand:product.modelbrand,
+                idnumber:product.idnumber,
+                location:product.location,
+                date:product.date,
+                duedate:product.duedate,
+                docupdate:product.docupdate,
+            
             })
         });
   
@@ -364,7 +293,7 @@ const CalibrationEquipmentList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'CalibrationEquipmentList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })

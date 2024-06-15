@@ -13,6 +13,8 @@ import { useFormik } from "formik";
 import { useState,useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from "prop-types";
+
 
 const RouteAdminList = () => {
 
@@ -48,6 +50,8 @@ const RouteAdminList = () => {
     //         position:"top-center"
     //      });
     //       setRowData(prevRowData => [...prevRowData, values]);
+    // setFetchTrigger(prev => prev+1);
+
     //       resetForm();
     //     } catch (error) {
     //       console.log(values);
@@ -65,13 +69,18 @@ const RouteAdminList = () => {
 
   const [openPopup, setOpenPopup] = useState(false);
 
+  const [fetchTrigger, setFetchTrigger] = useState(0);
+
+
   // to delete a row
 const handleDeleteRow = async (id) => {
   alert(id)
  if(window.confirm('Are you sure you want to delete this data?')){
  try {
      await axiosClientPrivate.delete(`/users/${id}`);
-     setRowData(prevData => prevData.filter(row => row.id !== id));
+    //  setRowData(prevData => prevData.filter(row => row.id !== id));
+    setFetchTrigger(prev => prev+1);
+
  } catch (error) {
      console.error('Error deleting row:', error);
  }
@@ -80,9 +89,13 @@ const handleDeleteRow = async (id) => {
 
 
   
-  const CustomActionComponent = (props) => {
-    return <> <Button  onClick={() =>  handleEdit(props.id) }> <EditNoteRoundedIcon /></Button>
-    <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
+const CustomActionComponent = ({id}) => {
+  CustomActionComponent.propTypes = {
+      id: PropTypes.number.isRequired,
+    };
+  return <div> <Button onClick={() =>  handleEdit(id)} > <EditNoteRoundedIcon /></Button>
+     <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+
 };
 
 const pagination = true;
@@ -131,7 +144,7 @@ useEffect(() => {
         controller.abort();
     };
 
-}, []);
+}, [fetchTrigger]);
 
 
 const handleEdit = async (id) => {
@@ -166,6 +179,8 @@ const handleUpdate = async (id)=> {
           autoClose: 3000,
        });
        resetForm();
+       setFetchTrigger(prev => prev+1);
+
   }
   catch(err){
       console.log(values);
@@ -180,6 +195,7 @@ const handleUpdate = async (id)=> {
 
   return (
     <>
+    <ToastContainer />
       <Box
         className="ag-theme-quartz" // applying the grid theme
         style={{ height: 500 }} // adjust width as necessary

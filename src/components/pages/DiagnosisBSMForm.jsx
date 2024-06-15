@@ -1,23 +1,24 @@
-import Ohclogo from "./Ohclogo";
-import { FormControl, Grid, TextField } from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
-import Input from "../common/Input";
 import SingleSelect from "../common/SingleSelect";
-import MultipleSelect from "../common/MultipleSelect";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useState } from "react";
-import MultiCheckbox from "./MultiCheckbox";
+// import { useState,useEffect } from "react";
+// import useAxiosPrivate from '../../utils/useAxiosPrivate';
 
 const DiagnosisBSMForm = ({
   values,
   touched,
   handleBlur,
   errors,
-  handleChange,
+  // handleChange,
   setFieldValue,
   handleSubmit,
+  diagnosis,
+  bodySystem,
+  // bodySystemMap,
+  // setBodysystem
 }) => {
+
+
     DiagnosisBSMForm.propTypes = {
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
@@ -28,8 +29,19 @@ const DiagnosisBSMForm = ({
     handleSubmit: PropTypes.func.isRequired,
   };
 
-  const DiagnosisName = ["#BOTH BONES LEFT FOREARM", "......"];
-  const bodysystem = ["......", "........", "......."];
+  
+  
+  
+  // const [diagnosisMap,setDiagnosisMap] = useState(new Map());
+  // const diagnosisMap = new Map();
+
+ 
+
+
+
+
+
+
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
@@ -42,24 +54,30 @@ const DiagnosisBSMForm = ({
 
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <SingleSelect
-                    arr={DiagnosisName}
+                    arr={diagnosis}
                     label="Diagnosis Name"
-                    name="DiagnosisName"
-                    value={values.DiagnosisName}
+                    name="diagnosis"
+                    value={values.diagnosis}
+                    // onChange={(event, newValue) => {
+                    //   const syntheticEvent = {
+                    //     target: {
+                    //       name: "diagnosis",
+                    //       value: newValue,
+                    //     },
+                    //   };
+                    //   handleChange(syntheticEvent);
+                    // }}
+                    // handleChange ={handleChange}
+
                     onChange={(event, newValue) => {
-                      const syntheticEvent = {
-                        target: {
-                          name: "DiagnosisName",
-                          value: newValue,
-                        },
-                      };
-                      handleChange(syntheticEvent);
+                      setFieldValue('diagnosis', newValue ? newValue.label : '');
                     }}
+
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                      errors.DiagnosisName && touched.DiagnosisName ? (
-                        <span style={{ color: "red" }}>{errors.DiagnosisName}</span>
+                      errors.diagnosis && touched.diagnosis ? (
+                        <span style={{ color: "red" }}>{errors.diagnosis}</span>
                       ) : null
                     }
                   />
@@ -68,26 +86,29 @@ const DiagnosisBSMForm = ({
                
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <SingleSelect
-                    arr={bodysystem}
+                    arr={bodySystem}
                     label="Slect Body System"
-                    name="BodySystem"
-                    value={values.BodySystem}
+                    name="system"
+                    value={values.system}
+                    // onChange={(event, newValue) => {
+                    //   const syntheticEvent = {
+                    //     target: {
+                    //       name: "system",
+                    //       value: newValue,
+                    //     },
+                    //   };
+                    //   handleChange(syntheticEvent);
+                    // }}
                     onChange={(event, newValue) => {
-                      const syntheticEvent = {
-                        target: {
-                          name: "BodySystem",
-                          value: newValue,
-                        },
-                      };
-                      handleChange(syntheticEvent);
+                      setFieldValue('system', newValue ? newValue.label : '');
                     }}
                     // onChange={handleChange}
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                      errors.BodySystem && touched.BodySystem ? (
+                      errors.system && touched.system ? (
                         <span style={{ color: "red" }}>
-                          {errors.BodySystem}
+                          {errors.system}
                         </span>
                       ) : null
                     }

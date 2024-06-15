@@ -11,6 +11,7 @@ import BusinessReportForm from './BusinessReportForm';
 import { businessReportform } from './Validationform';
 import { useFormik } from "formik";
 // import axios from 'axios';
+import PropTypes from "prop-types";
 
 const BusinessReportList = () => {
 
@@ -65,7 +66,8 @@ const BusinessReportList = () => {
 
             // Update the grid data by filtering out the deleted row
             const newData = rowData.filter(row => row.id !== id);
-            setRowData(newData);
+            // setRowData(newData);
+            setFetchTrigger(prev => prev+1);
         } catch (error) {
             console.error('Error deleting row:',error);
         }
@@ -77,10 +79,16 @@ const BusinessReportList = () => {
 
     const [openPopup, setOpenPopup] = useState(false);
 
-    const CustomActionComponent = (props) => {
-          
-        return <> <Button onClick={() => console.log(props.data)}> <EditNoteRoundedIcon /></Button>
-            <Button color="error" onClick={() => handleDeleteRow(props.id)}><DeleteSweepRoundedIcon /></Button> </>
+    const [fetchTrigger, setFetchTrigger] = useState(0);
+
+
+    const CustomActionComponent = ({id}) => {
+        CustomActionComponent.propTypes = {
+            id: PropTypes.number.isRequired,
+          };
+        return <div> <Button > <EditNoteRoundedIcon /></Button>
+           <Button color="error" onClick={() => handleDeleteRow(id)}> <DeleteSweepRoundedIcon /> </Button> </div>
+    
     };
 
     const pagination = true;
@@ -130,7 +138,7 @@ const BusinessReportList = () => {
             controller.abort();
         };
 
-    }, []);
+    }, [fetchTrigger]);
 
     return (
         <>

@@ -1,13 +1,8 @@
-import Ohclogo from "./Ohclogo";
-import { FormControl, Grid, TextField } from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
 import SingleSelect from "../common/SingleSelect"
-import MultipleSelect from "../common/MultipleSelect";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useState } from "react";
-import MultiCheckbox from "./MultiCheckbox";
+
 
 
 const AddDocDetailForm = ({
@@ -16,7 +11,7 @@ const AddDocDetailForm = ({
   handleBlur,
   errors,
   handleChange,
-  setFieldValue,
+  // setFieldValue,
   handleSubmit,
 }) => {
     AddDocDetailForm.propTypes = {
@@ -45,15 +40,15 @@ const AddDocDetailForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Enter Doctor Name"
-                    name="DoctorName"
+                    name="doctorName"
                     type="text"
                     size="large"
-                    value={values.DoctorName}
+                    value={values.doctorName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.DoctorName && touched.DoctorName? (
-                        <span style={{ color: "red" }}>{errors.DoctorName}</span>
+                      errors.doctorName && touched.doctorName? (
+                        <span style={{ color: "red" }}>{errors.doctorName}</span>
                       ) : null
                     }
                   />
@@ -62,12 +57,12 @@ const AddDocDetailForm = ({
                   <SingleSelect
                     arr={Medselect}
                     label="Dcotor Emp Code"
-                    name="statusType"
-                    value={values.statusType}
+                    name="doctorEmpId"
+                    value={values.doctorEmpId}
                     onChange={(event, newValue) => {
                       const syntheticEvent = {
                         target: {
-                          name: "statusType",
+                          name: "doctorEmpId",
                           value: newValue,
                         },
                       };
@@ -76,8 +71,8 @@ const AddDocDetailForm = ({
                     onBlur={handleBlur}
                     type="text"
                     helperText={
-                      errors.statusType && touched.statusType ? (
-                        <span style={{ color: "red" }}>{errors.statusType}</span>
+                      errors.doctorEmpId && touched.doctorEmpId ? (
+                        <span style={{ color: "red" }}>{errors.doctorEmpId}</span>
                       ) : null
                     }
                   />
@@ -85,16 +80,16 @@ const AddDocDetailForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                   <Input
                     label="Doctor Details"
-                    name="DoctorDetails"
+                    name="doctorDesc"
                     type="text"
                     size="large"
-                    value={values.DoctorDetails}
+                    value={values.doctorDesc}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.DoctorDetails && touched.DoctorDetails ? (
+                      errors.doctorDesc && touched.doctorDesc ? (
                         <span style={{ color: "red" }}>
-                          {errors.DoctorDetails}
+                          {errors.doctorDesc}
                         </span>
                       ) : null
                     }
