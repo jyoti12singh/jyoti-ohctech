@@ -22,7 +22,7 @@ import 'jspdf-autotable';
 import * as Yup from 'yup';
 
 
-const MedValidationForm =Yup.object({
+const MedValidationForm =  Yup.object({
 
     medicineFrequency: Yup.string().required("Please enter medicine frequency"),
     frequencyDescription: Yup.string().required("Please enter description"),
