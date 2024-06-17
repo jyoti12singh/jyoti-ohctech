@@ -41,7 +41,9 @@ const CheckupParameterGroupList =() => {
         
         group: "",
         groupnumber:"",
-        groupsec:""
+        groupsec:"",
+        lastModified: "",
+        modifiedBy: ""
        
       };
 
@@ -93,6 +95,8 @@ const CheckupParameterGroupList =() => {
             setFieldValue("group",response.data.group);
             setFieldValue(" groupnumber",response.data. groupnumber);
             setFieldValue("groupsec",response.data.groupsec);
+            setFieldValue("lastModified", response.data.lastModified);
+            setFieldValue("modifiedBy", response.data.modifiedBy);
             
           setId(id);
           setShowupdate(true);
@@ -176,7 +180,7 @@ const CheckupParameterGroupList =() => {
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.id;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -206,8 +210,9 @@ const CheckupParameterGroupList =() => {
     const exportpdf = async () => {
        
         const doc = new jsPDF();
-        const header = [['Id','group', 'groupnumber',"groupsec"]];
+        const header = [['id','group', 'groupnumber',"groupsec"]];
         const tableData = rowData.map(item => [
+            item.id,
             item.group,
             item.groupnumber,
             item.groupsec,
@@ -241,7 +246,7 @@ const CheckupParameterGroupList =() => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            Id: 10,
+            id: 10,
             group: 20,
             groupnumber: 20,
             groupsec: 20,
@@ -250,7 +255,7 @@ const CheckupParameterGroupList =() => {
       };
   
         sheet.columns = [
-          { header: "Id", key: 'buId', width: columnWidths.Id, style: headerStyle },
+          { header: "id", key: 'buId', width: columnWidths.Id, style: headerStyle },
           { header: "group", key: 'group', width: columnWidths.group, style: headerStyle },
           { header: "groupnumber", key: 'groupnumber', width: columnWidths.groupnumber, style: headerStyle },
           { header: "groupsec", key: 'groupsec', width: columnWidths.groupsec, style: headerStyle },
@@ -259,13 +264,11 @@ const CheckupParameterGroupList =() => {
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
+                id: product.id,
                 group: product.group,
-                groupnumber: product. groupnumber,
-                groupsec: product. groupsec,
+                groupnumber: product.groupnumber,
+                groupsec: product.groupsec,
                
-
-
             })
         });
   
@@ -276,7 +279,7 @@ const CheckupParameterGroupList =() => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'CheckupParameterGroupList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -288,7 +291,7 @@ const CheckupParameterGroupList =() => {
         <ToastContainer />
             <Box
                 className="ag-theme-quartz" 
-                style={{ height: 500 }}
+                style={{ height: 660 }}
             >
 
                 <Stack sx={{ display: 'flex', flexDirection: 'row' }} marginY={1} paddingX={1}>
