@@ -42,11 +42,17 @@ import HabitList from "./components/pages/HabitList";
 import DeviceList from "./components/pages/DeviceList";
 import PlantList from "./components/pages/PlantList";
 import VaccineList from "./components/pages/VaccineList";
-import RoleSelection from "./components/pages/RoleSelection";
-import OhcSelection from "./components/pages/OhcSelection";
+// import RoleSelection from "./components/pages/RoleSelection";
+// import OhcSelection from "./components/pages/OhcSelection";
 import PatientProfileList from "./components/pages/PatientProfileList";
 import Patient from "./components/pages/Patient";
 import MedFreqList from "./components/pages/MedFreqList";
+import ContactList from "./components/pages/ContactList";
+import NutrientList from "./components/pages/NutrientList";
+import FoodList  from "./components/pages/FoodList";
+// import NutrientList from "./components/pages/NutrientList";
+
+
 
 const router = createBrowserRouter([
   {
@@ -61,14 +67,14 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
-          {
-            path: "/ohcSelection",
-            element: <OhcSelection />,
-          },
-          {
-            path: "/roleSelection",
-            element: <RoleSelection />,
-          },
+          // {
+          //   path: "/ohcSelection",
+          //   element: <OhcSelection />,
+          // },
+          // {
+          //   path: "/roleSelection",
+          //   element: <RoleSelection />,
+          // },
           // {
           //  path :  "/Ohc",
           //  element : <OhcSelection />
@@ -232,6 +238,18 @@ const router = createBrowserRouter([
               {
                 path : "/MedFreqList",
                 element : <MedFreqList/ >
+              },
+              {
+                path : "/ContactList",
+                element : <ContactList />
+              },
+              {
+                path : "/NutrientList",
+                element  : <NutrientList />
+              },
+              {
+                path : "/FoodList",
+                element : <FoodList />
               }
             ],
           },

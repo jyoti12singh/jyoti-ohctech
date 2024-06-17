@@ -1,6 +1,7 @@
 import { Stack } from "@mui/material";
 import { Box, Container } from "@mui/material";
 // import ohcimg from "../../../public/ohc.jpg";
+import group from "../../../public/Group.jpg";
 import ohcimg from "../../assets/images/ohc.jpg";
 // import RoleCard from "./RoleCard";
 import chiefmedoff from "../../assets/images/ChiefMedicalOfficer.png";
@@ -14,18 +15,17 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSessionStorage } from "../../utils/useSessionStorage";
 import { Card, CardActionArea, CardMedia, Typography } from "@mui/material";
+import logo from '../../../public/Ohctech-logo-white.png'
 
 const RoleSelection = () => {
-  // const [icons] = useState([
-  //   { image: medicalExamination, name: "Medical Examination" },
-  //   { image: reception, name: "Reception" },
-  //   { image: applicationadmin, name: "Application Admin" },
-  //   { image: chiefmedoff, name: "Chief Medical Officer" },
-  //   { image: employee, name: "Employee" },
-  //   { image: pharmacy, name: "Pharmacy" },
-  // ]);
-
-
+  const [icons] = useState([
+    { image: medicalExamination, name: "Medical Examination" },
+    { image: reception, name: "Reception" },
+    { image: applicationadmin, name: "Application Admin" },
+    { image: chiefmedoff, name: "Chief Medical Officer" },
+    { image: employee, name: "Employee" },
+    { image: pharmacy, name: "Pharmacy" },
+  ]);
   
 
   // from old starting
@@ -38,7 +38,6 @@ const RoleSelection = () => {
   const navigate = useNavigate();
 
 
-  
   
 
   useEffect(() => {
@@ -92,11 +91,60 @@ const RoleSelection = () => {
 
   return (
     <Stack spacing={0} direction="row">
+       <Box
       <Box
         sx={{
           width: "50vw",
           height: "100vh",
           display: { xs: "none", sm: "block" },
+          position: "relative",
+        }}
+      >
+        <img style={{ height: "100vh", width: "50vw" }} src={group} alt="" />
+        {/* <Box
+          sx={{
+            position: "absolute",
+            top: '2rem',
+            left: '5rem',
+            p: 2, 
+          }}
+        >
+          <img src={logo} alt="Logo" style={{ width: '150px' }} /> 
+        </Box> */}
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            color: "white",
+            p: 3,
+            
+          }}
+        >
+          <Typography sx={{ mb: 4, fontWeight:'bold' }} ><img src={logo} alt="Logo" style={{ width: '150px' }}/></Typography> 
+          <Typography variant="h6" sx={{mb:2}}>Nice to see you again</Typography>
+          <Typography variant="h4" sx={{ mb: 2, fontWeight:'bold' }}>
+            WELCOME BACK
+          </Typography>
+          <div
+                  style={{
+                    width: "5vw",
+                    // margin: "1rem auto",
+                    height: "4px",
+                    backgroundColor: "white",
+                    borderRadius:'6px'
+                  }}
+                ></div>
+          <Typography variant="h9" sx={{ mb: 2 ,mt:2}}>
+            OHCTECH is a venture conceptualized by Occupational Health Experts and developed by Techsyneric Technologies professionals who wanted to develop Occupational health solutions
+          </Typography>
         }}
       >
         <Box>
@@ -115,7 +163,11 @@ const RoleSelection = () => {
           maxWidth="xs"
           sx={{
             height: "100%",
-            display: "flex",
+           display: "flex",
+           justifyContent: "center",
+           alignItems: "center",
+           alignContent:'center'
+            // display: "flex",
             flexDirection: "column",
             // alignItems: "center",
             justifyContent: "center",
@@ -127,6 +179,46 @@ const RoleSelection = () => {
             sx={{
               display: "flex",
               flexDirection: "row",
+              justifyContent: "center", 
+              alignItems: "center",
+              textAlign: "center",
+              flexWrap: "wrap",
+              // marginTop: "1rem",
+              height: "80%",
+              // marginBottom: "1rem",
+              // gap: "1rem", 
+            }}
+          >
+            {icons.map((item,index) => (
+             <div style={{ display: "block", justifyContent: "center", alignContent: "center" }} key={index}>
+             <Card
+               sx={{ width: 145, height: 145, margin: "0.5rem" }} 
+               onClick={() => handleRoleClick(item.id)}
+             >
+               <CardActionArea
+                 sx={{
+                   display: "flex",
+                   flexDirection: "column",
+                   alignItems: "center",
+                   justifyContent: "center",
+                   height: "100%",
+                 }}
+               >
+                 <CardMedia
+                   component="img"
+                   image={item.image} 
+                   alt="image"
+                   sx={{
+                     width: 60,
+                     height: 60,
+                     objectFit: "contain",
+                     marginBottom: 2,
+                   }}
+                 />
+                 <Typography variant="body2">{item.name}</Typography>
+               </CardActionArea>
+             </Card>
+           </div>
               alignItems: "center",
               textAlign: "center",
               flexWrap: "wrap",

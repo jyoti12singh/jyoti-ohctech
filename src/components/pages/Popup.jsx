@@ -5,6 +5,7 @@ const Popup = ({showupdate,setShowupdate,id,handleUpdate, title, children, openP
 
     // const { title, children, openPopup, setOpenPopup } = props;
 
+    
   Popup.propTypes = {
     id : PropTypes.number.isRequired,
   }

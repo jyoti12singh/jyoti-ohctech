@@ -20,6 +20,18 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
+import * as Yup from 'yup';
+
+
+const MedValidationForm =  Yup.object({
+
+    medicineFrequency: Yup.string().required("Please enter medicine frequency"),
+    frequencyDescription: Yup.string().required("Please enter description"),
+    qty: Yup.string().required("Please enter calculated city"),
+    displayOrder: Yup.string().required("Please enter display order"),
+  });
+
+
 // new
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -70,7 +82,9 @@ const MedFreqList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: MedValidationForm,
+
+        validationSchema: MedValidationForm,
+
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
@@ -120,8 +134,6 @@ const MedFreqList = () => {
        }
    }
    };
-
-    
 
 
 
@@ -194,9 +206,18 @@ const MedFreqList = () => {
                 if (items.length > 0) {
 
                     const headerMappings = {
+
+                        medicineFrequency: "Medicine frequency",
+                        frequencyDescription: "Description",
+                        qty: "calculatedCity",
+                        displayOrder: "displayOrder",
+                        active: "status",
+                        isDefault: "select default",
+
                         vaccineName: "Vaccine Name",
                         vaccineCompany : "Company",
                         vaccineDesc : "Description",
+
                     };
 
                    const  columns = Object.keys(items[0]).map(key => ({
@@ -259,7 +280,11 @@ const MedFreqList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
+
+        doc.save("MedFreqList.pdf");
+
         doc.save("VaccineList.pdf");
+
     };
 
     const exportExcelfile = async () => {
@@ -315,7 +340,11 @@ const MedFreqList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
+
+            anchor.download = 'MedFreqList.xlsx';
+
             anchor.download = 'VaccineList.xlsx';
+
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
