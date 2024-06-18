@@ -10,7 +10,7 @@ import Popup from './Popup';
 //import InjuryClassForm from './InjuryClassForm';
 import InjuryPartForm from './InjuryPartForm';
 import { useFormik } from "formik";
-import { InjuryPartValidationForm } from './Validationform';
+//import { InjuryPartValidationForm } from './Validationform';
 // import axios from 'axios';
 import PropTypes from "prop-types";
 import { ToastContainer, toast } from 'react-toastify';
@@ -20,6 +20,13 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import * as Yup from 'yup';
+const InjuryPartValidationForm = Yup.object({
+    name: Yup.string().min(2).max(25).required("Please enter Injury Name"),
+    description: Yup.string().min(2).max(25).required("Please enter Injury Discription"),
+    code: Yup.string().min(2).max(25).required("Please enter Bussiness Injury Code"),
+       
+  });
 
 const InjuryPartList = () => {
 
@@ -223,9 +230,9 @@ const InjuryPartList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20, 
+          theme: 'grid', 
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -239,7 +246,6 @@ const InjuryPartList = () => {
         
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -279,7 +285,6 @@ const InjuryPartList = () => {
             anchor.href = url;
             anchor.download = 'InjuryClassificationList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
 

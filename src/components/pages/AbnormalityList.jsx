@@ -20,7 +20,7 @@ import 'jspdf-autotable';
 import PropTypes from "prop-types";
 import * as Yup from 'yup';
 
- const AbnormValidationForm = Yup.object({
+const AbnormValidationForm = Yup.object({
     abnormalityName: Yup.string().min(2).max(25).required("Please enter Abnormality Name"),
     wellnessProgram: Yup.string().min(2).max(25).required("Please enter Wellness Programs"),
   });

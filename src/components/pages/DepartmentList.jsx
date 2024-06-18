@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import DepartmentForm from './DepartmentForm';
-import { departmentForm } from './Validationform';
+//import { departmentForm } from './Validationform';
 import { useFormik } from "formik";
 // import { WidthFull } from '@mui/icons-material';
 import { ToastContainer, toast } from 'react-toastify';
@@ -19,6 +19,16 @@ import 'jspdf-autotable';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DownloadIcon from '@mui/icons-material/Download';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+
+ const departmentForm = Yup.object({
+  buId: Yup.string().min(2).max(25).required("Please enter Bussiness Unit "),
+  departmentName: Yup.string().min(2).max(25).required("Please enter Department Name"),
+  departmentHeadName: Yup.string().min(2).max(25).required("Please enter Department Head Email"),
+  departmentEmail: Yup.string().email().required("Please enter Department Head Email"),
+     
+});
+
 
 const DepartmentList = () => {
 
@@ -235,9 +245,9 @@ const DepartmentList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20, 
+          theme: 'grid',
+          margin: { top: 30 },
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -248,67 +258,8 @@ const DepartmentList = () => {
     const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-        // sheet.columns = [
-        //     {
-        //         header: "Id",
-        //         key: 'id',
-        //     },
-        //     {
-        //         header: "OhcName",
-        //         key: 'ohcName',
-        //     },
-        //     {
-        //         header: "OhcCode",
-        //         key: 'ohcCode',
-        //     },
-        //     {
-        //         header: "OhcDescription",
-        //         key: 'ohcDescription',
-        //     },
-        //     {
-        //       header : "Address",
-        //       key : "address",
-        //     },
-        //     {
-        //         header: "State",
-        //         key: 'state',
-        //     },
-        //     {
-        //         header: "Fax",
-        //         key: 'fax',
-        //     },
-        //     {
-        //       header: "PrimaryPhone",
-        //       key: 'primaryPhone',
-        //   },
-        //   {
-        //       header: "PrimaryEmail",
-        //       key: 'primaryEmail',
-        //   },
-        //   {
-        //       header : "PinCode",
-        //       key : "pinCode",
-        //   },
-        //   {
-        //       header: "OhcType",
-        //       key: 'ohcType',
-        //   },
-        //   {
-        //       header: "IconColor",
-        //       key: 'iconColor',
-        //   },
-        //   {
-        //     header: "IconText",
-        //     key: 'iconText',
-        // },
-        // {
-        //     header: "OhcCategory",
-        //     key: 'OhcCategory',
-        // }
-        // ];
-  
+       
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'left' }
           
       };
@@ -349,7 +300,6 @@ const DepartmentList = () => {
             anchor.href = url;
             anchor.download = 'Department.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
    

@@ -23,7 +23,7 @@ import 'jspdf-autotable';
 import * as Yup from 'yup';
 
 
-const MedValidationForm =  Yup.object({
+const MedValidationForm = Yup.object({
 
     medicineFrequency: Yup.string().required("Please enter medicine frequency"),
     frequencyDescription: Yup.string().required("Please enter description"),
@@ -274,9 +274,9 @@ const MedFreqList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20,
+          theme: 'grid',
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -292,7 +292,6 @@ const MedFreqList = () => {
         const sheet = workbook.addWorksheet('My Sheet');
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -346,7 +345,6 @@ const MedFreqList = () => {
             anchor.download = 'VaccineList.xlsx';
 
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
 

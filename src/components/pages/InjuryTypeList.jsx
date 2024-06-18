@@ -9,7 +9,7 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import Popup from './Popup';
 //import 
 //import { InjuryValidationForm} from './Validationform';
-import { InjuryTypeValidationForm } from './Validationform';
+//import { InjuryTypeValidationForm } from './Validationform';
 import { useFormik } from "formik";
 // import axios from 'axios';
 //import InjuryForm from './InjuryForm';
@@ -22,6 +22,12 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import * as Yup from 'yup';
+const InjuryTypeValidationForm = Yup.object({
+    injuryTypeName: Yup.string().required("Please enter Injury Part Name"),
+    injuryTypeDesc: Yup.string().required("Please Injury Part  Description"),
+    injuryTypeCode: Yup.string().required("Please enter Injury Part Code"),
+  });
 
 
 
@@ -228,9 +234,9 @@ const InjuryTypeList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20,
+          theme: 'grid', 
+          margin: { top: 30 },
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -244,7 +250,6 @@ const InjuryTypeList = () => {
         
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -284,7 +289,6 @@ const InjuryTypeList = () => {
             anchor.href = url;
             anchor.download = 'InjuryTypeList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
 

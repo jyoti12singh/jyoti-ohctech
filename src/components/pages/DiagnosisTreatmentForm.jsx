@@ -9,7 +9,7 @@ import { useState } from "react";
 import MultiCheckbox from "./MultiCheckbox";
 //import Select from "@mui/material";
 
-const DiagnosisForm = ({
+const DiagnosisTreatmentForm = ({
   values,
   touched,
   handleBlur,
@@ -18,7 +18,7 @@ const DiagnosisForm = ({
   setFieldValue,
   handleSubmit,
 }) => {
-  DiagnosisForm.propTypes = {
+  DiagnosisTreatmentForm.propTypes = {
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -257,4 +257,4 @@ const DiagnosisForm = ({
   );
 };
 
-export default DiagnosisForm;
+export default DiagnosisTreatmentForm;

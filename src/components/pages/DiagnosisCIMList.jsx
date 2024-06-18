@@ -19,6 +19,11 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import * as Yup from 'yup';
+ const opdmaster = Yup.object({
+    DiagnosisName: Yup.string().required("Please enter Diagnosis Name"),
+    ChronicIllness: Yup.string().required("Please enter Chronic Illness"),
+  });
 
 const DiagnosisCIMList = () => {
 
@@ -72,7 +77,7 @@ const DiagnosisCIMList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: complaintForm,
+        validationSchema: opdmaster,
         // onSubmit: (values, action) => {
         //         console.log("ppp",diagnosis,abnormility);
         //     const ailment = diagnosis.find(item => item.label === values.diagnosis);
@@ -436,9 +441,9 @@ useEffect(() => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20, 
+          theme: 'grid', 
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -452,7 +457,6 @@ useEffect(() => {
         
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -489,7 +493,6 @@ useEffect(() => {
             anchor.href = url;
             anchor.download = 'DiagnosisCIMList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
 
