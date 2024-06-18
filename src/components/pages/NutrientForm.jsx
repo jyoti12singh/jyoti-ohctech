@@ -8,8 +8,10 @@ import SingleSelect from "../common/SingleSelect";
   handleBlur,
   errors,
   handleChange,
-//   setFieldValue,
-  handleSubmit,}) => {
+  setFieldValue,
+  handleSubmit,
+  foodname,
+}) => {
 
 
     NutrientForm.propTypes = {
@@ -28,7 +30,7 @@ import SingleSelect from "../common/SingleSelect";
           <form onSubmit={handleSubmit}>
               <Grid container spacing={2} justifyContent="center" alignItems="center">
               <Grid item  xs={12} sm={5} spacing={1}  container  justifyContent="center"   alignItems="center">
-              <Input
+              {/*<Input
                   label="Food Name"
                   name="foodId"
                   type="text"
@@ -44,9 +46,38 @@ import SingleSelect from "../common/SingleSelect";
                       </span>
                     ) : null
                   }
-                />
-              </Grid>
-             
+                />*/}
+                <SingleSelect
+                    arr={foodname}
+                    label="Food Name"
+                    name="foodname"
+                    value={values.foodname}
+                    sx={{ width: '250px' }}
+                    // onChange={(event, newValue) => {
+                    //   const syntheticEvent = {
+                    //     target: {
+                    //       name: "foodname",
+                    //       value: newValue,
+                    //     },
+                    //   };
+                    //   handleChange(syntheticEvent);
+                    // }}
+                    // handleChange ={handleChange}
+
+                    onChange={(event, newValue) => {
+                      setFieldValue('foodname', newValue ? newValue.label : '');
+                    }}
+
+                    onBlur={handleBlur}
+                    type="text"
+                    helperText={
+                      errors.foodname && touched.foodname ? (
+                        <span style={{ color: "red" }}>{errors.foodname}</span>
+                      ) : null
+                    }
+                  />
+                </Grid>
+              
               <Grid item  xs={12} sm={5}  container spacing={1} justifyContent="center"   alignItems="center">
                 <Input
                     label="Quantity in grams"

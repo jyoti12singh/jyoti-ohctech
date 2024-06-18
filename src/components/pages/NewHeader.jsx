@@ -136,7 +136,12 @@ const NewHeader = () => {
   const [toggleDrawer, setToggleDrawer] = useState(false);
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  // const [fetchTrigger, setFetchTrigger] = useState(0);
+
+
   const theme = useTheme();
+  
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleDrawerToggle = () => {

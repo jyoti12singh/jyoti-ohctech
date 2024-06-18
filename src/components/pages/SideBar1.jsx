@@ -31,10 +31,10 @@ import {
 import Collapse from "@mui/material/Collapse";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import ExpandLess from "@mui/icons-material/ExpandLess";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+// import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+// import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Toolbar from "@mui/material/Toolbar";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 // import DutyRooster from '../../assets/images/DutyRooster.png';
 // import Inventory from '../../assets/images/Inventory.png'
@@ -51,7 +51,7 @@ import useAxiosPrivate from "../../utils/useAxiosPrivate";
 // import { useNavigate } from "react-router-dom";
 import { useSessionStorage } from "../../utils/useSessionStorage";
 import { useEffect } from "react";
-import MuiDrawer from '@mui/material/Drawer';
+// import MuiDrawer from '@mui/material/Drawer';
 import DateTime from "./DateTime";
 
 
@@ -94,9 +94,10 @@ const SideBar1 = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const [isCollapse, setIsCollapse] = React.useState(false);
+  const [isCollapse, setIsCollapse] = useState(false);
   const [isopen,setIsOpen]=useState(false);
   
+
   const handleCollapse = (index) => {
     setIsCollapse((prevOpen) => (prevOpen === index ? null : index));
   };
@@ -227,7 +228,7 @@ const SideBar1 = () => {
 
 
   // vikas
-   //  cosnt [data,setData] = useState([]);
+    // cosnt [data,setData] = useState([]);
    const axiosClientPrivate = useAxiosPrivate();
    const [data, setData] = useState([]);
   //  const [hoveredCard, setHoveredCard] = useState(null); // State to track hovered card
@@ -255,6 +256,7 @@ const SideBar1 = () => {
            }
          );
             console.log("side bar menu: ",response.data),
+            // setFetchTrigger(prev => prev+1);
          //   setData(JSON.stringify(response.data)); string
          setData(response.data);
        } catch (err) {

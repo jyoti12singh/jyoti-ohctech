@@ -29,7 +29,7 @@ import {  Grid} from "@mui/material";
               <Grid container spacing={2} justifyContent="center" alignItems="center">
               <Grid item  xs={12} sm={12} spacing={1}  container  justifyContent="center"   alignItems="center">
               <Input
-                  label="Weight"
+                  label="Indicators"
                   name="weight"
                   type="text"
                   size="large"
@@ -48,7 +48,45 @@ import {  Grid} from "@mui/material";
               </Grid>
               <Grid item  xs={12} sm={12} spacing={1}  container  justifyContent="center"   alignItems="center">
               <Input
-                  label="In Kgs"
+                  label="Actual"
+                  name="inKgs"
+                  type="number"
+                  size="large"
+                  sx={{ width: "300px" }}
+                  value={values.inKgs}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={
+                    errors.inKgs && touched.inKgs ? (
+                      <span style={{ color: "red" }}>
+                        {errors.inKgs}
+                      </span>
+                    ) : null
+                  }
+                />
+              </Grid>
+              <Grid item  xs={12} sm={12} spacing={1}  container  justifyContent="center"   alignItems="center">
+              <Input
+                  label="Target"
+                  name="inKgs"
+                  type="number"
+                  size="large"
+                  sx={{ width: "300px" }}
+                  value={values.inKgs}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={
+                    errors.inKgs && touched.inKgs ? (
+                      <span style={{ color: "red" }}>
+                        {errors.inKgs}
+                      </span>
+                    ) : null
+                  }
+                />
+              </Grid>
+              <Grid item  xs={12} sm={12} spacing={1}  container  justifyContent="center"   alignItems="center">
+              <Input
+                  label="Percent"
                   name="inKgs"
                   type="number"
                   size="large"

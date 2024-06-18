@@ -42,6 +42,9 @@ const NutrientList = () => {
 
     const [paginationPageSize, setPaginationPageSize] = useState(2);
 
+    const [foodname,setFoodname] = useState([{}]);
+
+
     // const [change, setChange] = useState("";)
 
     // console.log("check",paginationPageSize);
@@ -49,8 +52,10 @@ const NutrientList = () => {
     // Long id, Long foodId, String calories, String addedSugar, String maida,
     //                             String quantityInGrams, String proteins, String deepFried, String saturatedFats) {
 
+
     const initialValues = {
-        foodId:"",
+        // foodId:"",
+        foodname:"",
         calories:"",
         addedSugar:"",
         maida:"",
@@ -79,6 +84,12 @@ const NutrientList = () => {
         //     action.resetForm();
         //   },
         onSubmit: async (values, {resetForm}) => {
+
+            const fooddish = foodname.find(item => item.label === values.foodname);
+            const dishid = fooddish ? fooddish.value : null;
+            values['foodId'] = values.foodname;
+            delete values.foodname;
+            values.foodId = dishid;
         try {
             const response = await axiosClientPrivate.post('/nutrients', values);
             toast.success("Saved Successfully!",{
@@ -110,8 +121,14 @@ const NutrientList = () => {
         try {
           const response = await axiosClientPrivate.get(`/nutrients/${id}`);
             console.log(response.data);
+
+            values.id = response.data.id;
+            const updateDish = foodname.find(item => item.value == parseInt(response.data.foodId)).label;
+            values.foodname = String(updateDish);
+
+
             setFieldValue("id",response.data.id);
-            setFieldValue("foodId",response.data.foodId);
+            setFieldValue("foodname",String(updateDish));
             setFieldValue("calories",response.data.calories);
             setFieldValue("addedSugar",response.data.addedSugar);
             setFieldValue("maida",response.data.maida);
@@ -131,6 +148,8 @@ const NutrientList = () => {
 
       const handleUpdate = async (id)=> {
         alert(id);
+        values.foodId = foodname.find(item => item.label == String(values.foodname)).value;
+        delete values.foodname;
         const update = values;
         try{
              console.log(values);
@@ -180,6 +199,45 @@ const NutrientList = () => {
     // const paginationPageSizeSelector = [50, 100, 200, 500];
     const pageSizeOptions = [2, 4, 8, 10];
 
+    useEffect(() => {
+        const controller = new AbortController();
+    
+        const getAllOhc = async () => {
+            try {
+                const response = await axiosClientPrivate.get('http://localhost:8080/foods', { signal: controller.signal });
+                const items = response.data.content;
+                    console.log("food name :-",items);
+    
+                    // const newDiagnosisMap = new Map();
+                    // items.forEach(item => newDiagnosisMap.set(item.ailmentSysName, item.id));
+                    // setBodysystem(newDiagnosisMap);
+    
+                    // console.log(diagnosisMap.size);
+                    // const ailment = items.map((item)=>{
+                    //   // diagnosisMap.set(item.id,item.ailmentSysName);
+                    //   return item.ailmentSysName;
+                    // });
+    
+                    const foodname = items.map((item)=>{
+                      return {label : item.foodName,value : item.id};
+                    });
+    
+                    
+                    setFoodname(foodname);
+                    // console.log(ailment);
+    
+            } catch (err) {
+                console.error("Failed to fetch data: ", err);
+            }
+        };
+    
+        getAllOhc();
+    
+        return () => {
+            controller.abort();
+        };
+    
+    }, []);
     
 
     useEffect(() => {
@@ -189,8 +247,19 @@ const NutrientList = () => {
             try {
                 const response = await axiosClientPrivate.get(`http://localhost:8080/nutrients?page=0&size=${paginationPageSize}`, { signal: controller.signal });
                 const items = response.data.content;
-                    // console.log("new",items);
+                    console.log("new",items);
                 setRowData(items);
+
+                if(foodname.length>0){
+                    items.forEach(obj => {
+                        obj.foodId = foodname.find(item => item.value == parseInt(obj.foodId)).label;
+                      });
+                }
+                else{
+                    console.log("Not found!");
+                }
+
+
 
                 if (items.length > 0) {
 
@@ -220,8 +289,6 @@ const NutrientList = () => {
                     setColDefs(columns);
                 }
 
-                
-
             } catch (err) {
                 console.error("Failed to fetch data: ", err);
                 setRowData([]);
@@ -234,7 +301,7 @@ const NutrientList = () => {
             controller.abort();
         };
 
-    }, [paginationPageSize,fetchTrigger,axiosClientPrivate]);
+    }, [paginationPageSize,foodname,fetchTrigger,axiosClientPrivate]);
 
 
      
@@ -419,9 +486,9 @@ const [index,setIndex] = useState();
 
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Vaccine Master">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Nutrition Master">
 
-                <NutrientForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <NutrientForm foodname={foodname} values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>

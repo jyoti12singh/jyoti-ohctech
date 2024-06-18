@@ -52,7 +52,7 @@ import NutrientList from "./components/pages/NutrientList";
 import FoodList  from "./components/pages/FoodList";
 import ExerciseMinuteList from "./components/pages/ExerciseMinuteList";
 import BodyMeasurementList from "./components/pages/BodyMeasurementList";
-
+import LandingPageList from "./components/pages/BodyMeasurementList";
 
 
 
@@ -260,6 +260,10 @@ const router = createBrowserRouter([
               {
                 path : "/BodyMeasurementList",
                 element : <BodyMeasurementList />
+              },
+              {
+                path : "/LandingPageList",
+                element : <LandingPageList />
               }
             ],
           },

@@ -2,7 +2,7 @@ import { Outlet } from "react-router";
 // import Header from "./Header";
 // import Footer from "./Footer";
 import { Box, Stack } from "@mui/material";
-import RightBar from "./RightBar";
+// import RightBar from "./RightBar";
 // import LeftBar from "./LeftBar";
 import BottomRightDial from './BottomRightDial'
 import NewHeader from "./NewHeader";
@@ -22,7 +22,7 @@ const Root = () => {
       <NewHeader />
       <Stack   direction="row" spacing={2} justifyContent="space-between">
         {/* <LeftBar /> */}
-        <SideBar1 sx={{ display: { xs: 'none', sm: 'block' } }} />
+        {/*<SideBar1 sx={{ display: { xs: 'none', sm: 'block' } }} />*/}
         <Box flex={4} p={2}>
           <Outlet />
         </Box>
