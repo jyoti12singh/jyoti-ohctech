@@ -18,6 +18,13 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+
+ const AbnormValidationForm = Yup.object({
+    abnormalityName: Yup.string().min(2).max(25).required("Please enter Abnormality Name"),
+    wellnessProgram: Yup.string().min(2).max(25).required("Please enter Wellness Programs"),
+  });
+
 
 
 const AbnormalityList = () => {
@@ -55,7 +62,7 @@ const AbnormalityList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: AbnormValidationForm,
+         validationSchema: AbnormValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
@@ -190,7 +197,6 @@ const AbnormalityList = () => {
                 autoClose: 3000,
              });
              resetForm();
-            //  setRowData(rowData => [...rowData,values]);
             setFetchTrigger(prev => prev+1);
         }
         catch(err){
@@ -211,9 +217,9 @@ const AbnormalityList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20, 
+          theme: 'grid', 
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -227,7 +233,6 @@ const AbnormalityList = () => {
         
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -266,7 +271,7 @@ const AbnormalityList = () => {
             anchor.href = url;
             anchor.download = 'AddDocDetailList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
+            
         })
     }
 
