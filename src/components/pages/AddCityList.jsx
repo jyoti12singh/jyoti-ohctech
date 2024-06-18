@@ -19,8 +19,6 @@ import 'jspdf-autotable';
 import PropTypes from "prop-types";
 
 const AddCityList = () => {
-
-
     const [rowData, setRowData] = useState([]);
 
     const [colDefs, setColDefs] = useState([]);
