@@ -9,7 +9,7 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import Popup from './Popup';
 import AilmentSystemForm from './AilmentSystemForm';
 //import { AilValidationForm } from './Validationform';
-import { AilValidationForm } from './Validationform';
+//import { AilValidationForm } from './Validationform';
 import { useFormik } from "formik";
 // import axios from 'axios';
 import PropTypes from "prop-types";
@@ -20,6 +20,12 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import * as Yup from 'yup';
+ const AilValidationForm = Yup.object({
+    ailmentSysName: Yup.string().min(2).max(25).required("Please enter ailment Name"),
+    ailmentSysDesc: Yup.string().min(2).max(25).required("Please enter Description"),
+    ailmentSysCode: Yup.string().min(2).max(25).required("Please enter ailment code"),
+  });
 
 const AilmentSystemList = () => {
 
@@ -223,9 +229,9 @@ const AilmentSystemList = () => {
             doc.autoTable({
               head: header,
               body: tableData,
-              startY: 20, // Start Y position for the table
-              theme: 'grid', // Optional theme for the table
-              margin: { top: 30 }, // Optional margin from top
+              startY: 20, 
+              theme: 'grid', 
+              margin: { top: 30 }, 
               styles: { fontSize: 5 },
               columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
           });
@@ -239,7 +245,7 @@ const AilmentSystemList = () => {
             
       
             const headerStyle = {
-              // font: { bold: true, size: 12 },
+          
               alignment: { horizontal: 'center' }
               
           };
@@ -278,7 +284,7 @@ const AilmentSystemList = () => {
                 anchor.href = url;
                 anchor.download = 'AilmentSystemList.xlsx';
                 anchor.click();
-                // anchor.URL.revokeObjectURL(url);
+               
             })
         }
 

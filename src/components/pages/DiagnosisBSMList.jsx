@@ -19,6 +19,12 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import * as Yup from 'yup';
+
+ const bodysystemForm = Yup.object({
+    DiagnosisName: Yup.string().required("Please enter Diagnosis Name"),
+     BodySystem: Yup.string().required("Please enter Body System"),
+  });
 
 const DiagnosisBSMList = () => {
 
@@ -72,7 +78,7 @@ const DiagnosisBSMList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: complaintForm,
+        validationSchema: bodysystemForm,
         // onSubmit: (values, action) => {
 
         //     const ailment = diagnosis.find(item => item.label === values.diagnosis);

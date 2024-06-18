@@ -12,13 +12,20 @@ import Popup from './Popup';
 import RefferedByForm from './RefferedByForm';
 import { useFormik } from "formik";
 // import axios from 'axios';
-import { RefferedByValidationForm } from './Validationform';
+//import { RefferedByValidationForm } from './Validationform';
 import PropTypes from "prop-types";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import * as Yup from 'yup';
+const RefferedByValidationForm = Yup.object({
+    referredBy: Yup.string().required("Please enter Reffered By"),
+    description: Yup.string().required("Please Enter Description"),
+    remarks: Yup.string().required("Please Enter Remarks"),
+  });
+  
 
 const RefferedByList = () => {
 
@@ -225,9 +232,9 @@ const RefferedByList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20,
+          theme: 'grid', 
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -241,7 +248,6 @@ const RefferedByList = () => {
         
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -280,7 +286,6 @@ const RefferedByList = () => {
             anchor.href = url;
             anchor.download = 'RefferedByList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
 

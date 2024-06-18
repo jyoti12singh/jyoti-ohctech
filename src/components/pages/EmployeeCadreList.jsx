@@ -7,7 +7,7 @@ import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRou
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 // import  {userValidationForm}  from './Validationform';
 //import { roleValidationForm } from './Validationform';
-import { EmployeeCadreValidationForm } from './Validationform';
+//import { EmployeeCadreValidationForm } from './Validationform';
 import Popup from "./Popup";
 //import R from './RoleForm';
 //import New2Form from './New2Form';
@@ -22,6 +22,13 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+
+const EmployeeCadreValidationForm = Yup.object({
+  empCadre: Yup.string().required("Please enter Employee Cadre Name"),
+  remarks: Yup.string().required("Please enter Remarks"),
+  medicalClaimLimit : Yup.number().required("Please enter Claim Limit"),
+});
 
 
 const EmployeeCadreList = () => {
@@ -221,9 +228,9 @@ const exportpdf = async () => {
   doc.autoTable({
     head: header,
     body: tableData,
-    startY: 20, // Start Y position for the table
-    theme: 'grid', // Optional theme for the table
-    margin: { top: 30 }, // Optional margin from top
+    startY: 20, 
+    theme: 'grid', 
+    margin: { top: 30 },
     styles: { fontSize: 5 },
     columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
 });
@@ -237,7 +244,6 @@ const exportExcelfile = async () => {
   
 
   const headerStyle = {
-    // font: { bold: true, size: 12 },
     alignment: { horizontal: 'center' }
     
 };
@@ -277,7 +283,6 @@ sheet.getRow(1).font = { bold: true };
       anchor.href = url;
       anchor.download = 'download.xlsx';
       anchor.click();
-      // anchor.URL.revokeObjectURL(url);
   })
 }
 

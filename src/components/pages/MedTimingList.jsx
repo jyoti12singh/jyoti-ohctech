@@ -9,7 +9,7 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import Popup from './Popup';
 import MedicineTimingForm from './MedTimingForm';
 import PropTypes from "prop-types";
-import { MedTimeValidationForm } from './Validationform';
+//import { MedTimeValidationForm } from './Validationform';
 import { useFormik } from "formik";
 // import axios from 'axios';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
@@ -19,6 +19,12 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import * as Yup from 'yup';
+
+const MedTimeValidationForm = Yup.object({
+    medicineTiming: Yup.string().min(2).max(25).required("Please enter Medicine Timing"),
+    timingDescription: Yup.string().min(2).max(25).required("Please enter Description"),
+  });
 
 const MedTimingList = () => {
 
@@ -229,9 +235,9 @@ const MedTimingList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20,
+          theme: 'grid',
+          margin: { top: 30 },
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -244,7 +250,6 @@ const MedTimingList = () => {
         
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -281,7 +286,6 @@ const MedTimingList = () => {
             anchor.href = url;
             anchor.download = 'MedTimingList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
 

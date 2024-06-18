@@ -19,7 +19,16 @@ import 'jspdf-autotable';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
 
+const empcontValidationForm = Yup.object({
+    employerContractorName: Yup.string().required("Please enter Employee Name"),
+    employerContractorCode: Yup.string().required("Please enter Code"),
+    employerContractorAddress : Yup.string().required("Please enter Address"),
+    employerContractorContact : Yup.number().required("Please enter Contact Details"),
+    employerContractorEmail: Yup.string().required("Please enter Emails"),
+    employerContractorDesc: Yup.string().required("Please enter Remarks of Employee"),
+  });
 
 const EmployeeContractorList = () => {
 
@@ -62,7 +71,7 @@ const EmployeeContractorList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: empcontValidationForm,
+         validationSchema: empcontValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //   action.resetForm();
@@ -236,9 +245,9 @@ const EmployeeContractorList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20, 
+          theme: 'grid',
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -251,7 +260,6 @@ const EmployeeContractorList = () => {
         
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -297,7 +305,6 @@ const EmployeeContractorList = () => {
             anchor.href = url;
             anchor.download = 'EmployeeContractorList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
 
