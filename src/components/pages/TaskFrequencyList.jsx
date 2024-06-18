@@ -19,6 +19,14 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import * as Yup from 'yup';
+
+const taskFrequencyForm = Yup.object({
+ 
+    frequencyName:Yup.string().required("Please enter Frequency Name"),
+    frequencyCode:Yup.number().min(6).required("Please enter Frequency Code"),
+      
+  });
 
 const TaskFrequencyList = () => {
 
@@ -52,7 +60,7 @@ const TaskFrequencyList = () => {
         resetForm,
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: complaintForm,
+        validationSchema: taskFrequencyForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
@@ -211,10 +219,9 @@ const TaskFrequencyList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
-          styles: { fontSize: 5 },
+          startY: 20, 
+          theme: 'grid',
+          margin: { top: 30 }, 
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
         doc.save("TaskFrequencyList.pdf");
@@ -227,7 +234,7 @@ const TaskFrequencyList = () => {
         
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
+        
           alignment: { horizontal: 'center' }
           
       };
@@ -264,7 +271,7 @@ const TaskFrequencyList = () => {
             anchor.href = url;
             anchor.download = 'TaskFrequencyList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
+            
         })
     }
 

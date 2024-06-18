@@ -9,7 +9,7 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import Popup from './Popup';
 
 
-import { AmbulanceItemValidationForm } from './Validationform';
+//import { AmbulanceItemValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,8 +20,15 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
 import AmbulanceItemForm from './AmbulanceItemForm';
+import * as Yup from 'yup';
 
-
+const AmbulanceitemForm = Yup.object({
+    issueto: Yup.string().required("Please enter Check Type Name"),
+    itemcatagories: Yup.string().required("Please enter Check Type Code  "),
+    ohclocation: Yup.string().required("Please enter  Cost"),
+  
+  
+  });
 const AmbulanceItemList = () => {
 
 
@@ -58,7 +65,7 @@ const AmbulanceItemList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: AmbulanceItemValidationForm,
+        validationSchema: AmbulanceitemForm,
         onSubmit: async (values, {resetForm}) => {
         try {
             const response = await axiosClientPrivate.post('/business-units', values);
@@ -218,9 +225,9 @@ const AmbulanceItemList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20, 
+          theme: 'grid', 
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -272,7 +279,7 @@ const AmbulanceItemList = () => {
             anchor.href = url;
             anchor.download = 'download.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
+            
         })
     }
    

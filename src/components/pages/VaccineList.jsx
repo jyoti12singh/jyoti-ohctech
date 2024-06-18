@@ -21,8 +21,14 @@ import PropTypes from "prop-types";
 // new
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import * as Yup from 'yup';
 
-
+const VaccineValidationForm = Yup.object({
+    vaccineName: Yup.string().required("Please enter Vaccine Name"),
+    vaccineCompany: Yup.string().required("Please Enter Company Name"),
+    vaccineDesc: Yup.string().required("Please Enter Vaccine Description"),
+  });
+  
 const VaccineList = () => {
 
 
@@ -64,7 +70,7 @@ const VaccineList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: VaccineValidationForm,
+         validationSchema: VaccineValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
@@ -239,9 +245,9 @@ const VaccineList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20,
+          theme: 'grid', 
+          margin: { top: 30 },
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -254,7 +260,6 @@ const VaccineList = () => {
         const sheet = workbook.addWorksheet('My Sheet');
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -295,7 +300,6 @@ const VaccineList = () => {
             anchor.href = url;
             anchor.download = 'VaccineList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
    
@@ -306,43 +310,20 @@ const VaccineList = () => {
     const onFilterChanged = (params) => {
         const filterModel = params.api.getFilterModel();
         setTemp(filterModel)
-        // console.log("search string",filterModel);
-        // fetchFilteredData(filterModel);
+       
     };
 
     console.log("tempppp filter",temp);
 
 
 
-//  index page
+
 const [index,setIndex] = useState();
 
-// const gridOptions = useMemo(() => ({
-    
-//     // pagination: true,
-//     // paginationPageSize: 10,
-//     // rowModelType: 'serverSide',
-//     // cacheBlockSize: 10,
-//     // serverSideStoreType: 'partial',
-//     paginationNumberFormatter: (params) => {
-//       return `Page ${params.value + 1}`;
-//     },
-//     // onGridReady: params => {
-//     //   params.api.setServerSideDatasource(serverSideDatasource());
-//     // },
-//     onRowClicked: (event) => {
-//         setIndex(event.node.rowIndex);
-//     },
-//   }), []);
-
-
-//   const paginationNumberFormatter = useCallback((params) => {
-//     return "[" + params.value.toLocaleString() + "]";  
-//   }, []);
 
   console.log("index for next page : ",index);
   
-//   console.log("grid api");
+
 
     return (
         <>

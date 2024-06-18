@@ -25,7 +25,12 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 // import { Group } from '@mui/icons-material';
+import * as Yup from 'yup';
 
+const DeviceValidationForm = Yup.object({
+    deviceName: Yup.string().required("Please enter device name"),
+   
+  });
 
 const DeviceList = () => {
 
@@ -62,7 +67,7 @@ const DeviceList = () => {
         resetForm,
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: HabitValidationForm,
+         validationSchema: DeviceValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
@@ -226,9 +231,9 @@ const DeviceList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20, 
+          theme: 'grid',
+          margin: { top: 30 },
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -242,7 +247,6 @@ const DeviceList = () => {
         
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -279,7 +283,6 @@ const DeviceList = () => {
             anchor.href = url;
             anchor.download = 'DeviceList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
 
