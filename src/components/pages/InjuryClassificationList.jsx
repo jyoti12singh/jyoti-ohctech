@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import InjuryClassificationForm from './InjuryClassificationForm';
-import { InjuryClassValidationForm } from './Validationform';
+//import { InjuryClassValidationForm } from './Validationform';
 import { useFormik } from "formik";
 // import axios from 'axios';
 import PropTypes from "prop-types";
@@ -19,6 +19,12 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import * as Yup from 'yup';
+const InjuryClassValidationForm = Yup.object({
+    injClassName: Yup.string().required("Please enter Injury  Name"),
+    injClassDesc: Yup.string().required("Please Injury   Description"),
+    injClassCode: Yup.string().required("Please enter Injury  Code"),
+  });
 
 const InjuryClassificationList = () => {
 
@@ -221,9 +227,9 @@ const InjuryClassificationList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20, 
+          theme: 'grid', 
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -237,7 +243,6 @@ const InjuryClassificationList = () => {
         
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -277,7 +282,6 @@ const InjuryClassificationList = () => {
             anchor.href = url;
             anchor.download = 'InjuryClassificationList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
 

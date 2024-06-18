@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import SectionForm from './SectionForm';
-import { sectionForm } from './Validationform';
+//import { sectionForm } from './Validationform';
 import { useFormik } from "formik";
 // import { WidthFull } from '@mui/icons-material';
 import { ToastContainer, toast } from 'react-toastify';
@@ -19,6 +19,16 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+
+const sectionForm = Yup.object({
+    buId: Yup.string().min(2).max(25).required("Please enter Bussiness Unit"),
+    deptId: Yup.string().min(2).max(25).required("Please enter Department Name"),
+    sectionName: Yup.string().min(2).max(25).required("Please enter Section Name"),
+    sectionHeadName: Yup.string().min(2).max(25).required("Please enter Section Head"),
+    sectionHeadEmail: Yup.string().email().required("Please enter Section Email"),
+       
+  });
 
 const SectionList = () => {
 
@@ -237,9 +247,9 @@ const CustomActionComponent = ({id}) => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20, 
+          theme: 'grid', 
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -253,7 +263,6 @@ const CustomActionComponent = ({id}) => {
         
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -296,7 +305,6 @@ const CustomActionComponent = ({id}) => {
             anchor.href = url;
             anchor.download = 'download.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
 

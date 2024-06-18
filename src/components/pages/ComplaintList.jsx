@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import ComplaintForm from './ComplaintForm';
-import { complaintForm } from './Validationform';
+//import { complaintForm } from './Validationform';
 import { useFormik } from "formik";
 // import axios from 'axios';
 import PropTypes from "prop-types";
@@ -19,6 +19,15 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import * as Yup from 'yup';
+
+ const complaintForm = Yup.object({
+    complaint: Yup.string().min(2).max(25).required("Please enter Complaint"),
+    complaintDesc: Yup.string().min(2).max(25).required("Please enter Complaint Details"),
+    isActive: Yup.string().required("Please Select deafult"),
+    
+       
+  });
 
 const ComplaintList = () => {
 
@@ -224,9 +233,9 @@ const ComplaintList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20, 
+          theme: 'grid', 
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -240,7 +249,6 @@ const ComplaintList = () => {
         
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -280,7 +288,6 @@ const ComplaintList = () => {
             anchor.href = url;
             anchor.download = 'ComplaintList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
 

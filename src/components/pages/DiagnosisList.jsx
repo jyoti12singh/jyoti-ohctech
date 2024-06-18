@@ -16,11 +16,16 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-
-//import { AilValidationForm } from './Validationform';
-import { AilmentValidationForm } from './Validationform';
 import { useFormik } from "formik";
-// import axios from 'axios';
+import * as Yup from 'yup';
+
+export const Diagnosisiform = Yup.object({
+    ailmentName: Yup.string().min(2).max(25).required("Please enter ailment Name"),
+    ailmentDesc: Yup.string().min(2).max(25).required("Please enter Description"),
+    ailmentCode: Yup.string().min(2).max(25).required("Please enter ailment code"),
+    isActive: Yup.string().min(2).max(25).required("Please enter ailment Action"),
+  });
+
 
 const DiagnosisList = () => {
 
@@ -59,7 +64,7 @@ const DiagnosisList = () => {
             resetForm
           } = useFormik({
             initialValues: initialValues,
-            validationSchema: AilmentValidationForm,
+            validationSchema: Diagnosisiform,
             // onSubmit: (values, action) => {
             //     console.log(values);
             //     action.resetForm();
@@ -231,9 +236,9 @@ const DiagnosisList = () => {
             doc.autoTable({
               head: header,
               body: tableData,
-              startY: 20, // Start Y position for the table
-              theme: 'grid', // Optional theme for the table
-              margin: { top: 30 }, // Optional margin from top
+              startY: 20, 
+              theme: 'grid', 
+              margin: { top: 30 }, 
               styles: { fontSize: 5 },
               columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
           });
@@ -247,7 +252,6 @@ const DiagnosisList = () => {
             
       
             const headerStyle = {
-              // font: { bold: true, size: 12 },
               alignment: { horizontal: 'center' }
               
           };
@@ -289,7 +293,6 @@ const DiagnosisList = () => {
                 anchor.href = url;
                 anchor.download = 'DiagnosisList.xlsx';
                 anchor.click();
-                // anchor.URL.revokeObjectURL(url);
             })
         }
 

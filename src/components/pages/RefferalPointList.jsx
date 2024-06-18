@@ -7,7 +7,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import { RefferalValidationForm } from './Validationform';
+//import { RefferalValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import RefferalPointForm from './RefferalPointForm';
 // import axios from 'axios';
@@ -19,6 +19,14 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import * as Yup from 'yup';
+const RefferalValidationForm = Yup.object({
+    referralPointName: Yup.string(2).min(1).required("Please enter Refferal Point Name"),
+    city: Yup.string().min(2).max(25).required("Please enter Specialist Name"),
+    hospitalName: Yup.string().min(2).max(25).required("Please enter Hospital Name"),
+    address: Yup.string().min(2).max(25).required("Please enter Address"),
+    contactDetail: Yup.string().required("Please enter Contact Detail"),
+  });
 
 const RefferalPointList = () => {
 
@@ -235,9 +243,9 @@ const RefferalPointList = () => {
             doc.autoTable({
               head: header,
               body: tableData,
-              startY: 20, // Start Y position for the table
-              theme: 'grid', // Optional theme for the table
-              margin: { top: 30 }, // Optional margin from top
+              startY: 20,
+              theme: 'grid', 
+              margin: { top: 30 }, 
               styles: { fontSize: 5 },
               columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
           });
@@ -251,7 +259,6 @@ const RefferalPointList = () => {
             
       
             const headerStyle = {
-              // font: { bold: true, size: 12 },
               alignment: { horizontal: 'center' }
               
           };
@@ -297,7 +304,6 @@ const RefferalPointList = () => {
                 anchor.href = url;
                 anchor.download = 'ComplaintList.xlsx';
                 anchor.click();
-                // anchor.URL.revokeObjectURL(url);
             })
         }
 

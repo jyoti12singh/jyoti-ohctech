@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import {
   Box,
-  // Typography,
+  Grid,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Divider,
+  Typography,
   IconButton,
   useMediaQuery,
   useTheme,
@@ -44,16 +45,17 @@ import PatientManagement from '../../assets/images/Patient Management.png'
 import DataSetup from '../../assets/images/Data Setup.png'
 // import BioWaste from '../../assets/images/Bio-Waste.png'
 // import ChronicIllnessMaster from '../../assets/images/Chronic Illness Master.png'
-import Logout from '../../assets/images/Logout.png'
-
-
+import Logout from '../../assets/images/Logout.png';
+import Back from '../../assets/images/back.png';
 import useAxiosPrivate from "../../utils/useAxiosPrivate";
 // import { useNavigate } from "react-router-dom";
 import { useSessionStorage } from "../../utils/useSessionStorage";
 import { useEffect } from "react";
 import MuiDrawer from '@mui/material/Drawer';
+import DateTime from "./DateTime";
 
-const drawerWidth = 240;
+
+const drawerWidth = 250;
 const openedMixin = (theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
@@ -75,38 +77,16 @@ const closedMixin = (theme) => ({
   },
 });
 
-// const DrawerHeader = styled("div")(({ theme }) => ({
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "flex-end",
+// const DrawerHeader = styled('div')(({ theme }) => ({
+  // display: 'flex',
+  // alignItems: 'center',
+  // justifyContent: 'flex-end',
 //   padding: theme.spacing(0, 1),
+//   // necessary for content to be below app bar
+//   // ...theme.mixins.toolbar,
 // }));
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    // flexShrink: 0,
-    // whiteSpace: 'nowrap',
-    // boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
-  }),
-);
 
 const SideBar1 = () => {
 
@@ -124,7 +104,7 @@ const SideBar1 = () => {
     setIsOpen((prevOpen) => (prevOpen === index ? null : index));
   };
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -133,6 +113,23 @@ const SideBar1 = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const MiniDrawer = styled("div")(({ theme, open }) => ({
+    width: isMobile ? "100vh" : 240,
+    height:"100vh",
+    backgroundColor:"white",
+    // flexShrink: 0,
+    transition: "width 0.2s ease-in-out",
+    // whiteSpace: "nowrap",
+    boxSizing: "border-box",
+    border: "1px solid #dedede", // Add a 1px solid border
+   ...(open && {
+     ...openedMixin(theme),
+    }),
+   ...(!open && {
+     ...closedMixin(theme),
+    }),
+  }));
 
   // const sidebararr = [
   //   {
@@ -287,19 +284,16 @@ const SidebarMap = {
 
 
   return (
-    <Box  
-      sx={{
-        width: isMobile ? "100%" : 250,
-        height: "100vh",
-        backgroundColor: "white",
-        color: "#45474B",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        transition: "width 0.2s ease-in-out",
-        border: "10px",
-      }}
-    >
-    <Drawer variant="permanent" open={open}>
-      <Divider />
+      <Box>
+      <MiniDrawer open={open}>
+      {/* <Divider /> */}
+      {/* <ListItem>
+              <ListItemIcon>
+              <img src={"/ohctech_logo.jpeg"} width="150" height="20" />
+              </ListItemIcon>
+              <ListItemText/>
+      </ListItem>
+      <Divider /> */}
       <List>
       {data.map((item, index) => (
         <React.Fragment key={item.Id}>
@@ -358,25 +352,46 @@ const SidebarMap = {
         </React.Fragment>
       ))}
      </List>
-
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
       <Toolbar>
-        <IconButton
-          color="inherit"
+     <Grid container direction="row" spacing={2}>
+       {/* <Grid item> */}
+       <IconButton
+          // color="inherit"
           aria-label="open drawer"
           onClick={handleDrawerOpen}
           edge="start"
           sx={{
-            marginRight: 5,
+            // marginRight: 5,
+            marginLeft: 0.5,
             ...(open && { display: 'none' }),
+            // justifyContent: 'flex-end',
           }}
         >
-          <ChevronRightIcon />
+          {open ? (
+            <img src={Back} width="25px" />
+          ) : (
+            <img src={Back} width="25px" />
+          )}
         </IconButton>
+        {open && (
+          <IconButton
+            aria-label="close drawer"
+            onClick={handleDrawerClose}
+            sx={{
+              marginLeft: 21,
+              // justifyContent: 'flex-end',
+            }}
+          >
+            <img src={Back} width="25px" />
+          </IconButton>
+        )}
+        {/* </Grid> */}
+        <Grid item>
+          <Typography variant="body1" component="div" sx={{ ml: 3, mt: 1 }}>
+            <DateTime />
+          </Typography>
+        </Grid>
+      </Grid>
       </Toolbar>
       <Divider />
       <List>
@@ -389,7 +404,7 @@ const SidebarMap = {
           </ListItemButton>
         </ListItem>
       </List>
-    </Drawer>
+    </MiniDrawer>
     </Box>
   );
 };
