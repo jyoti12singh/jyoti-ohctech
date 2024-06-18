@@ -8,10 +8,18 @@ import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import BusinessReportForm from './BusinessReportForm';
-import { businessReportform } from './Validationform';
+//import { businessReportform } from './Validationform';
 import { useFormik } from "formik";
 // import axios from 'axios';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+
+const businessReportform = Yup.object({
+
+    filtername: Yup.string().required("Please enter ohc type"),
+   reportname: Yup.string().required("Please enter ohc category"),
+    specific: Yup.string().required("Please enter fax"),
+  });
 
 const BusinessReportList = () => {
 

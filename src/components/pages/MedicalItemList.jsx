@@ -9,7 +9,7 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import Popup from './Popup';
 
 
-import { MedicalitemValidationForm } from './Validationform';
+//import { MedicalItemValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,6 +20,30 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import MedicalItemForm from './MedicalItemForm';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+
+
+
+const MedicalItemValidationForm = Yup.object({
+  
+    itemName: Yup.string().required("Please enter Item Name"),
+    itemCode: Yup.string().required("Please enter Item Code"),
+    subClassification: Yup.string().required("Please enter subclassification"),
+    salt: Yup.string().required("Please enter what salt"),
+    indication: Yup.string().required("Please enter indication"),
+    contraindication: Yup.string().required("Please enter contraindication"),
+    sideEffect: Yup.string().required("Please enter sideeffect"),
+    interaction: Yup.string().required("Please enter interaction"),
+    medicineprecaution: Yup.string().required("Please enter medicine precaution"),
+    reorderstorelevel: Yup.string().required("Please enter store level"),
+    ministorelevel: Yup.string().required("Please enter mini store level"),
+    minindentlevel: Yup.string().required("Please enter min indent level"),
+    maxiindentlevel: Yup.string().required("Please enter max indent level"),
+    reorderpercentagelevel: Yup.string().required("Please enter record percentage level"),
+    remark: Yup.string().required("Please enter remark"),
+    
+    
+  });
 
 const MedicalItemList = () => {
 
@@ -80,7 +104,7 @@ const MedicalItemList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: MedicalitemValidationForm,
+        validationSchema: MedicalItemValidationForm,
         onSubmit: async (values, {resetForm}) => {
         try {
             const response = await axiosClientPrivate.post('/medicallist', values);
@@ -309,13 +333,13 @@ const MedicalItemList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20, 
+          theme: 'grid',
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("MedicineList.pdf");
+        doc.save("MedicalItemList.pdf");
     };
 
 
@@ -439,9 +463,8 @@ const MedicalItemList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'MedicalItemList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
    

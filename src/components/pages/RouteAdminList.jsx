@@ -5,7 +5,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import ImportExportRoundedIcon from "@mui/icons-material/ImportExportRounded";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
-import  {routeadminForm}  from './Validationform';
+//import  {routeadminForm}  from './Validationform';
 import Popup from "./Popup";
 //import UserForm from "./UserForm";
 import RouteAdminForm from './RouteAdminForm';
@@ -14,7 +14,14 @@ import { useState,useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
 
+const routeadminForm = Yup.object({
+ 
+  routeAdmin:Yup.string().required("Please enter RouteAdmin"),
+  remarks:Yup.string().required("Please enter remarks"),
+    
+});
 
 const RouteAdminList = () => {
 

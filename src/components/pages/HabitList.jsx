@@ -18,7 +18,12 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
 
+const HabitValidationForm = Yup.object({
+    habit: Yup.string().required("Please enter Habit Name"),
+    
+  });
 
 const HabitList = () => {
 
@@ -55,7 +60,7 @@ const HabitList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: HabitValidationForm,
+         validationSchema: HabitValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
@@ -215,9 +220,9 @@ const HabitList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20,
+          theme: 'grid',
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -231,7 +236,6 @@ const HabitList = () => {
         
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -266,7 +270,6 @@ const HabitList = () => {
             anchor.href = url;
             anchor.download = 'HabitList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
    
