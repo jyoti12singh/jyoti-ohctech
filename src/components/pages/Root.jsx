@@ -22,7 +22,7 @@ const Root = () => {
       <NewHeader />
       <Stack   direction="row" spacing={2} justifyContent="space-between">
         {/* <LeftBar /> */}
-        {/*<SideBar1 sx={{ display: { xs: 'none', sm: 'block' } }} />*/}
+        <SideBar1 sx={{ display: { xs: 'none', sm: 'block' } }} />
         <Box flex={4} p={2}>
           <Outlet />
         </Box>

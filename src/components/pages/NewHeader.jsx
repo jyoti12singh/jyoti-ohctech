@@ -11,31 +11,31 @@ import {
   Toolbar,
   Typography,
   styled,
-  Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
+  // Divider,
+  // List,
+  // ListItem,
+  // ListItemIcon,
+  // ListItemText,
   useTheme,
-  useMediaQuery,
+  // useMediaQuery,
 } from "@mui/material";
 import React from 'react';
 import MedicationIcon from "@mui/icons-material/Medication";
 import { Notifications } from "@mui/icons-material";
 import { useState } from "react";
-import ListMenu from "./ListMenu";
+// import ListMenu from "./ListMenu";
 import MenuIcon from '@mui/icons-material/Menu';
-import { useEffect } from "react";
-import { useSessionStorage } from "../../utils/useSessionStorage";
-import useAxiosPrivate from "../../utils/useAxiosPrivate";
+// import { useEffect } from "react";
+// import { useSessionStorage } from "../../utils/useSessionStorage";
+// import useAxiosPrivate from "../../utils/useAxiosPrivate";
 import SearchIcon from '@mui/icons-material/Search';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import LibraryBooksRoundedIcon from '@mui/icons-material/LibraryBooksRounded';
 import PowerSettingsNewRoundedIcon from '@mui/icons-material/PowerSettingsNewRounded';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ListItemButton from '@mui/material/ListItemButton';
+// import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+// import ListItemButton from '@mui/material/ListItemButton';
 import SideBar1 from "./SideBar1";
 import help from '../../assets/images/Help.png';
 
@@ -131,7 +131,7 @@ const NewHeader = () => {
 
   const [open, setOpen] = useState(false);
 
-  const [openItem, setOpenItem] = useState(false);
+  // const [openItem, setOpenItem] = useState(false);
 
   const [toggleDrawer, setToggleDrawer] = useState(false);
 
@@ -142,24 +142,24 @@ const NewHeader = () => {
 
   const theme = useTheme();
   
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  // const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
 
-  const handleClick = (index) => {
-    setOpenItem(openItem === index ? null : index);
-  };
+  // const handleClick = (index) => {
+  //   setOpenItem(openItem === index ? null : index);
+  // };
 
-  const handleDrawerOpen = () => {
-    setToggleDrawer(true);
-  };
+  // const handleDrawerOpen = () => {
+  //   setToggleDrawer(true);
+  // };
 
-  const handleDrawerClose = () => {
-    setToggleDrawer(false);
-  };
+  // const handleDrawerClose = () => {
+  //   setToggleDrawer(false);
+  // };
   
 
     // const drawer = (
@@ -245,11 +245,11 @@ const NewHeader = () => {
           <Avatar
             sx={{ width: 30, height: 30 ,border:'black'}}
             src=""
-            onClick={(e) => setOpen(true)}
+            onClick={() => setOpen(true)}
           />
-          <Typography variant="subtitle1" sx={{ color: "#45474B"}} onClick={(e) => setOpen(true)}>
+          <Typography variant="subtitle1" sx={{ color: "#45474B"}} onClick={() => setOpen(true)}>
             ADMIN1,
-            <Typography variant="subtitle2" sx={{ color: "#45474B",fontSize:"12px"}} onClick={(e) => setOpen(true)}>
+            <Typography variant="subtitle2" sx={{ color: "#45474B",fontSize:"12px"}} onClick={() => setOpen(true)}>
               Application Admin
             </Typography>
           </Typography>
@@ -257,12 +257,12 @@ const NewHeader = () => {
         <UserBox>
           <Avatar
             sx={{ width: 30, height: 30 }}
-            src=""
-            onClick={(e) => setOpen(true)}
+            // src=""
+            onClick={() => setOpen(true)}
           />
-          <Typography variant="subtitle1" sx={{ color: "#45474B",fontSize:"10px"}} onClick={(e) => setOpen(true)}>
+          <Typography variant="subtitle1" sx={{ color: "#45474B",fontSize:"10px"}} onClick={() => setOpen(true)}>
             ADMIN1,
-            <Typography variant="subtitle2" sx={{ color: "#45474B",fontSize:"7px"}} onClick={(e) => setOpen(true)}>
+            <Typography variant="subtitle2" sx={{ color: "#45474B",fontSize:"7px"}} onClick={() => setOpen(true)}>
               Application Admin
             </Typography>
           </Typography>
@@ -273,7 +273,7 @@ const NewHeader = () => {
             id="menu-appbar"
             aria-labelledby="demo-positioned-button"
             open={open}
-            onClose={(e) => {
+            onClose={() => {
               setOpen(false);
             }}
             anchorOrigin={{
