@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -14,175 +14,320 @@ import 'react-toastify/dist/ReactToastify.css';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import SingleSelect from '../common/SingleSelect';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
-import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
+// import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
+// import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import Input from '../common/Input';
-import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+// import * as Yup from 'yup';
+// import { Link } from 'react-router-dom';
 import EmpHealthDasboard from './EmpHealthDashboard';
 
 const genderselect=["Femail","Mail","Third Gender"]
 const bloodgroupselect=["A+","AB+","B+","B-","O+","O-"]
 const Patientselect=["A Grade","B Grade","A + Grade"]
 
-const PatientValidationSchema = Yup.object({
-  gender: Yup.string().required('Please select a gender'),
-});
+// const PatientValidationSchema = Yup.object({
+//   gender: Yup.string().required('Please select a gender'),
+// });
 
-const ContactValidationSchema = Yup.object({
-  email: Yup.string().required('Please enter an email'),
-});
+// const ContactValidationSchema = Yup.object({
+//   email: Yup.string().required('Please enter an email'),
+// });
 
 const PatientAndContact = () => {
   const axiosClientPrivate = useAxiosPrivate();
-  const { id } = useParams();
 
   // State for visibility of forms
   const [showPatientForm, setShowPatientForm] = useState(true);
   const [showContactForm, setShowContactForm] = useState(false);
 
   // State for fetched data
-  const [rowData, setRowData] = useState([]);
-  const [colDefs, setColDefs] = useState([]);
-  const [fetchTrigger, setFetchTrigger] = useState(0);
+  // const [rowData, setRowData] = useState([]);
+  // const [colDefs, setColDefs] = useState([]);
+  // const [fetchTrigger, setFetchTrigger] = useState(0);
 
   const [showDashboard, setShowDashboard] = useState(false);
-  const toggleDashboard = () => {
-    setShowDashboard(!showDashboard);
-};    
+//   const toggleDashboard = () => {
+//     setShowDashboard(!showDashboard);
+// };    
+
+
+const initialValues = {
+  selectpatientcategory: "",
+  patientName: "",
+  fatherName: "",
+  dob: "",
+  gender: "",
+  bloodGroup: "",
+  aadharNo: "",
+  primaryPhone: "",
+  village: "",
+  post: "",
+  ps: "",
+  tehsil: "",
+  district: "",
+  state: "",
+  pinCode: "",
+  //contact
+  emailId : "",
+  personalPhone : "",
+  primaryContactPerson : "",
+  primaryContactNo : "",
+  secondaryContactPerson : "",
+  secondaryContactNo : "",
+  lastModified: "",
+  modifiedBy: ""
+};
+
+// const PatientValidationForm = Yup.object({
+//   selectpatientcategory: Yup.string().required("Please choose patient category "),
+// pname: Yup.string().required("Please enter patient name"),
+// fhname: Yup.string().required("Please enter father anme "),
+// date: Yup.string().required("Please enter birth date"),
+// genderchoose: Yup.string().required("Please  genderchoose"),
+// blood: Yup.string().required("Please enter  blood"),
+// aadhar: Yup.string().required("Please enter aadhar"),
+// phone: Yup.string().required("Please enter phone number"),
+// village: Yup.string().required("Please enter village"),
+// post: Yup.string().required("Please enter post"),
+// ps: Yup.string().required("Please enter ps"),
+// tehsil:Yup.string().required("Please enter tehsil "),
+// district:Yup.string().required("Please enter district "),
+// state:Yup.string().required("Please enter sat"),
+// pin:Yup.string().required("Please enter pin"),
+// });
+
+const {
+  values,
+  touched,
+  errors,
+  handleBlur,
+  handleChange,
+  setFieldValue,
+  handleSubmit,
+  // resetForm,
+} = useFormik({
+  initialValues: initialValues,
+  // validationSchema: PatientValidationForm,
+  onSubmit: async (values) => {
+      try {
+          const response = await axiosClientPrivate.post('/medicallist', values);
+          toast.success("Saved Successfully!", {
+              position: "top-center"
+          });
+          // setFetchTrigger(prev => prev + 1);
+          console.log('Response:', response.data);
+          // resetForm();
+      } catch (error) {
+          console.log(values);
+          console.error('Error:', error);
+      }
+  },
+});
+
+
+const [stop,setStop] = useState(true);
+
+
+const handleEdit = async (id) => {
+  // alert(id);
+  
+  
+    try {
+        const response = await axiosClientPrivate.get(`/patients/${id}`);
+        // const items = response.data.content;
+
+        setFieldValue("id", response.data.id);
+        setFieldValue("selectpatientcategory", response.data.selectpatientcategory);
+        setFieldValue("patientName", response.data.patientName);
+        setFieldValue("fatherName", response.data.fatherName);
+        setFieldValue("dob", response.data.dob);
+        setFieldValue("gender", response.data.gender);
+        setFieldValue("bloodGroup", response.data.bloodGroup);
+        setFieldValue("aadharNo", response.data.aadharNo);
+        setFieldValue("primaryPhone", response.data.primaryPhone);
+        setFieldValue("village", response.data.village);
+        setFieldValue("post", response.data.post);
+        setFieldValue("ps", response.data.ps);
+        setFieldValue("tehsil", response.data.tehsil);
+        setFieldValue("district", response.data.district);
+        setFieldValue("state", response.data.state);
+        setFieldValue("pinCode", response.data.pinCode);
+        // contact
+        setFieldValue("emailId", response.data.emailId);
+        setFieldValue("personalPhone", response.data.personalPhone);
+        setFieldValue("primaryContactPerson", response.data.primaryContactPerson);
+        setFieldValue("primaryContactNo", response.data.primaryContactNo);
+        setFieldValue("secondaryContactPerson", response.data.secondaryContactPerson);
+        setFieldValue("secondaryContactNo", response.data.secondaryContactNo);
+
+        setFieldValue("lastModified", response.data.lastModified);
+        setFieldValue("modifiedBy", response.data.modifiedBy);
+        // setShowForm(true);
+        
+    } catch (error) {
+        console.error('Error fetching item for edit:', error);
+    }
+};
+
+const { id } = useParams();
+if(stop){
+  handleEdit(id);
+  setStop(false);
+}
+ 
+
+
+const handleUpdate = async (id) => {
+  alert(id);
+  const update = values;
+  try {
+      console.log(values);
+      await axiosClientPrivate.put(`/patients/${id}`, update);
+      toast.success("Updated Successfully!", {
+          position: "top-center",
+          autoClose: 3000,
+      });
+      // resetForm();
+      handleEdit();
+  } catch (err) {
+      console.log(values);
+      console.log(err);
+  }
+}
+
 
   // Initial form values
-  const initialPatientValues = {
-    gender: '',
-  };
+  // const initialvalues = {
+  //   gender: '',
+  // };
 
-  const initialContactValues = {
-    email: '',
-  };
+  // const initialvalues = {
+  //   email: '',
+  // };
 
   // Formik for patient form
-  const {
-    values: patientValues,
-    touched: patientTouched,
-    errors: patientErrors,
-    handleBlur: patientHandleBlur,
-    handleChange: patientHandleChange,
-    handleSubmit: patientHandleSubmit,
-    resetForm: patientResetForm,
-  } = useFormik({
-    initialValues: initialPatientValues,
-    validationSchema: PatientValidationSchema,
-    onSubmit: async (values, { resetForm }) => {
-      try {
-        const response = await axiosClientPrivate.post('/patients', values);
-        toast.success('Patient Saved Successfully!', {
-          position: 'top-center',
-        });
-        setFetchTrigger((prev) => prev + 1);
-        console.log('Patient Response:', response.data);
-        patientResetForm();
-      } catch (error) {
-        console.error('Error saving patient:', error);
-      }
-    },
-  });
+  // const {
+  //   values: values,
+  //   touched: patientTouched,
+  //   errors: errors,
+  //   handleBlur: handleBlur,
+  //   handleChange: handleChange,
+  //   handleSubmit: patientHandleSubmit,
+  //   resetForm: patientResetForm,
+  // } = useFormik({
+  //   initialValues: initialPatientValues,
+  //   validationSchema: PatientValidationSchema,
+  //   onSubmit: async (values, { resetForm }) => {
+  //     try {
+  //       const response = await axiosClientPrivate.post('/patients', values);
+  //       toast.success('Patient Saved Successfully!', {
+  //         position: 'top-center',
+  //       });
+  //       setFetchTrigger((prev) => prev + 1);
+  //       console.log('Patient Response:', response.data);
+  //       patientResetForm();
+  //     } catch (error) {
+  //       console.error('Error saving patient:', error);
+  //     }
+  //   },
+  // });
 
   // Formik for contact form
-  const {
-    values: contactValues,
-    touched: contactTouched,
-    errors: contactErrors,
-    handleBlur: contactHandleBlur,
-    handleChange: contactHandleChange,
-    handleSubmit: contactHandleSubmit,
-    resetForm: contactResetForm,
-  } = useFormik({
-    initialValues: initialContactValues,
-    validationSchema: ContactValidationSchema,
-    onSubmit: async (values, { resetForm }) => {
-      try {
-        const response = await axiosClientPrivate.post('/contacts', values);
-        toast.success('Contact Saved Successfully!', {
-          position: 'top-center',
-        });
-        setFetchTrigger((prev) => prev + 1);
-        console.log('Contact Response:', response.data);
-        contactResetForm();
-      } catch (error) {
-        console.error('Error saving contact:', error);
-      }
-    },
-  });
+  // const {
+  //   values: values,
+  //   touched: contactTouched,
+  //   errors: errors,
+  //   handleBlur: contactHandleBlur,
+  //   handleChange: contactHandleChange,
+  //   handleSubmit: contactHandleSubmit,
+  //   resetForm: contactResetForm,
+  // } = useFormik({
+  //   initialValues: initialContactValues,
+  //   validationSchema: ContactValidationSchema,
+  //   onSubmit: async (values, { resetForm }) => {
+  //     try {
+  //       const response = await axiosClientPrivate.post('/contacts', values);
+  //       toast.success('Contact Saved Successfully!', {
+  //         position: 'top-center',
+  //       });
+  //       setFetchTrigger((prev) => prev + 1);
+  //       console.log('Contact Response:', response.data);
+  //       contactResetForm();
+  //     } catch (error) {
+  //       console.error('Error saving contact:', error);
+  //     }
+  //   },
+  // });
 
   // Fetch all patients for AG Grid
-  useEffect(() => {
-    const controller = new AbortController();
+  // useEffect(() => {
+  //   const controller = new AbortController();
 
-    const fetchPatients = async () => {
-      try {
-        const response = await axiosClientPrivate.get('/patients');
-        const items = response.data;
-        setRowData(items);
-        if (items.length > 0) {
-          const columns = Object.keys(items[0]).map((key) => ({
-            field: key,
-            headerName: key.charAt(0).toUpperCase() + key.slice(1),
-            filter: true,
-            sortable: true,
-          }));
+  //   const fetchPatients = async () => {
+  //     try {
+  //       const response = await axiosClientPrivate.get('/patients');
+  //       const items = response.data;
+  //       setRowData(items);
+  //       if (items.length > 0) {
+  //         const columns = Object.keys(items[0]).map((key) => ({
+  //           field: key,
+  //           headerName: key.charAt(0).toUpperCase() + key.slice(1),
+  //           filter: true,
+  //           sortable: true,
+  //         }));
 
-          columns.unshift({
-            field: 'Actions',
-            headerName: 'Actions',
-            cellRenderer: ({ data }) => (
-              <div>
-                <Button onClick={() => handleEditPatient(data.id)}>
-                  <EditNoteRoundedIcon />
-                </Button>
-                <Button onClick={() => handleDeletePatient(data.id)}>
-                  <DeleteSweepRoundedIcon />
-                </Button>
-              </div>
-            ),
-          });
+  //         columns.unshift({
+  //           field: 'Actions',
+  //           headerName: 'Actions',
+  //           cellRenderer: ({ data }) => (
+  //             <div>
+  //               <Button onClick={() => handleEditPatient(data.id)}>
+  //                 <EditNoteRoundedIcon />
+  //               </Button>
+  //               <Button onClick={() => handleDeletePatient(data.id)}>
+  //                 <DeleteSweepRoundedIcon />
+  //               </Button>
+  //             </div>
+  //           ),
+  //         });
 
-          setColDefs(columns);
-        }
-      } catch (error) {
-        console.error('Error fetching patients:', error);
-      }
-    };
+  //         setColDefs(columns);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching patients:', error);
+  //     }
+  //   };
 
-    fetchPatients();
+  //   fetchPatients();
 
-    return () => {
-      controller.abort();
-    };
-  }, [axiosClientPrivate, fetchTrigger]);
+  //   return () => {
+  //     controller.abort();
+  //   };
+  // }, [axiosClientPrivate, fetchTrigger]);
 
   // Function to handle editing patient
-  const handleEditPatient = async (patientId) => {
-    try {
-      const response = await axiosClientPrivate.get(`/patients/${patientId}`);
-      patientHandleChange({ target: { name: 'gender', value: response.data.gender } });
-      setShowPatientForm(true);
-      setShowContactForm(false);
-    } catch (error) {
-      console.error('Error fetching patient for edit:', error);
-    }
-  };
+  // const handleEditPatient = async (patientId) => {
+  //   try {
+  //     const response = await axiosClientPrivate.get(`/patients/${patientId}`);
+  //     handleChange({ target: { name: 'gender', value: response.data.gender } });
+  //     setShowPatientForm(true);
+  //     setShowContactForm(false);
+  //   } catch (error) {
+  //     console.error('Error fetching patient for edit:', error);
+  //   }
+  // };
 
   // Function to handle deleting patient
-  const handleDeletePatient = async (patientId) => {
-    if (window.confirm('Are you sure you want to delete this patient?')) {
-      try {
-        await axiosClientPrivate.delete(`/patients/${patientId}`);
-        setFetchTrigger((prev) => prev + 1);
-      } catch (error) {
-        console.error('Error deleting patient:', error);
-      }
-    }
-  };
+  // const handleDeletePatient = async (patientId) => {
+  //   if (window.confirm('Are you sure you want to delete this patient?')) {
+  //     try {
+  //       await axiosClientPrivate.delete(`/patients/${patientId}`);
+  //       setFetchTrigger((prev) => prev + 1);
+  //     } catch (error) {
+  //       console.error('Error deleting patient:', error);
+  //     }
+  //   }
+  // };
 
   // Function to handle toggling patient form visibility
   const togglePatientForm = () => {
@@ -221,7 +366,7 @@ const PatientAndContact = () => {
       {/* Patient form */}
       {showPatientForm && (
         <Box mb={4}>
-          <form onSubmit={patientHandleSubmit}>
+          <form onSubmit={handleSubmit}>
             <FormControl sx={{ width: '100%' }}>
             <Grid container spacing={0} justifyContent="center" alignItems="center"  >
                           
@@ -233,7 +378,7 @@ const PatientAndContact = () => {
                                     arr={Patientselect}
                                     label="Patient Category"
                                     name="selectpatientcategory"
-                                    value={patientValues.selectpatientcategory}
+                                    value={values.selectpatientcategory}
                                     onChange={(event, newValue) => {
                                       const syntheticEvent = {
                                         target: {
@@ -241,13 +386,13 @@ const PatientAndContact = () => {
                                           value: newValue,
                                         },
                                       };
-                                      patientHandleChange(syntheticEvent);
+                                      handleChange(syntheticEvent);
                                     }}
-                                    onBlur={patientHandleBlur}
+                                    onBlur={handleBlur}
                                     type="text"
                                     helperText={
-                                      patientErrors.selectpatientcategory && touched.selectpatientcategorye ? (
-                                        <span style={{ color: "red" }}>{patientErrors.selectpatientcategory}</span>
+                                      errors.selectpatientcategory && touched.selectpatientcategorye ? (
+                                        <span style={{ color: "red" }}>{errors.selectpatientcategory}</span>
                                       ) : null
                                     }
                                   />
@@ -258,13 +403,13 @@ const PatientAndContact = () => {
                                     name="patientName"
                                     type="text"
                                     size="large"
-                                    value={patientValues.patientName}
-                                    onChange={patientHandleChange}
-                                    onBlur={patientHandleBlur}
+                                    value={values.patientName}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     helperText={
-                                      patientErrors.patientName && touched.patientName ? (
+                                      errors.patientName && touched.patientName ? (
                                         <span style={{ color: "red" }}>
-                                          {patientErrors.patientName}
+                                          {errors.patientName}
                                         </span>
                                       ) : null
                                     }
@@ -276,13 +421,13 @@ const PatientAndContact = () => {
                                     name="fatherName"
                                     type="text"
                                     size="large"
-                                    value={patientValues.fatherName}
-                                    onChange={patientHandleChange}
-                                    onBlur={patientHandleBlur}
+                                    value={values.fatherName}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     helperText={
-                                      patientErrors.fatherName && touched.fatherName ? (
+                                      errors.fatherName && touched.fatherName ? (
                                         <span style={{ color: "red" }}>
-                                          {patientErrors.fatherName}
+                                          {errors.fatherName}
                                         </span>
                                       ) : null
                                     }
@@ -294,13 +439,13 @@ const PatientAndContact = () => {
                                     name="dob"
                                     type="date"
                                     size="large"
-                                    value={patientValues.dob}
-                                    onChange={patientHandleChange}
-                                    onBlur={patientHandleBlur}
+                                    value={values.dob}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     helperText={
-                                      patientErrors.dob && touched.dob ? (
+                                      errors.dob && touched.dob ? (
                                         <span style={{ color: "red" }}>
-                                          {patientErrors.dob}
+                                          {errors.dob}
                                         </span>
                                       ) : null
                                     }
@@ -312,7 +457,7 @@ const PatientAndContact = () => {
                                     arr={genderselect}
                                     label="Gender"
                                     name="gender"
-                                    value={patientValues.gender}
+                                    value={values.gender}
                                     onChange={(event, newValue) => {
                                       const syntheticEvent = {
                                         target: {
@@ -320,13 +465,13 @@ const PatientAndContact = () => {
                                           value: newValue,
                                         },
                                       };
-                                      patientHandleChange(syntheticEvent);
+                                      handleChange(syntheticEvent);
                                     }}
-                                    onBlur={patientHandleBlur}
+                                    onBlur={handleBlur}
                                     type="text"
                                     helperText={
-                                      patientErrors.gender && touched.gender ? (
-                                        <span style={{ color: "red" }}>{patientErrors.gender}</span>
+                                      errors.gender && touched.gender ? (
+                                        <span style={{ color: "red" }}>{errors.gender}</span>
                                       ) : null
                                     }
                                   />
@@ -336,7 +481,7 @@ const PatientAndContact = () => {
                                     arr={bloodgroupselect}
                                     label="Blood Group"
                                     name="bloodGroup"
-                                    value={patientValues.bloodGroup}
+                                    value={values.bloodGroup}
                                     onChange={(event, newValue) => {
                                       const syntheticEvent = {
                                         target: {
@@ -344,13 +489,13 @@ const PatientAndContact = () => {
                                           value: newValue,
                                         },
                                       };
-                                      patientHandleChange(syntheticEvent);
+                                      handleChange(syntheticEvent);
                                     }}
-                                    onBlur={patientHandleBlur}
+                                    onBlur={handleBlur}
                                     type="text"
                                     helperText={
-                                      patientErrors.bloodGroup && touched.bloodGroup ? (
-                                        <span style={{ color: "red" }}>{patientErrors.bloodGroup}</span>
+                                      errors.bloodGroup && touched.bloodGroup ? (
+                                        <span style={{ color: "red" }}>{errors.bloodGroup}</span>
                                       ) : null
                                     }
                                   />
@@ -362,13 +507,13 @@ const PatientAndContact = () => {
                                     name="aadharNo"
                                     type="text"
                                     size="large"
-                                    value={patientValues.aadharNo}
-                                    onChange={patientHandleChange}
-                                    onBlur={patientHandleBlur}
+                                    value={values.aadharNo}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     helperText={
-                                      patientErrors.aadharNo && touched.aadharNo ? (
+                                      errors.aadharNo && touched.aadharNo ? (
                                         <span style={{ color: "red" }}>
-                                          {patientErrors.aadharNo}
+                                          {errors.aadharNo}
                                         </span>
                                       ) : null
                                     }
@@ -380,13 +525,13 @@ const PatientAndContact = () => {
                                     name="primaryPhone"
                                     type="text"
                                     size="large"
-                                    value={patientValues.primaryPhone}
-                                    onChange={patientHandleChange}
-                                    onBlur={patientHandleBlur}
+                                    value={values.primaryPhone}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     helperText={
-                                      patientErrors.primaryPhone && touched.primaryPhone ? (
+                                      errors.primaryPhone && touched.primaryPhone ? (
                                         <span style={{ color: "red" }}>
-                                          {patientErrors.primaryPhone}
+                                          {errors.primaryPhone}
                                         </span>
                                       ) : null
                                     }
@@ -398,13 +543,13 @@ const PatientAndContact = () => {
                                     name="village"
                                     type="text"
                                     size="large"
-                                    value={patientValues.village}
-                                    onChange={patientHandleChange}
-                                    onBlur={patientHandleBlur}
+                                    value={values.village}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     helperText={
-                                      patientErrors.village && touched.village ? (
+                                      errors.village && touched.village ? (
                                         <span style={{ color: "red" }}>
-                                          {patientErrors.village}
+                                          {errors.village}
                                         </span>
                                       ) : null
                                     }
@@ -416,13 +561,13 @@ const PatientAndContact = () => {
                                     name="post"
                                     type="text"
                                     size="large"
-                                    value={patientValues.post}
-                                    onChange={patientHandleChange}
-                                    onBlur={patientHandleBlur}
+                                    value={values.post}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     helperText={
-                                      patientErrors.post && touched.post ? (
+                                      errors.post && touched.post ? (
                                         <span style={{ color: "red" }}>
-                                          {patientErrors.post}
+                                          {errors.post}
                                         </span>
                                       ) : null
                                     }
@@ -434,13 +579,13 @@ const PatientAndContact = () => {
                                     name="ps"
                                     type="text"
                                     size="large"
-                                    value={patientValues.ps}
-                                    onChange={patientHandleChange}
-                                    onBlur={patientHandleBlur}
+                                    value={values.ps}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     helperText={
-                                      patientErrors.ps && touched.ps ? (
+                                      errors.ps && touched.ps ? (
                                         <span style={{ color: "red" }}>
-                                          {patientErrors.ps}
+                                          {errors.ps}
                                         </span>
                                       ) : null
                                     }
@@ -452,13 +597,13 @@ const PatientAndContact = () => {
                                     name="tehsil"
                                     type="text"
                                     size="large"
-                                    value={patientValues.tehsil}
-                                    onChange={patientHandleChange}
-                                    onBlur={patientHandleBlur}
+                                    value={values.tehsil}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     helperText={
-                                      patientErrors.tehsil && touched.tehsil ? (
+                                      errors.tehsil && touched.tehsil ? (
                                         <span style={{ color: "red" }}>
-                                          {patientErrors.tehsil}
+                                          {errors.tehsil}
                                         </span>
                                       ) : null
                                     }
@@ -470,13 +615,13 @@ const PatientAndContact = () => {
                                     name="district"
                                     type="text"
                                     size="large"
-                                    value={patientValues.district}
-                                    onChange={patientHandleChange}
-                                    onBlur={patientHandleBlur}
+                                    value={values.district}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     helperText={
-                                      patientErrors.district && touched.district ? (
+                                      errors.district && touched.district ? (
                                         <span style={{ color: "red" }}>
-                                          {patientErrors.district}
+                                          {errors.district}
                                         </span>
                                       ) : null
                                     }
@@ -490,13 +635,13 @@ const PatientAndContact = () => {
                                     name="state"
                                     type="text"
                                     size="large"
-                                    value={patientValues.state}
-                                    onChange={patientHandleChange}
-                                    onBlur={patientHandleBlur}
+                                    value={values.state}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     helperText={
-                                      patientErrors.state && touched.state ? (
+                                      errors.state && touched.state ? (
                                         <span style={{ color: "red" }}>
-                                          {patientErrors.state}
+                                          {errors.state}
                                         </span>
                                       ) : null
                                     }
@@ -508,13 +653,13 @@ const PatientAndContact = () => {
                                     name="pinCode"
                                     type="text"
                                     size="large"
-                                    value={patientValues.pinCode}
-                                    onChange={patientHandleChange}
-                                    onBlur={patientHandleBlur}
+                                    value={values.pinCode}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                     helperText={
-                                      patientErrors.pinCode && touched.pinCode ? (
+                                      errors.pinCode && touched.pinCode ? (
                                         <span style={{ color: "red" }}>
-                                          {patientErrors.pinCode}
+                                          {errors.pinCode}
                                         </span>
                                       ) : null
                                     }
@@ -525,8 +670,8 @@ const PatientAndContact = () => {
                           </Grid>
                         </Grid>
               <Box mt={2} display="flex" justifyContent="center">
-                <Button type="submit" variant="outlined">
-                  Save Patient
+                <Button type="submit" onClick={() => handleUpdate(id)} variant="outlined">
+                  Update
                 </Button>
               </Box>
             </FormControl>
@@ -537,79 +682,79 @@ const PatientAndContact = () => {
       {/* Contact form */}
       {showContactForm && (
         <Box mb={4}>
-          <form onSubmit={contactHandleSubmit}>
+          <form onSubmit={handleSubmit}>
             <FormControl sx={{ width: '100%' }}>
             <Grid container spacing={4} justifyContent="center" alignItems="center" sx={{ maxWidth: 900, marginLeft:26, marginTop:2}}>
                     <Grid item xs={12} sm={6}>
                         <Input
                             label="Email"
-                            name="email"
+                            name="emailId"
                             type="text"
-                            value={contactValues.email}
-                            onChange={contactHandleChange}
-                            onBlur={contactHandleBlur}
-                            helperText={contactErrors.email && touched.email ? <span style={{ color: "red" }}>{contactErrors.email}</span> : null}
+                            value={values.emailId}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={errors.emailId && touched.emailId ? <span style={{ color: "red" }}>{errors.emailId}</span> : null}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Input
                             label="Personal Phone"
-                            name="pphone"
+                            name="personalPhone"
                             type="text"
-                            value={contactValues.pphone}
-                            onChange={contactHandleChange}
-                            onBlur={contactHandleBlur}
-                            helperText={contactErrors.pphone && touched.pphone ? <span style={{ color: "red" }}>{contactErrors.pphone}</span> : null}
+                            value={values.personalPhone}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={errors.personalPhone && touched.personalPhone ? <span style={{ color: "red" }}>{errors.personalPhone}</span> : null}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Input
                             label="Primary Contact Person"
-                            name="pcperson"
+                            name="primaryContactPerson"
                             type="text"
-                            value={contactValues.pcperson}
-                            onChange={contactHandleChange}
-                            onBlur={contactHandleBlur}
-                            helperText={contactErrors.pcperson && touched.pcperson ? <span style={{ color: "red" }}>{contactErrors.pcperson}</span> : null}
+                            value={values.primaryContactPerson}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={errors.primaryContactPerson && touched.primaryContactPerson ? <span style={{ color: "red" }}>{errors.primaryContactPerson}</span> : null}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Input
                             label="Primary Contact Number"
-                            name="pcnumber"
+                            name="primaryContactNo"
                             type="text"
-                            value={contactValues.pcnumber}
-                            onChange={contactHandleChange}
-                            onBlur={contactHandleBlur}
-                            helperText={contactErrors.pcnumber && touched.pcnumber ? <span style={{ color: "red" }}>{contactErrors.pcnumber}</span> : null}
+                            value={values.primaryContactNo}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={errors.primaryContactNo && touched.primaryContactNo ? <span style={{ color: "red" }}>{errors.primaryContactNo}</span> : null}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Input
                             label="Sec Contact Person"
-                            name="scperson"
+                            name="secondaryContactPerson"
                             type="text"
-                            value={contactValues.scperson}
-                            onChange={contactHandleChange}
-                            onBlur={contactHandleBlur}
-                            helperText={contactErrors.scperson && touched.scperson ? <span style={{ color: "red" }}>{contactErrors.scperson}</span> : null}
+                            value={values.secondaryContactPerson}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={errors.secondaryContactPerson && touched.secondaryContactPerson ? <span style={{ color: "red" }}>{errors.secondaryContactPerson}</span> : null}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Input
                             label="Sec Contact Number"
-                            name="scnumber"
+                            name="secondaryContactNo"
                             type="text"
-                            value={contactValues.scnumber}
-                            onChange={contactHandleChange}
-                            onBlur={contactHandleBlur}
-                            helperText={contactErrors.scnumber && touched.scnumber ? <span style={{ color: "red" }}>{contactErrors.scnumber}</span> : null}
+                            value={values.secondaryContactNo}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={errors.secondaryContactNo && touched.secondaryContactNo ? <span style={{ color: "red" }}>{errors.secondaryContactNo}</span> : null}
                         />
                     </Grid>
                 </Grid>
               <Box mt={2} display="flex" justifyContent="center">
-                <Button type="submit" variant="outlined">
-                  Save Contact
+                <Button type="submit" onClick={() => handleUpdate(id)}  variant="outlined">
+                  Save
                 </Button>
               </Box>
             </FormControl>

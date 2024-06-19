@@ -53,7 +53,7 @@ import FoodList  from "./components/pages/FoodList";
 import ExerciseMinuteList from "./components/pages/ExerciseMinuteList";
 import BodyMeasurementList from "./components/pages/BodyMeasurementList";
 import LandingPageList from "./components/pages/BodyMeasurementList";
-
+import PatientAndContact from "./components/pages/PatientAndContact";
 
 
 const router = createBrowserRouter([
@@ -264,6 +264,10 @@ const router = createBrowserRouter([
               {
                 path : "/LandingPageList",
                 element : <LandingPageList />
+              },
+              {
+                path : "/PatientAndContact/:id",
+                element : <PatientAndContact />
               }
             ],
           },

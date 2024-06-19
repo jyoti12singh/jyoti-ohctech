@@ -38,19 +38,22 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 // import ListItemButton from '@mui/material/ListItemButton';
 import SideBar1 from "./SideBar1";
 import help from '../../assets/images/Help.png';
-
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
-import { Link } from "react-router-dom";
-const StyledToolBar = styled(Toolbar)({
 
+const StyledToolBar = styled(Toolbar)({
+  height: '75px',
   display: "flex",
   justifyContent: "space-between",
   padding: "3",
   border: "1px solid #ccc", // Add a border to the toolbar
-//   "@media (max-width: 700px)": {
-//   padding: "3",
-// },
+  "@media (min-width: 100px) and (max-width: 370px)": {
+    padding: "3",
+    height: "70px",
+    width:"80vh"
+  },
+
 });
 
 const Icons = styled(Box)(({ theme }) => ({
@@ -64,6 +67,9 @@ const Icons = styled(Box)(({ theme }) => ({
   "@media (max-width: 700px)": {
   gap: "10px",
   },
+  "@media (max-width: 480px)": {
+    gap: "5px",
+  },
 }));
 
 const UserBox = styled(Box)(({ theme }) => ({
@@ -74,9 +80,12 @@ const UserBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {
     display: "none",
   },
-//   "@media (max-width: 700px)": {
-//   gap: "5px",
-// },
+"@media (max-width: 700px)": {
+    gap: "5px",
+  },
+  "@media (max-width: 480px)": {
+    gap: "3px",
+  },
 }));
 
 const Search = styled('div')(({ theme }) => ({
@@ -90,8 +99,12 @@ const Search = styled('div')(({ theme }) => ({
   marginLeft: 0,
   width: '500px',
   "@media (max-width: 700px)": {
-      width: "300px",
+    width: "300px",
   },
+  "@media (max-width: 480px)": {
+    width: "200px",
+  },
+
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -187,10 +200,20 @@ const NewHeader = () => {
     fontWeight: theme.breakpoints.down('xs') ? 'bold' : 'normal',
   }}>
   
-    <AppBar position="sticky" sx={{ backgroundColor: "white" ,width:'100%'}} elevation={0}>
+    <AppBar position="sticky" sx={{ backgroundColor: "white" ,width:'100%',
+      "@media (min-width: 100px) and (max-width: 370px)": {
+          width:"80vh"
+        },
+      "@media (min-width: 380px) and (max-width: 450px)": {
+          width:"60vh"
+        }
+
+      }} 
+      elevation={0}
+    >
 
       
-      <StyledToolBar sx={{ height: '75px',width:'100%' }}>
+      <StyledToolBar>
       <Box sx={{ display: { xs: "block", sm: "none" } }}>
       <IconButton
           color='black'
@@ -320,9 +343,9 @@ const NewHeader = () => {
       </Drawer>
       
     {/* </nav> */}
-    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+    {/* <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
       <SideBar1 />
-    </Box>
+    </Box> */}
   </div>
     
   );

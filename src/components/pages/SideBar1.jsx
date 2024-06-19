@@ -88,7 +88,7 @@ const closedMixin = (theme) => ({
 
 
 
-const SideBar1 = () => {
+const SideBar1 = ()=> {
 
 
   const theme = useTheme();
@@ -331,7 +331,7 @@ const SidebarMap = {
                         <List component="div" disablePadding sx={{ paddingLeft: '56px' }}>
                           {secondItem.childMenus.map((thirdItem) => (
                             <ListItem key={thirdItem.Id} disablePadding>
-                              <ListItemButton to={`${secondItem.menuUrl}`}>
+                              <ListItemButton to={`${thirdItem.menuUrl}`}>
                                 {/* <ListItemIcon>
                                   {met.images}
                                 </ListItemIcon> 
