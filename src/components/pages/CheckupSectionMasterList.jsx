@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import CheckupSectionMasterForm from './CheckupSectionMasterForm';
-import { CheckupSectionMasterValidationForm } from './Validationform';
+//import { CheckupSectionMasterValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,6 +18,20 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+
+      
+export const CheckupSectionMasterValidationForm = Yup.object({
+    CheckupSectionName: Yup.string().min(2).max(25).required("Please enter  Checkup SectionName"),
+    Description: Yup.string().min(2).max(25).required("Please enter Description"),
+    Notes: Yup.string().min(2).max(25).required("Please enter Notes"),
+    Comments: Yup.string().min(2).max(25).required("Please enter Comments"),
+    SetStatus: Yup.string().min(2).max(25).required("Please enter SetStatus"),
+    ApplicableRules: Yup.string().min(2).max(25).required("Please enter ApplicableRules"),
+    SectionSequence: Yup.string().email().required("Please enter SectionSequence"),
+    Interpretation: Yup.string().required("Please enter Interpretation"),
+    
+});
 
 const CheckupSectionMasterList = () => {
 

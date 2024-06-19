@@ -9,7 +9,7 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import Popup from './Popup';
 
 
-import { HealthReportableParameterValidationForm } from './Validationform';
+//import { HealthReportableParameterValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,6 +20,15 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import HealthReportableParameterForm from './HealthReportableParameterForm';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+
+
+const HealthReportableParameterValidationForm = Yup.object({
+    kid: Yup.string().required("Please enter Key Id"),
+    parametername: Yup.string().required("Please enter Parameter Name"),
+    
+    
+  });
 
 const HealthReportableParameterList = () => {
 
@@ -216,9 +225,9 @@ const HealthReportableParameterList = () => {
             doc.autoTable({
               head: header,
               body: tableData,
-              startY: 20, // Start Y position for the table
-              theme: 'grid', // Optional theme for the table
-              margin: { top: 30 }, // Optional margin from top
+              startY: 20,
+              theme: 'grid',
+              margin: { top: 30 },
               styles: { fontSize: 5 },
               columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
           });
@@ -231,7 +240,7 @@ const HealthReportableParameterList = () => {
             const sheet = workbook.addWorksheet('My Sheet');
       
             const headerStyle = {
-              // font: { bold: true, size: 12 },
+
               alignment: { horizontal: 'center' }
               
           };
@@ -269,9 +278,9 @@ const HealthReportableParameterList = () => {
                 const url = window.URL.createObjectURL(blob);
                 const anchor = document.createElement('a');
                 anchor.href = url;
-                anchor.download = 'download.xlsx';
+                anchor.download = 'HealthReportableParameterList.xlsx';
                 anchor.click();
-                // anchor.URL.revokeObjectURL(url);
+
             })
         }
        

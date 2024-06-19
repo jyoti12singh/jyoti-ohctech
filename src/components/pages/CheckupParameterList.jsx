@@ -7,7 +7,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import { CheckupParameterValidationForm } from './Validationform';
+//import { CheckupParameterValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,8 +18,37 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import CheckupParameterForm from './CheckupParameterForm';
 import PropTypes from "prop-types";
-//import MultipleSelect from '../common/MultipleSelect';
-//import TextField from '@mui/material';
+import * as Yup from 'yup';
+
+const CheckupParameterValidationForm = Yup.object({
+
+    cpname: Yup.string().required("Please enter checkup parameter"),
+    startingrange: Yup.string().required("Please enter starting range"),
+    endingrange: Yup.string().required("Please enter ending range"),
+    columnorder: Yup.string().required("Please enter column order"),
+    placeholder: Yup.string().required("Please enter Place holder"),
+    parametervaluename: Yup.string().required("Please enter Parameter Name"),
+    checkuptype: Yup.string().required("Please enter the checkup type"),
+    refrange: Yup.string().required("Please enter ref range"),
+    default: Yup.string().required("Please enter the default"),
+    healthkeyname: Yup.string().required("Please enter healthkeyname"),
+    lessrisk: Yup.string().required("Please enter lessrisk"),
+    morerisk: Yup.string().required("Please enter morerisk"),
+    lessadvice: Yup.string().required("Please enter lessadvice"),
+    moreadvice: Yup.string().required("Please enter moreadvice"),
+    section: Yup.string().required("Please enter section"),
+    inputtype: Yup.string().required("Please enter inputtype"),
+    status: Yup.string().required("Please enter status"),
+    edit: Yup.string().required("Please enter edit"),
+    selectunit: Yup.string().required("Please enter selectunit"),
+    opd: Yup.string().required("Please enter opd"),
+    daycare: Yup.string().required("Please enter daycare"),
+    injury: Yup.string().required("Please enter injury"),
+    rangerule: Yup.string().required("Please enter rangerule"),
+    parent: Yup.string().required("Please enter parent"),
+    mandatory: Yup.string().required("Please enter mandatory"),
+  });
+  
 const CheckupParameterList = () => {
 
 

@@ -2,9 +2,9 @@ import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
 import SingleSelect from "../common/SingleSelect";
-import TextArea from "./TextArea";
+//import Input from "./Input";
 
-//import TextArea from "../TextArea";
+//import Input from "../Input";
 
 const CheckupParameterForm = ({
   values,
@@ -417,7 +417,7 @@ const CheckupParameterForm = ({
                 </Grid>
                 <Grid item xs={12} sm={4} container spacing={1} justifyContent="center" alignItems="center">
                  
-                  <TextArea
+                  <Input
                     label="Ref Range"
                     name="refrange"
                     type="text"

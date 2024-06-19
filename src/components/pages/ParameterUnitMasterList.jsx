@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 
-import { ParameterUnitMasterValidationForm } from './Validationform';
+//import { ParameterUnitMasterValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,6 +19,13 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import ParameterUnitMasterForm from './ParameterUnitMasterForm';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+const ParameterUnitMasterValidationForm = Yup.object({
+    unitname: Yup.string().required("Please enter Unit Name"),
+    
+    
+  });
+
 
 const ParameterUnitMasterList = () => {
 

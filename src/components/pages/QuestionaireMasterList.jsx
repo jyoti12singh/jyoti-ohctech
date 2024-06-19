@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import QuestionaireMasterForm from './QuestionaireMasterForm';
-import {QuestionaireMasterValidationForm } from './Validationform';
+//import {QuestionaireMasterValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,6 +18,18 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+
+const QuestionaireMasterValidationForm = Yup.object({
+    secname: Yup.string().required("Please enter Section Name"),
+    seq: Yup.string().required("Please enter Sequence"),
+    locallanguage: Yup.string().required("Please enter Local Language "),
+    question: Yup.string().required("Please enter  Question"),
+    order: Yup.string().required("Please enter order"),
+    type: Yup.string().required("Please enter  type"),
+    secavailable: Yup.string().required("Please enter Section Available"),
+    
+  });
 
 const QuestionaireMasterList = () => {
 
@@ -210,9 +222,9 @@ const QuestionaireMasterList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20,
+          theme: 'grid', 
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -225,7 +237,7 @@ const QuestionaireMasterList = () => {
         const sheet = workbook.addWorksheet('My Sheet');
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
+
           alignment: { horizontal: 'center' }
           
       };
@@ -265,7 +277,7 @@ const QuestionaireMasterList = () => {
             anchor.href = url;
             anchor.download = 'download.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
+
         })
     }
    

@@ -7,7 +7,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import { CheckupParameterGroupValidationForm } from './Validationform';
+//import { CheckupParameterGroupValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,6 +20,14 @@ import CheckupParameterGroupForm from './CheckupParameterGroupForm';
 import PropTypes from "prop-types";
 //import MultipleSelect from '../common/MultipleSelect';
 //import TextField from '@mui/material';
+import * as Yup from 'yup';
+const CheckupParameterGroupValidationForm = Yup.object({
+    group: Yup.string().required("Please enter Group"),
+    groupnumber: Yup.string().required("Please enter Group Number"),
+      groupsec: Yup.string().required("Please enter Group Section "),
+     
+  });
+
 const CheckupParameterGroupList =() => {
 
 
