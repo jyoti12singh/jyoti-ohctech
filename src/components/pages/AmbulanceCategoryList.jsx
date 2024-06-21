@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import AmbulanceCategoryForm from './AmbulanceCategoryForm';
-import { AmbulanceValidationForm } from './Validationform';
+//import { AmbulanceValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,6 +18,12 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+
+const AmbulanceValidationForm = Yup.object({
+    AmbulanceCategory: Yup.string().required("Please enter Ambulance Category"),
+    
+  });
 
 const AmbulanceCategoryList = () => {
 
@@ -209,16 +215,15 @@ const AmbulanceCategoryList = () => {
         const tableData = rowData.map(item => [
           item.Id,
           item.AmbulanceCategory,
-          //item.buHeadName,
-          //item.buEmail,
+          
           
         ]);
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20, 
+          theme: 'grid', 
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -231,7 +236,7 @@ const AmbulanceCategoryList = () => {
         const sheet = workbook.addWorksheet('My Sheet');
         
         const headerStyle = {
-          // font: { bold: true, size: 12 },
+          
           alignment: { horizontal: 'center' }
           
       };
@@ -241,15 +246,13 @@ const AmbulanceCategoryList = () => {
         const columnWidths = {
             id: 10,
             AmbulanceCategory: 20,
-            //buHeadName: 15,
-           // buEmail: 25,
+            
       };
   
         sheet.columns = [
           { header: "id", key: 'id', width: columnWidths.buId, style: headerStyle },
           { header: "AmbulanceCategory", key: 'AmbulanceCategory', width: columnWidths.AmbulanceCategory, style: headerStyle },
-          //{ header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          //{ header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          
           
       ];
   
@@ -257,8 +260,7 @@ const AmbulanceCategoryList = () => {
             sheet.addRow({
                 Id: product.id,
                 AmbulanceCategory: product.AmbulanceCategory,
-               // buHeadName: product.buHeadName,
-                //buEmail: product.buEmail,
+               
             })
         });
   
@@ -271,7 +273,7 @@ const AmbulanceCategoryList = () => {
             anchor.href = url;
             anchor.download = 'AmbulanceCategoryList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
+            
         })
     }
    

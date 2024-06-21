@@ -7,7 +7,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import AddCityForm from './AddCityForm';
-import { AddCityValidationForm } from './Validationform';
+//import { AddCityValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,6 +17,17 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+
+const AddCityValidationForm = Yup.object({
+    city: Yup.string().min(2).max(25).required("Please enter city name"),
+    AcPerKMCost: Yup.string().min(2).max(25).required("Please enter Ac perKM Cost"),
+    AcAmbulanceCharge: Yup.string().min(2).max(25).required("Please enter AC Ambulance Charge"),
+    NonAcPerKMCost: Yup.string().min(2).max(25).required("Please enter Non AC cost"),
+    NonAcAmbulanceCharge: Yup.string().email().required("Please enter Non AC Ambulance charge"),
+       
+  });
+  
 
 const AddCityList = () => {
     const [rowData, setRowData] = useState([]);
@@ -212,9 +223,9 @@ const AddCityList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20, 
+          theme: 'grid',
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -227,7 +238,7 @@ const AddCityList = () => {
         const sheet = workbook.addWorksheet('My Sheet');
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
+         
           alignment: { horizontal: 'center' }
           
       };
@@ -267,7 +278,7 @@ const AddCityList = () => {
             anchor.href = url;
             anchor.download = 'download.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
+           
         })
     }
    
