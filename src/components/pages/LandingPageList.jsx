@@ -1,14 +1,11 @@
-import { Box, Button, ButtonGroup, Stack } from '@mui/material';
 import { useEffect, useState} from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
-// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import BodyMeasurementForm from './BodyMeasurementForm';
-// import { VaccineValidationForm } from './Validationform';
+import LandingPageForm from "./LandingPageForm"
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,12 +15,18 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
-// new
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { Link } from 'react-router-dom';
+import PersonIcon from '@mui/icons-material/Person';
+import { Box, IconButton, TextField, ButtonGroup, Button, Stack, Avatar } from '@mui/material';
 
 
-const BodyMeasurementList = () => {
+const LandingPageList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -41,6 +44,8 @@ const BodyMeasurementList = () => {
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
     const [paginationPageSize, setPaginationPageSize] = useState(10);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
 
     // const [change, setChange] = useState("";)
 
@@ -98,7 +103,7 @@ const BodyMeasurementList = () => {
       
 
       const handleEdit = async (id) => {
-        // alert(id);
+        alert(id);
         try {
           const response = await axiosClientPrivate.get(`/measurements/${id}`);
             console.log(response.data);
@@ -116,7 +121,7 @@ const BodyMeasurementList = () => {
       };
 
       const handleUpdate = async (id)=> {
-        // alert(id);
+        alert(id);
         const update = values;
         try{
              console.log(values);
@@ -139,7 +144,7 @@ const BodyMeasurementList = () => {
 
      // to delete a row
      const handleDeleteRow = async (id) => {
-        // alert(id)
+        alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
            await axiosClientPrivate.delete(`/measurements/${id}`);
@@ -242,7 +247,7 @@ const BodyMeasurementList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("BodyMeasurementList.pdf");
+        doc.save("LandingPageList.pdf");
     };
 
 
@@ -289,7 +294,7 @@ const BodyMeasurementList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'BodyMeasurementList.xlsx';
+            anchor.download = 'LandingPageList.xlsx';
             anchor.click();
             // anchor.URL.revokeObjectURL(url);
         })
@@ -340,6 +345,19 @@ const [index,setIndex] = useState();
   
 //   console.log("grid api");
 
+
+const handleDateChange = (newDate) => {
+    setSelectedDate(newDate);
+};
+
+const handlePrevDay = () => {
+    setSelectedDate(prev => new Date(prev.setDate(prev.getDate() - 1)));
+};
+
+const handleNextDay = () => {
+    setSelectedDate(prev => new Date(prev.setDate(prev.getDate() + 1)));
+};
+
     return (
         <>
         <ToastContainer />
@@ -352,8 +370,31 @@ const [index,setIndex] = useState();
                     <ButtonGroup variant="contained" aria-label="Basic button group">
                         <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }}>Add New</Button>
                         <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
-                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button>
+                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button> 
                     </ButtonGroup>
+                    
+                    <IconButton onClick={handlePrevDay}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: '150px' }}>
+                        <ArrowBackIosIcon />
+                    </div>
+                    </IconButton>
+                    <LocalizationProvider dateAdapter={AdapterDateFns} style={{ textDecoration: 'none', marginLeft: 'auto' }}>
+                        <DatePicker
+                            value={selectedDate}
+                            onChange={handleDateChange}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
+                    </LocalizationProvider>
+                    <IconButton onClick={handleNextDay}>
+                        <ArrowForwardIosIcon />
+                    </IconButton>
+                    <Link to="/PatientAndContact/:id" style={{ textDecoration: 'none', marginLeft: 'auto' }}>
+                    <IconButton>
+                        <Avatar>
+                            <PersonIcon />
+                        </Avatar>
+                    </IconButton>
+                </Link>
 
                 </Stack>
 
@@ -383,11 +424,11 @@ const [index,setIndex] = useState();
 
             <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="LandingPage Master">
 
-                <BodyMeasurementForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <LandingPageForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default BodyMeasurementList;
+export default LandingPageList;
