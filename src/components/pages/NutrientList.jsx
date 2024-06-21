@@ -21,7 +21,8 @@ import PropTypes from "prop-types";
 // new
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-
+import EmpHealthDasboard from './EmpHealthDashboard';
+import { Link } from 'react-router-dom';
 
 const NutrientList = () => {
 
@@ -117,7 +118,7 @@ const NutrientList = () => {
       
 
       const handleEdit = async (id) => {
-        alert(id);
+        // alert(id);
         try {
           const response = await axiosClientPrivate.get(`/nutrients/${id}`);
             console.log(response.data);
@@ -147,7 +148,7 @@ const NutrientList = () => {
       };
 
       const handleUpdate = async (id)=> {
-        alert(id);
+        // alert(id);
         values.foodId = foodname.find(item => item.label == String(values.foodname)).value;
         delete values.foodname;
         const update = values;
@@ -172,7 +173,7 @@ const NutrientList = () => {
 
      // to delete a row
      const handleDeleteRow = async (id) => {
-        alert(id)
+        // alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
            await axiosClientPrivate.delete(`/nutrients/${id}`);
@@ -452,11 +453,22 @@ const [index,setIndex] = useState();
                 className="ag-theme-quartz" 
                 style={{ height: 500 }}
             >
+            <EmpHealthDasboard />
 
                 <Stack sx={{ display: 'flex', flexDirection: 'row' }} marginY={1} paddingX={1}>
-                    <ButtonGroup variant="contained" aria-label="Basic button group">
-                        <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }}>Add New</Button>
-                        <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
+                    <ButtonGroup variant="contained" aria-label="Basic button group" >
+                    <Link to="/PatientAndContact/:id">
+                    <Button variant="contained" startIcon={<AddCircleOutlineRoundedIcon />} sx={{marginRight : "5px",}} >
+                    Patient Profile
+                   </Button>
+                   </Link>
+                   <Link to="/PatientAndContact/:id">
+                    <Button variant="contained" startIcon={<AddCircleOutlineRoundedIcon />} sx={{marginRight : "5px"}} >
+                        Contact
+                    </Button>
+                    </Link>
+                        <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }} sx={{marginRight : "5px"}}>Add New</Button>
+                        <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>} sx={{marginRight : "5px"}}>PDF</Button>
                         <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button>
                     </ButtonGroup>
 

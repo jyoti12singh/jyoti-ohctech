@@ -18,7 +18,7 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 // import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import Input from '../common/Input';
 // import * as Yup from 'yup';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import EmpHealthDasboard from './EmpHealthDashboard';
 
 const genderselect=["Femail","Mail","Third Gender"]
@@ -39,7 +39,7 @@ const PatientAndContact = () => {
   // State for visibility of forms
   const [showPatientForm, setShowPatientForm] = useState(true);
   const [showContactForm, setShowContactForm] = useState(false);
-
+  // const [showFoodConsumtion, setShowFoodConsumtion] = useState(false);
   // State for fetched data
   // const [rowData, setRowData] = useState([]);
   // const [colDefs, setColDefs] = useState([]);
@@ -178,7 +178,7 @@ if(stop){
 
 
 const handleUpdate = async (id) => {
-  alert(id);
+  // alert(id);
   const update = values;
   try {
       console.log(values);
@@ -341,6 +341,12 @@ const handleUpdate = async (id) => {
     setShowPatientForm(false);
   };
 
+  // showFoodConsumtion
+  // const toggleFoodConsumtion = () => {
+  //   setShowFoodConsumtion(!showContactForm);
+  //   setShowFoodConsumtion(false);
+  // };
+
   return (
     <Box m="20px">
       <EmpHealthDasboard/>
@@ -359,6 +365,11 @@ const handleUpdate = async (id) => {
           <Button variant="contained" startIcon={<AddCircleOutlineRoundedIcon />} onClick={toggleContactForm}>
             Contact
           </Button>
+          <Link to = "/NutrientList">
+          <Button variant="contained" startIcon={<AddCircleOutlineRoundedIcon />} onClick={toggleContactForm}>
+            Food Consumtion
+          </Button>
+          </Link>
         </ButtonGroup>
       </Stack>
       {showDashboard && <EmpHealthDasboard />}

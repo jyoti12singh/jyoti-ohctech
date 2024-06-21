@@ -34,7 +34,7 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 // import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 // import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Toolbar from "@mui/material/Toolbar";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // import DutyRooster from '../../assets/images/DutyRooster.png';
 // import Inventory from '../../assets/images/Inventory.png'
@@ -53,7 +53,7 @@ import { useSessionStorage } from "../../utils/useSessionStorage";
 import { useEffect } from "react";
 // import MuiDrawer from '@mui/material/Drawer';
 import DateTime from "./DateTime";
-
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const drawerWidth = 250;
 const openedMixin = (theme) => ({
@@ -95,7 +95,7 @@ const SideBar1 = ()=> {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [isCollapse, setIsCollapse] = useState(false);
-  const [isopen,setIsOpen]=useState(false);
+  const [isopen,setIsOpen] = useState(false);
   
 
   const handleCollapse = (index) => {
@@ -285,8 +285,9 @@ const SidebarMap = {
 };
 
 
+
   return (
-      <Box>
+      <Box >
       <MiniDrawer open={open}>
       {/* <Divider /> */}
       {/* <ListItem>
@@ -301,47 +302,57 @@ const SidebarMap = {
         <React.Fragment key={item.Id}>
           <ListItem disablePadding onClick={() => handleCollapse(index)}>
             <ListItemButton>
-              <ListItemIcon>
+               
+               <ListItemIcon>
                <img src={SidebarMap[item.iconText]} width="20"/>
               </ListItemIcon>
-              <ListItemText  primary={item.menuName} />
+              {/*<ListItemText  primary={item.menuName} />*/}
+              <ListItemText
+                primary={
+                  <Typography variant="body2" >
+                    {item.menuName}
+                  </Typography>
+                }
+              />
               {item.childMenus && (isCollapse === index ? <ExpandLess /> : <ExpandMore />)}
             </ListItemButton>
           </ListItem>
           {item.childMenus && (
             <Collapse in={isCollapse === index} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
+              <List  disablePadding sx={{ paddingLeft: '56px', margin : '0px' }} >
                 {item.childMenus.map((secondItem, childIndex) => (
-                  <React.Fragment key={secondItem.Id}>
+                  <React.Fragment key={secondItem.Id} >
                     <ListItem disablePadding onClick={() => handleOpen(childIndex)}>
-                      <ListItemButton to={`${secondItem.menuUrl}`}>
-                       {/* <ListItemIcon>
-                          <img src={met.images} width="20"/>
-                        </ListItemIcon>*/}
+                    
+                    <Link to={secondItem.menuUrl} >
+                    <ListItemButton sx={{  margin : '0px',paddingY: '0px' }} >
+                      {/*<ListItemText primary={secondItem.name} onClick={() => handleOpen(childIndex)} />*/}
+                      <ListItemText
+                      onClick={() => handleOpen(childIndex)}
+                      primary={
+                        <Typography variant="body2" style={{ color: 'gray' }}>
+                          {secondItem.name}
+                        </Typography>
+                      }
+                    />
 
-                        {/*<ListItemText primary={secondItem.name} />*/}
-                        
-                        <ListItemText primary={secondItem.name} />
-                      
-                        {secondItem.childMenus.length>0 ? secondItem.childMenus && (isopen === childIndex ? <ExpandLess /> : <ExpandMore />) : ''}
-                      </ListItemButton>
+                      {secondItem.childMenus.length > 0
+                        ? secondItem.childMenus && (isopen === childIndex ? <ExpandLess /> : <ExpandMore />)
+                        : ''}
+                    </ListItemButton>
+                  </Link>
                     </ListItem>
                     {secondItem.childMenus && (
                       <Collapse in={isopen === childIndex} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding sx={{ paddingLeft: '56px' }}>
                           {secondItem.childMenus.map((thirdItem) => (
                             <ListItem key={thirdItem.Id} disablePadding>
-                              <ListItemButton to={`${thirdItem.menuUrl}`}>
-                                {/* <ListItemIcon>
-                                  {met.images}
-                                </ListItemIcon> 
-
-                                <ListItemText primary={thirdItem.name} />*/}
-                                
-                                  <ListItemText primary={thirdItem.name} />
-                            
+                            <Link to={thirdItem.menuUrl} style={{ textDecoration: 'none', color: 'inherit' }}>
+                              <ListItemButton>
+                                <ListItemText primary={thirdItem.name} />
                               </ListItemButton>
-                            </ListItem>
+                            </Link>
+                          </ListItem>
                           ))}
                         </List>
                       </Collapse>

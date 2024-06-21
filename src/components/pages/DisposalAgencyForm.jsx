@@ -42,15 +42,15 @@ const DisposalAgencyForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="Enter Agency  Name"
-                    name="agencyname"
+                    name="agencyName"
                     type="text"
                     size="large"
-                    value={values.agencyname}
+                    value={values.agencyName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.agencyname && touched.agencyname? (
-                        <span style={{ color: "red" }}>{errors.agencyname}</span>
+                      errors.agencyName && touched.agencyName? (
+                        <span style={{ color: "red" }}>{errors.agencyName}</span>
                       ) : null
                     }
                   />

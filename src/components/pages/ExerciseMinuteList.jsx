@@ -96,7 +96,7 @@ const ExerciseMinuteList = () => {
       
 
       const handleEdit = async (id) => {
-        alert(id);
+        // alert(id);
         try {
           const response = await axiosClientPrivate.get(`/exercise-masters/${id}`);
             console.log(response.data);
@@ -114,7 +114,7 @@ const ExerciseMinuteList = () => {
       };
 
       const handleUpdate = async (id)=> {
-        alert(id);
+        // alert(id);
         const update = values;
         try{
              console.log(values);
@@ -137,7 +137,7 @@ const ExerciseMinuteList = () => {
 
      // to delete a row
      const handleDeleteRow = async (id) => {
-        alert(id)
+        // alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
            await axiosClientPrivate.delete(`/exercise-masters/${id}`);

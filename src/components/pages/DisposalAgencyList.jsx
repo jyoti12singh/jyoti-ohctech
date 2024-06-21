@@ -49,7 +49,7 @@ const DisposalAgencyList = () => {
 
 
     const initialValues = {
-        agencyname: "",
+        agencyName: "",
         agencyaddress: "",
         registrationno: "",
         allocation: "",
@@ -104,7 +104,7 @@ const DisposalAgencyList = () => {
         try {
           const response = await axiosClientPrivate.get(`/business-units/${id}`);
             console.log(response.data);
-            setFieldValue("buEmail",response.data.buEmail);
+            setFieldValue("agencyName",response.data.agencyName);
             setFieldValue("buHeadName",response.data.buHeadName);
             setFieldValue("buId",response.data.buId);
             setFieldValue("buName",response.data.buName);
@@ -177,6 +177,7 @@ const DisposalAgencyList = () => {
                 const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
                 const items = response.data.content;
                     // console.log(items);
+
                 setRowData(items);
                 if (items.length > 0) {
                    const  columns = Object.keys(items[0]).map(key => ({
@@ -221,8 +222,11 @@ const DisposalAgencyList = () => {
         const doc = new jsPDF();
         const header = [['Id', 'buName',"buHeadName","buEmail"]];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.buName,
+          item.id,
+          item.agencyName,
+          item.buHeadName,
+          item.buEmail,
+          item.agencyName,
           item.buHeadName,
           item.buEmail,
           
@@ -269,7 +273,7 @@ const DisposalAgencyList = () => {
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
+                id: product.id,
                 buName: product.buName,
                 buHeadName: product.buHeadName,
                 buEmail: product.buEmail,

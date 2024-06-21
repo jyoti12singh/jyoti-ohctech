@@ -1,5 +1,5 @@
 import { Box, Button, ButtonGroup, Stack } from '@mui/material';
-import { useEffect, useState,useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
@@ -97,7 +97,7 @@ const FoodList = () => {
       
 
       const handleEdit = async (id) => {
-        alert(id);
+        // alert(id);
         try {
           const response = await axiosClientPrivate.get(`/foods/${id}`);
             console.log(response.data);
@@ -114,7 +114,7 @@ const FoodList = () => {
       };
 
       const handleUpdate = async (id)=> {
-        alert(id);
+        // alert(id);
         const update = values;
         try{
              console.log(values);
@@ -137,7 +137,7 @@ const FoodList = () => {
 
      // to delete a row
      const handleDeleteRow = async (id) => {
-        alert(id)
+        // alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
            await axiosClientPrivate.delete(`/foods/${id}`);
