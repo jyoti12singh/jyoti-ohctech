@@ -6,7 +6,7 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import {RiskValidationForm } from './Validationform';
+//import {HealthRiskValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,6 +17,12 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
 import HealthRiskForm from './HealthRiskForm';
+import * as Yup from 'yup';
+
+const HealthRiskValidationForm = Yup.object({
+    HealthRiskName: Yup.string().min(2).max(25).required("Please enter health risk name"),
+    HealthAdviceCategory: Yup.string().min(2).max(25).required("Please enter health advice category"),
+  });
 
 const HealthRiskList = () => {
 
@@ -54,7 +60,7 @@ const HealthRiskList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: RiskValidationForm,
+        validationSchema: HealthRiskValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
@@ -215,9 +221,9 @@ const HealthRiskList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20,
+          theme: 'grid',
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -230,7 +236,7 @@ const HealthRiskList = () => {
         const sheet = workbook.addWorksheet('My Sheet');
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
+
           alignment: { horizontal: 'center' }
           
       };
@@ -268,9 +274,9 @@ const HealthRiskList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'HealthRiskList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
+
         })
     }
    

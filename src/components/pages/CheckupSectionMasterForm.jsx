@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Input from "../common/Input";
 import SingleSelect from "../common/SingleSelect"
 import MultipleSelect from "../common/MultipleSelect";
-import TextArea from "../pages/TextArea";
+//import TextArea from "../pages/TextArea";
 
 const CheckupSectionMasterForm = ({
   values,
@@ -69,7 +69,7 @@ const CheckupSectionMasterForm = ({
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} container spacing={1} justifyContent="center" alignItems="center">
-                <TextArea
+                <Input
                     label="Notes"
                     name="Notes"
                     type="text"
@@ -85,7 +85,7 @@ const CheckupSectionMasterForm = ({
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} container spacing={1} justifyContent="center" alignItems="center">
-                <TextArea
+                <Input
                     label="Comments"
                     name="Comments"
                     type="text"
@@ -126,7 +126,7 @@ const CheckupSectionMasterForm = ({
                 </Grid>
                 <Grid item xs={12} sm={6} container spacing={1} justifyContent="center" alignItems="center">
                 <MultipleSelect
-                    arr={['Rule1', 'Rule2', 'Rule3']}
+                    arr={rules}
                     label="Applicable Rules"
                     name="ApplicableRules"
                     value={values.ApplicableRules}

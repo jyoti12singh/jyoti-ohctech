@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import CheckupTypeNameForm from './CheckupTypeNameForm';
-import { CheckupTypeNameValidationForm } from './Validationform';
+//import { CheckupTypeNameValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,6 +18,19 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+export const CheckupTypeNameValidationForm = Yup.object({
+    CheckTypeName: Yup.string().min(2).max(25).required("Please enter Check Type Name"),
+    CheckTypeCode: Yup.string().min(2).max(25).required("Please enter Check Type Code"),
+    Duration: Yup.string().min(2).max(25).required("Please enter Duration"),
+    Cost: Yup.string().min(2).max(25).required("Please enter Cost"),
+    CheckFormSection: Yup.string().min(2).max(25).required("Please enter CheckFormSection"),
+    SetStatus: Yup.string().min(2).max(25).required("Please enter your SetStatus"),
+    LabCheckup: Yup.string().min(2).max(25).required("Please enter LabCheckup"),
+    SectionChoiceAvailable: Yup.string().min(2).max(25).required("Please enter SectionChoiceAvailable"),
+    ApplicableOhcs: Yup.string().min(2).max(25).required("Please enter ApplicableOhcs"),
+   
+});
 
 
 const CheckupTypeNameList = () => {

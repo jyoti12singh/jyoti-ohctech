@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 
-import { CheckupValidationForm } from './Validationform';
+//import { CheckupValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,6 +19,13 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
 import CheckupParameterValuesForm from './CheckupParameterValuesForm';
+import * as Yup from 'yup';
+export const CheckupValidationForm = Yup.object({
+    ParameterValueName: Yup.string().min(2).max(25).required("Please enter Paramete rValue Name"),
+ 
+   
+});
+
 
 const CheckupParameterValuesList = () => {
 

@@ -2,7 +2,7 @@ import Ohclogo from "./Ohclogo";
 import { FormControl, Grid} from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
-import TextArea from "../pages/TextArea";
+
 import { InputLabel, MenuItem, Select } from "@mui/material";
 
 
@@ -50,7 +50,7 @@ const InterpretationForm = ({
                   />
                 </Grid>
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
-                  <TextArea
+                  <Input
                     label="Key"
                     name="Key"
                     type="text"
@@ -66,7 +66,7 @@ const InterpretationForm = ({
                   />
                 </Grid>
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
-                  <TextArea
+                  <Input
                     label="Value(Enter $ as a separator)"
                     name="Value"
                     type="text"

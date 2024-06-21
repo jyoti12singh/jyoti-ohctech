@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import JobProfileForm from './JobProfileForm';
-import {JobProfileValidationForm } from './Validationform';
+//import {JobProfileValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,6 +18,15 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+
+const JobProfileValidationForm = Yup.object({
+    Name: Yup.string().required("Please enter Profile Name"),
+    code: Yup.number().min(4).required("Please enter Profile Code"),
+  
+  });
+
+
 const JobProfileList = () => {
     const [rowData, setRowData] = useState([]);
     const [colDefs, setColDefs] = useState([]);
@@ -203,9 +212,9 @@ const JobProfileList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20,
+          theme: 'grid', 
+          margin: { top: 30 },
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -218,7 +227,7 @@ const JobProfileList = () => {
         const sheet = workbook.addWorksheet('My Sheet');
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
+
           alignment: { horizontal: 'center' }
           
       };
@@ -258,7 +267,7 @@ const JobProfileList = () => {
             anchor.href = url;
             anchor.download = 'download.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
+
         })
     }
    

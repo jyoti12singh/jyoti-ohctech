@@ -7,7 +7,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import { RulegenerationValidationForm } from './Validationform';
+//import { RulegenerationValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,6 +20,26 @@ import RulegenerationForm from './RulegenerationForm';
 import PropTypes from "prop-types";
 //import MultipleSelect from '../common/MultipleSelect';
 //import TextField from '@mui/material';
+import * as Yup from 'yup';
+
+const RulegenerationValidationForm = Yup.object({
+    bracket: Yup.string().required("Please enter Bracket"),
+    age: Yup.string().required("Please enter Age"),
+    risk: Yup.string().required("Please enter Risk  "),
+    ageend: Yup.string().required("Please enter Age End"),
+    advice: Yup.string().required("Please enter  Advice"),
+    condition: Yup.string().required("Please enter Condition"),
+    value: Yup.string().required("Please enter  Value"),
+    gender: Yup.string().required("Please enter  Gender"),
+    abnormality: Yup.string().required("Please enter  Abnormality"),
+    result: Yup.string().required("Please enter Result"),
+    close: Yup.string().required("Please enter Close Bracket"),
+    range:Yup.string().required("Please enter Range Type "),
+    checkup:Yup.string().required("Please enter Checkup Parameter  "),
+    rule:Yup.string().required("Please enter Text Comparsion Rule"),
+    res:Yup.string().required("Please enter Result Field "),
+  
+  });
 const RulegenerationList = () => {
 
 

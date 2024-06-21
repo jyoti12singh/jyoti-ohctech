@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 import CovidWahMasterForm from './CovidWahMasterForm';
-import {CovidWahMasterValidationForm } from './Validationform';
+//import {CovidWahMasterValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,6 +18,15 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+import * as Yup from 'yup';
+
+const CovidWahMasterValidationForm = Yup.object({
+
+    hindi: Yup.string().required("Please enter in Hindi"),
+    english: Yup.string().required("Please enter in English"),
+    seq: Yup.string().required("Please enter Sequence"),
+    type: Yup.string().required("Please enter  type"),
+  });
 
 const CovidWahMasterList = () => {
 
@@ -206,9 +215,9 @@ const CovidWahMasterList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20,
+          theme: 'grid', 
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -221,7 +230,7 @@ const CovidWahMasterList = () => {
         const sheet = workbook.addWorksheet('My Sheet');
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
+
           alignment: { horizontal: 'center' }
           
       };
@@ -261,7 +270,7 @@ const CovidWahMasterList = () => {
             anchor.href = url;
             anchor.download = 'download.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
+
         })
     }
    

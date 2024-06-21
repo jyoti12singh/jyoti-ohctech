@@ -19,7 +19,16 @@ import SlotsListForm from './SlotsListForm';
 import PropTypes from "prop-types";
 //import MultipleSelect from '../common/MultipleSelect';
 //import TextField from '@mui/material';
-import { SlotsListform } from './Validationform';
+//import { SlotsListform } from './Validationform';
+import * as Yup from 'yup';
+
+const SlotsListform = Yup.object({
+
+    doctorname: Yup.string().min(2).max(25).required("Please enter Doctor Name"),
+    date: Yup.string().required("Please enter Date"),
+   casetype: Yup.string().required("Please enter Case Type"),
+  });
+
 const SlotslistList = () => {
 
 
@@ -207,9 +216,9 @@ const SlotslistList = () => {
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20, 
+          theme: 'grid', 
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
@@ -259,7 +268,7 @@ const SlotslistList = () => {
             anchor.href = url;
             anchor.download = 'Slotlist.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
+            
         })
     }
    
