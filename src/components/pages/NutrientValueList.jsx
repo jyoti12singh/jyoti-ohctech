@@ -1,11 +1,14 @@
-import { useEffect, useState} from 'react';
+import { Box, Button, ButtonGroup, Stack } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import LandingPageForm from "./LandingPageForm"
+//import NutrientForm from './NutrientForm';
+// import { VaccineValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,18 +18,28 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+import NutritionalValueForm from './NutritionalValueForm';
+// new
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Link } from 'react-router-dom';
-import PersonIcon from '@mui/icons-material/Person';
-import { Box, IconButton, TextField, ButtonGroup, Button, Stack, Avatar } from '@mui/material';
+import * as Yup from 'yup';
 
 
-const LandingPageList = () => {
+const NutritionalvalueValidationForm = Yup.object({
+    foodCode: Yup.string().required("Please enter Food Code"),
+    foodName: Yup.string().required("Please enter Food Name"),
+    calories: Yup.number().required("Please enter Calories  "),
+    proteins: Yup.number().required("Please enter Proteins"),
+    maida: Yup.number().required("Please enter  Maida in grams"),
+    addedSugar: Yup.number().required("Please enter Added sugar in grams"),
+    saturatedFat: Yup.number().required("Please enter  Saturated fat in grams"),
+    fibre: Yup.string().required("Please enter  Fibre"),
+    remarks: Yup.string().required("Please enter Remarks"),
+  
+  });
+
+
+const NutritionalValueList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -43,17 +56,31 @@ const LandingPageList = () => {
 
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
-    const [paginationPageSize, setPaginationPageSize] = useState(10);
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [paginationPageSize, setPaginationPageSize] = useState(2);
+
+    const [foodCode,setFoodcode] = useState([{}]);
 
 
     // const [change, setChange] = useState("";)
 
     // console.log("check",paginationPageSize);
 
+    // Long id, Long foodId, String calories, String addedSugar, String maida,
+    //                             String quantityInGrams, String proteins, String deepFried, String saturatedFats) {
+
+
     const initialValues = {
-        weight:"",
-        inKgs: "",
+        foodCode:"",
+        foodName:"",
+        calories:"",
+        proteins:"",
+        maida:"",
+        addedSugar:"",
+        saturatedFat:"",
+        deepFried:"",
+        fibre:"",
+        remarks:"",
+        
       };
 
 
@@ -68,16 +95,20 @@ const LandingPageList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: VaccineValidationForm,
+        validationSchema: NutritionalvalueValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
         //   },
         onSubmit: async (values, {resetForm}) => {
+
+            const fooddish = foodName.find(item => item.label === values.foodName);
+            const dishid = fooddish ? fooddish.value : null;
+            values['foodId'] = values.foodName;
+            delete values.foodName;
+            values.foodId = dishid;
         try {
-            // values['inKgs'] = parseFloat(values.inKgs);
-            // console.log("checkkk",values);
-            const response = await axiosClientPrivate.post('/measurements', values);
+            const response = await axiosClientPrivate.post('/nutritipnal-values', values);
             toast.success("Saved Successfully!",{
                 position:"top-center"
              }); 
@@ -105,11 +136,25 @@ const LandingPageList = () => {
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/measurements/${id}`);
+          const response = await axiosClientPrivate.get(`/nutritipnal-values/${id}`);
             console.log(response.data);
+
+            values.id = response.data.id;
+            const updateDish = foodName.find(item => item.value == parseInt(response.data.foodId)).label;
+            values.foodName = String(updateDish);
+
+
             setFieldValue("id",response.data.id);
-            setFieldValue("weight",response.data.weight);
-            setFieldValue("inKgs",response.data.inKgs);
+            setFieldValue("foodCode",String(data.foodCode));
+            setFieldValue("foodName",String(updateDish));
+            setFieldValue("calories",response.data.calories);
+            setFieldValue("proteins",response.data.proteins);
+            setFieldValue("maida",response.data.maida);
+            setFieldValue("addedSugar",response.data.addedSugar);
+            setFieldValue("saturatedFat",response.data.saturatedFat);
+            setFieldValue("deepFried",response.data.deepFried);
+            setFieldValue("fibre",response.data.fibre);
+            setFieldValue("remarks",response.data.remarks);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -122,10 +167,12 @@ const LandingPageList = () => {
 
       const handleUpdate = async (id)=> {
         alert(id);
+        values.foodId = foodName.find(item => item.label == String(values.foodName)).value;
+        delete values.foodName;
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(`/measurements/${id}`,update);
+             await axiosClientPrivate.put(`/nutritipnal-values/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -147,7 +194,7 @@ const LandingPageList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(`/measurements/${id}`);
+           await axiosClientPrivate.delete(`/nutritipnal-values/${id}`);
         //    setRowData(prevData => prevData.filter(row => row.buId !== id));
         setFetchTrigger(prev => prev+1);
 
@@ -171,6 +218,45 @@ const LandingPageList = () => {
     // const paginationPageSizeSelector = [50, 100, 200, 500];
     const pageSizeOptions = [2, 4, 8, 10];
 
+    useEffect(() => {
+        const controller = new AbortController();
+    
+        const getAllOhc = async () => {
+            try {
+                const response = await axiosClientPrivate.get('http://localhost:8080/foods', { signal: controller.signal });
+                const items = response.data.content;
+                    console.log("food name :-",items);
+    
+                    // const newDiagnosisMap = new Map();
+                    // items.forEach(item => newDiagnosisMap.set(item.ailmentSysName, item.id));
+                    // setBodysystem(newDiagnosisMap);
+    
+                    // console.log(diagnosisMap.size);
+                    // const ailment = items.map((item)=>{
+                    //   // diagnosisMap.set(item.id,item.ailmentSysName);
+                    //   return item.ailmentSysName;
+                    // });
+    
+                    const foodName = items.map((item)=>{
+                      return {label : item.foodName,value : item.id};
+                    });
+    
+                    
+                    setFoodname(foodName);
+                    // console.log(ailment);
+    
+            } catch (err) {
+                console.error("Failed to fetch data: ", err);
+            }
+        };
+    
+        getAllOhc();
+    
+        return () => {
+            controller.abort();
+        };
+    
+    }, []);
     
 
     useEffect(() => {
@@ -178,16 +264,35 @@ const LandingPageList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get(`http://localhost:8080/measurements?page=0&size=${paginationPageSize}`, { signal: controller.signal });
+                const response = await axiosClientPrivate.get(`http://localhost:8080/nutritipnal-values?page=0&size=${paginationPageSize}`, { signal: controller.signal });
                 const items = response.data.content;
-                    // console.log("new",items);
+                    console.log("new",items);
                 setRowData(items);
+
+                if(foodName.length>0){
+                    items.forEach(obj => {
+                        obj.foodId = foodName.find(item => item.value == parseInt(obj.foodId)).label;
+                      });
+                }
+                else{
+                    console.log("Not found!");
+                }
+
+
 
                 if (items.length > 0) {
 
                     const headerMappings = {
-                        weight: " Weight",
-                        inKgs : "in Kgs",
+                        foodCode:" Food Code",
+                        foodName:" Food Name",
+                        calories:"Calories",
+                        proteins:"Proteins in grams",
+                        maida:"Maida in grams",
+                        addedSugar:" Added sugar in grams",
+                        saturatedFat:" Saturated fat in grams",
+                        deepFried:" Deep Fried",
+                        fibre:"Fibre",
+                        remarks:"Remarks",
                     };
 
                    const  columns = Object.keys(items[0]).map(key => ({
@@ -210,8 +315,6 @@ const LandingPageList = () => {
                     setColDefs(columns);
                 }
 
-                
-
             } catch (err) {
                 console.error("Failed to fetch data: ", err);
                 setRowData([]);
@@ -230,24 +333,34 @@ const LandingPageList = () => {
      
 
     const exportpdf = async () => {
-       
+        
         const doc = new jsPDF();
-        const header = [['Id', 'Weight',"In Kgs"]];
+        const header = [['Id', 'Food Code', 'Food Name',"Calories","Protein","Maida","Added sugar","Saturated fats","Deep fried","Fibre","Remarks"]];
         const tableData = rowData.map(item => [
           item.id,
-          item.weight,
-          item.inKgs,          
+          item.foodCode,
+          item.foodName,
+          item.calories,
+          item.proteins,
+          item.maida,
+          item.addedSugar,
+          item.saturatedFats,
+          item.deepFried,
+          item.fibre,
+          item.remarks,
+          
+          
         ]);
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, // Start Y position for the table
-          theme: 'grid', // Optional theme for the table
-          margin: { top: 30 }, // Optional margin from top
+          startY: 20,
+          theme: 'grid', 
+          margin: { top: 30 }, 
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("LandingPageList.pdf");
+        doc.save("NutritionalValueList.pdf");
     };
 
 
@@ -256,7 +369,7 @@ const LandingPageList = () => {
         const sheet = workbook.addWorksheet('My Sheet');
   
         const headerStyle = {
-          // font: { bold: true, size: 12 },
+  
           alignment: { horizontal: 'center' }
           
       };
@@ -264,26 +377,47 @@ const LandingPageList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            Id: 10,
-            weight: 20,
-            inKgs: 20,
-            vaccineDesc: 25,
+            id: 10,
+            foodCode: 20,
+            foodName: 20,
+            calories: 25,
+            proteins: 20,
+            maida: 20,
+            addedSugar: 25,
+            saturatedFats: 25,
+            deepFried: 25,
+            fibre: 25,
+            remarks: 25,
       };
       
-             // weight: "Exercise Name",
-        //                 inKgs : "inKgs",
+  
         sheet.columns = [
           { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
-          { header: "Weight", key: 'weight', width: columnWidths.weight, style: headerStyle },
-          { header: "In Kgs", key: 'inKgs', width: columnWidths.inKgs, style: headerStyle },
-          
+          { header: "Food Code", key: 'foodCode', width: columnWidths.foodCode, style: headerStyle },
+          { header: "Food Name", key: 'foodName', width: columnWidths.foodName, style: headerStyle },
+          { header: "Calories", key: 'calories', width: columnWidths.calories, style: headerStyle },
+          { header: "Protein", key: 'proteins', width: columnWidths.proteins, style: headerStyle },
+          { header: "Maida", key: 'maida', width: columnWidths.maida, style: headerStyle },
+          { header: "Added sugar", key: 'addedSugar', width: columnWidths.addedSugar, style: headerStyle },
+          { header: "Saturated fats", key: 'saturatedFats', width: columnWidths.saturatedFats, style: headerStyle },
+          { header: "Deep fried", key: 'deepFried', width: columnWidths.deepFried, style: headerStyle },
+          { header: "Fibre", key: 'fibre', width: columnWidths.fibre, style: headerStyle },
+          { header: "Remarks", key: 'remarks', width: columnWidths.remarks, style: headerStyle },          
       ];
   
         rowData.map(product =>{
             sheet.addRow({
                 id: product.id,
-                weight: product.weight,
-                inKgs: product.inKgs,
+                foodCode: product.foodCode,
+                foodName: product.foodName,
+                calories: product.calories,
+                proteins: product.proteins,
+                maida: product.maida,
+                addedSugar: product.addedSugar,
+                saturatedFats: product.saturatedFats,
+                deepFried: product.deepFried,
+                fibre: product.fibre,
+                remarks: product.remarks,
             })
         });
   
@@ -294,9 +428,8 @@ const LandingPageList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'LandingPageList.xlsx';
+            anchor.download = 'NutritionalValueList.xlsx';
             anchor.click();
-            // anchor.URL.revokeObjectURL(url);
         })
     }
    
@@ -345,56 +478,20 @@ const [index,setIndex] = useState();
   
 //   console.log("grid api");
 
-
-const handleDateChange = (newDate) => {
-    setSelectedDate(newDate);
-};
-
-const handlePrevDay = () => {
-    setSelectedDate(prev => new Date(prev.setDate(prev.getDate() - 1)));
-};
-
-const handleNextDay = () => {
-    setSelectedDate(prev => new Date(prev.setDate(prev.getDate() + 1)));
-};
-
     return (
         <>
         <ToastContainer />
             <Box
                 className="ag-theme-quartz" 
-                style={{ height: 500 }}
+                style={{ height: "110vh" }}
             >
 
                 <Stack sx={{ display: 'flex', flexDirection: 'row' }} marginY={1} paddingX={1}>
                     <ButtonGroup variant="contained" aria-label="Basic button group">
                         <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }}>Add New</Button>
                         <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
-                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button> 
+                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button>
                     </ButtonGroup>
-                    
-                    <IconButton onClick={handlePrevDay}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: '150px' }}>
-                        <ArrowBackIosIcon />
-                    </div>
-                    </IconButton>
-                    <LocalizationProvider dateAdapter={AdapterDateFns} style={{ textDecoration: 'none', marginLeft: 'auto' }}>
-                        <DatePicker
-                            value={selectedDate}
-                            onChange={handleDateChange}
-                            renderInput={(params) => <TextField {...params} />}
-                        />
-                    </LocalizationProvider>
-                    <IconButton onClick={handleNextDay}>
-                        <ArrowForwardIosIcon />
-                    </IconButton>
-                    <Link to="/PatientAndContact/:id" style={{ textDecoration: 'none', marginLeft: 'auto' }}>
-                    <IconButton>
-                        <Avatar>
-                            <PersonIcon />
-                        </Avatar>
-                    </IconButton>
-                </Link>
 
                 </Stack>
 
@@ -405,6 +502,7 @@ const handleNextDay = () => {
                     pagination={true}
                     paginationPageSize={paginationPageSize}
                     paginationPageSizeSelector={pageSizeOptions}
+                    Sx={{height:'100%',width: '100%'}}
                     onPaginationChanged={(event) => {
                         setPaginationPageSize(event.api.paginationGetPageSize());
                         setIndex(event.api.paginationGetCurrentPage());
@@ -422,13 +520,13 @@ const handleNextDay = () => {
 
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="LandingPage Master">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Nutrition Value Master">
 
-                <LandingPageForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <NutritionalValueForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default LandingPageList;
+export default NutritionalValueList;

@@ -1,9 +1,8 @@
 import Input from "../common/Input";
 import PropTypes from "prop-types";
 import {  Grid} from "@mui/material";
-// import SingleSelect from "../common/SingleSelect";
 
- const BodyMeasurementForm = ({values,
+ const LandingPageForm = ({values,
   touched,
   handleBlur,
   errors,
@@ -12,7 +11,7 @@ import {  Grid} from "@mui/material";
   handleSubmit,}) => {
 
 
-    BodyMeasurementForm.propTypes = {
+    LandingPageForm.propTypes = {
       values: PropTypes.object.isRequired,
       touched: PropTypes.object.isRequired,
       errors: PropTypes.object.isRequired,
@@ -108,5 +107,5 @@ import {  Grid} from "@mui/material";
   )
 }
 
-export default BodyMeasurementForm;
+export default LandingPageForm;
 
