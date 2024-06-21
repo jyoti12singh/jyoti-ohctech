@@ -7,7 +7,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import NutrientForm from './NutrientForm';
+import NutrientForm from './FoodMasterForm';
 // import { VaccineValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
@@ -22,6 +22,8 @@ import PropTypes from "prop-types";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import * as Yup from 'yup';
+import EmpHealthDasboard from './EmpHealthDashboard';
+import { Link } from 'react-router-dom';
 
 const NutrientValidationForm = Yup.object({
   foodId: Yup.string().required("Please Enter Food Name "),
@@ -465,14 +467,23 @@ const [index,setIndex] = useState();
                 className="ag-theme-quartz" 
                 style={{ height: '110vh' }}
             >
-
+            <EmpHealthDasboard />
                 <Stack sx={{ display: 'flex', flexDirection: 'row' }} marginY={1} paddingX={1}>
-                    <ButtonGroup variant="contained" aria-label="Basic button group">
-                        <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }}>Add New</Button>
-                        <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
-                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button>
-                    </ButtonGroup>
-
+                <ButtonGroup variant="contained" aria-label="Basic button group" >
+                <Link to="/PatientAndContact/:id">
+                <Button variant="contained" startIcon={<AddCircleOutlineRoundedIcon />} sx={{marginRight : "5px",}} >
+                Patient Profile
+               </Button>
+               </Link>
+               <Link to="/PatientAndContact/:id">
+                <Button variant="contained" startIcon={<AddCircleOutlineRoundedIcon />} sx={{marginRight : "5px"}} >
+                    Contact
+                </Button>
+                </Link>
+                <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }} sx={{marginRight : "5px"}}>Add New</Button>
+                <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
+                <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>} sx={{marginLeft : "5px"}}>Excel</Button>
+                 </ButtonGroup>
                 </Stack>
 
                 <AgGridReact

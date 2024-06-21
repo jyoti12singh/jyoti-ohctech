@@ -8,7 +8,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import Login from "./components/pages/Signup";
 import PersistLogin from "./utils/PersistLogin";
 import OhcList from "./components/pages/OhcList";
-import AdminHome from "./components/pages/AdminHome";
+// import AdminHome from "./components/pages/AdminHome";
 import UserList from "./components/pages/UserList";
 // import UserForm from "./components/pages/UserForm";
 // import OhcForm from "./components/pages/OhcForm";
@@ -54,7 +54,9 @@ import ExerciseMinuteList from "./components/pages/ExerciseMinuteList";
 import BodyMeasurementList from "./components/pages/BodyMeasurementList";
 import LandingPageList from "./components/pages/BodyMeasurementList";
 import PatientAndContact from "./components/pages/PatientAndContact";
-
+import AdminDashboard from "./components/pages/AdminDashboard";
+import ExerciseList from "./components/pages/ExerciseList";
+import FoodMasterList from "./components/pages/FoodMasterList";
 
 const router = createBrowserRouter([
   {
@@ -102,8 +104,8 @@ const router = createBrowserRouter([
             element: <ProtectedRoute />,
             children: [
               {
-                path:'/adminHome',
-                element:<AdminHome />
+                path:'/AdminDashboard',
+                element:<AdminDashboard />
               },
               {
                 path:'/ohcList',
@@ -268,6 +270,14 @@ const router = createBrowserRouter([
               {
                 path : "/PatientAndContact/:id",
                 element : <PatientAndContact />
+              },
+              {
+                path : "/ExerciseList",
+                element : <ExerciseList />
+              },
+              {
+                path : "/FoodMasterList",
+                element : <FoodMasterList />
               }
             ],
           },

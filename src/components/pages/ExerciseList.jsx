@@ -8,7 +8,7 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
 //import InjuryClassForm from './InjuryClassForm';
-import MasterExerciseForm from './MasterExerciseForm';
+import ExerciseForm from './ExerciseForm';
 import { useFormik } from "formik";
 //import { InjuryPartValidationForm } from './Validationform';
 // import axios from 'axios';
@@ -27,7 +27,7 @@ const ExerciseNameValidation = Yup.object({
        
   });
 
-const MasterExerciseList = () => {
+const ExerciseList = () => {
 
     const [rowData, setRowData] = useState([]);
 
@@ -43,6 +43,8 @@ const MasterExerciseList = () => {
 
     const [fetchTrigger, setFetchTrigger] = useState(0)
     
+    const [paginationPageSize, setPaginationPageSize] = useState(2);
+
     const initialValues = {
         exercisename : ""
     
@@ -118,16 +120,16 @@ const MasterExerciseList = () => {
     
     };
 
-    const pagination = true;
-    const paginationPageSize = 50;
-    const paginationPageSizeSelector = [50, 100, 200, 500];
+    // const pagination = true;
+    // const paginationPageSize = 50;
+    const pageSizeOptions = [50, 100, 200, 500];
 
     useEffect(() => {
         const controller = new AbortController();
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('http://localhost:8080/injury-parts?page=0&size=20', { signal: controller.signal });
+                const response = await axiosClientPrivate.get('http://localhost:8080/?page=0&size=20', { signal: controller.signal });
                 const items = response.data.content;
                     // console.log(items);
                 
@@ -230,7 +232,7 @@ const MasterExerciseList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("MasterExerciseForm.pdf");
+        doc.save("ExerciseForm.pdf");
     };
 
 
@@ -272,7 +274,7 @@ const MasterExerciseList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'MasterExerciseList.xlsx';
+            anchor.download = 'ExerciseList.xlsx';
             anchor.click();
         })
     }
@@ -295,7 +297,7 @@ const MasterExerciseList = () => {
                     </ButtonGroup>
 
                 </Stack>
-                <AgGridReact
+                 {/*<AgGridReact
                     rowData={rowData}
                     columnDefs={colDefs}
                     animateRows={true} // Optional: adds animation to row changes
@@ -303,16 +305,38 @@ const MasterExerciseList = () => {
                     paginationPageSize={paginationPageSize}
                     paginationPageSizeSelector={paginationPageSizeSelector}
                     Sx={{height:'100%',width: '100%'}}
+                />*/}
+                <AgGridReact
+                    rowData={rowData}
+                    columnDefs={colDefs}
+                    animateRows={true} 
+                    pagination={true}
+                    paginationPageSize={paginationPageSize}
+                    paginationPageSizeSelector={pageSizeOptions}
+                    Sx={{height:'100%',width: '100%'}}
+                    onPaginationChanged={(event) => {
+                        setPaginationPageSize(event.api.paginationGetPageSize());
+                        setIndex(event.api.paginationGetCurrentPage());
+                    }}
+                    
+                    onFilterChanged={onFilterChanged}
+                    // paginationNumberFormatter={paginationNumberFormatter}
+                    // onGridReady={(params) => {
+                    //     params.api.paginationGoToPage(currentPageIndex);
+                    // }}
+                    // paginationTotalRowCount = {200}
+                    // paginationGetPageSize = {200}
+                    
                 />
             </Box>
 
             <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Master Exercise Form ">
 
-                <MasterExerciseForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <ExerciseForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default MasterExerciseList;
+export default ExerciseList;

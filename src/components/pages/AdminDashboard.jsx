@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { Box, Button, Stack, Typography, Grid } from '@mui/material';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-
+import { Link } from 'react-router-dom';                                                
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const options = {
@@ -84,15 +84,21 @@ const AdminDashboard = () => {
             </Typography>
             <Stack direction="column" spacing={2} alignItems="center">
                 <Stack direction="row" spacing={10} justifyContent="center">
+                    <Link to = "/PatientProfileList" >
                     <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#000', borderRadius: 0, width: 300, height: 64, boxShadow: 3 }}>
                         List of users
                     </Button>
+                    </Link>
+                    <Link to = "/FoodMasterList" >
                     <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#000', borderRadius: 0, width: 300, height: 64, boxShadow: 3 }}>
                         Push food item to master list
                     </Button>
+                    </Link>
+                    <Link to = "/ExerciseList" >
                     <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#000', borderRadius: 0, width: 300, height: 64, boxShadow: 3 }}>
                         Push exercise item to master list
                     </Button>
+                    </Link>
                 </Stack>
                 <Stack direction="row" spacing={60} justifyContent="center">
                     <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#000', borderRadius: 0, width: 250, height: 64, boxShadow: 3 }} onClick={handleToggleOsiChart}>
@@ -106,7 +112,7 @@ const AdminDashboard = () => {
                     {showOsiChart && (
                         <Grid item xs={12} md={6}>
                             <Typography variant="h6" gutterBottom>
-                                OSI Weekly Report
+                                Trend of users registered
                             </Typography>
                             <Line options={{ ...options, title: { display: true, text: 'OSI Weekly Report' }}} data={osiData} />
                         </Grid>
@@ -114,7 +120,7 @@ const AdminDashboard = () => {
                     {showInjuryChart && (
                         <Grid item xs={12} md={6}>
                             <Typography variant="h6" gutterBottom>
-                                Injury Weekly Report
+                                Trends(avg)
                             </Typography>
                             <Line options={{ ...options, title: { display: true, text: 'Injury Weekly Report' }}} data={injuryData} />
                         </Grid>

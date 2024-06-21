@@ -2,7 +2,7 @@ import { FormControl, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
 
-const MasterExerciseForm = ({
+const ExerciseForm = ({
   values,
   touched,
   handleBlur,
@@ -12,7 +12,7 @@ const MasterExerciseForm = ({
   handleSubmit,
 }) => {
 
-  MasterExerciseForm.propTypes = {
+  ExerciseForm.propTypes = {
     values: PropTypes.object.isRequired,
     touched: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -58,5 +58,5 @@ const MasterExerciseForm = ({
   );
 };
 
-export default MasterExerciseForm;
+export default ExerciseForm;
 

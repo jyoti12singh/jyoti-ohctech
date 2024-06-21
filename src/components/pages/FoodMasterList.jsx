@@ -18,7 +18,7 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
-import NutritionalValueForm from './NutritionalValueForm';
+import FoodMasterForm from './FoodMasterForm';
 // new
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -39,7 +39,7 @@ const NutritionalvalueValidationForm = Yup.object({
   });
 
 
-const NutritionalValueList = () => {
+const FoodMasterList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -58,7 +58,7 @@ const NutritionalValueList = () => {
 
     const [paginationPageSize, setPaginationPageSize] = useState(2);
 
-    const [foodCode,setFoodcode] = useState([{}]);
+    const [foodname,setFoodcode] = useState([{}]);
 
 
     // const [change, setChange] = useState("";)
@@ -71,7 +71,7 @@ const NutritionalValueList = () => {
 
     const initialValues = {
         foodCode:"",
-        foodName:"",
+        foodname:"",
         calories:"",
         proteins:"",
         maida:"",
@@ -102,7 +102,7 @@ const NutritionalValueList = () => {
         //   },
         onSubmit: async (values, {resetForm}) => {
 
-            const fooddish = foodName.find(item => item.label === values.foodName);
+            const fooddish = foodname.find(item => item.label === values.foodname);
             const dishid = fooddish ? fooddish.value : null;
             values['foodId'] = values.foodName;
             delete values.foodName;
@@ -140,12 +140,12 @@ const NutritionalValueList = () => {
             console.log(response.data);
 
             values.id = response.data.id;
-            const updateDish = foodName.find(item => item.value == parseInt(response.data.foodId)).label;
+            const updateDish = foodname.find(item => item.value == parseInt(response.data.foodId)).label;
             values.foodName = String(updateDish);
 
 
             setFieldValue("id",response.data.id);
-            setFieldValue("foodCode",String(data.foodCode));
+            // setFieldValue("foodCode",String(data.foodCode));
             setFieldValue("foodName",String(updateDish));
             setFieldValue("calories",response.data.calories);
             setFieldValue("proteins",response.data.proteins);
@@ -167,7 +167,7 @@ const NutritionalValueList = () => {
 
       const handleUpdate = async (id)=> {
         alert(id);
-        values.foodId = foodName.find(item => item.label == String(values.foodName)).value;
+        values.foodId = foodname.find(item => item.label == String(values.foodName)).value;
         delete values.foodName;
         const update = values;
         try{
@@ -241,8 +241,7 @@ const NutritionalValueList = () => {
                       return {label : item.foodName,value : item.id};
                     });
     
-                    
-                    setFoodname(foodName);
+                    setFoodcode(foodName);
                     // console.log(ailment);
     
             } catch (err) {
@@ -269,9 +268,9 @@ const NutritionalValueList = () => {
                     console.log("new",items);
                 setRowData(items);
 
-                if(foodName.length>0){
+                if(foodname.length>0){
                     items.forEach(obj => {
-                        obj.foodId = foodName.find(item => item.value == parseInt(obj.foodId)).label;
+                        obj.foodId = foodname.find(item => item.value == parseInt(obj.foodId)).label;
                       });
                 }
                 else{
@@ -360,7 +359,7 @@ const NutritionalValueList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("NutritionalValueList.pdf");
+        doc.save("FoodMasterList.pdf");
     };
 
 
@@ -428,7 +427,7 @@ const NutritionalValueList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'NutritionalValueList.xlsx';
+            anchor.download = 'FoodMasterList.xlsx';
             anchor.click();
         })
     }
@@ -522,11 +521,11 @@ const [index,setIndex] = useState();
 
             <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Nutrition Value Master">
 
-                <NutritionalValueForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <FoodMasterForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default NutritionalValueList;
+export default FoodMasterList;

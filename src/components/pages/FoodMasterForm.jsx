@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {  Grid} from "@mui/material";
 import SingleSelect from "../common/SingleSelect";
 
- const NutrientForm = ({values,
+ const FoodMasterForm = ({values,
   touched,
   handleBlur,
   errors,
@@ -14,7 +14,7 @@ import SingleSelect from "../common/SingleSelect";
 }) => {
 
 
-    NutrientForm.propTypes = {
+    FoodMasterForm.propTypes = {
       values: PropTypes.object.isRequired,
       touched: PropTypes.object.isRequired,
       errors: PropTypes.object.isRequired,
@@ -220,5 +220,5 @@ import SingleSelect from "../common/SingleSelect";
   )
 }
 
-export default NutrientForm;
+export default FoodMasterForm;
 
