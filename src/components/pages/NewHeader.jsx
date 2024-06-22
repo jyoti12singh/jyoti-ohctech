@@ -272,7 +272,7 @@ const NewHeader = () => {
           />
           <Typography variant="subtitle1" sx={{ color: "#45474B"}} onClick={() => setOpen(true)}>
             ADMIN1,
-            <Typography variant="subtitle2" sx={{ color: "#45474B",fontSize:"12px"}} onClick={() => setOpen(true)}>
+            <Typography variant="subtitle2" component={'span'} sx={{ color: "#45474B",fontSize:"12px"}} onClick={() => setOpen(true)}>
               Application Admin
             </Typography>
           </Typography>
@@ -285,7 +285,7 @@ const NewHeader = () => {
           />
           <Typography variant="subtitle1" sx={{ color: "#45474B",fontSize:"10px"}} onClick={() => setOpen(true)}>
             ADMIN1,
-            <Typography variant="subtitle2" sx={{ color: "#45474B",fontSize:"7px"}} onClick={() => setOpen(true)}>
+            <Typography variant="subtitle2" component={'span'} sx={{ color: "#45474B",fontSize:"7px"}} onClick={() => setOpen(true)}>
               Application Admin
             </Typography>
           </Typography>
