@@ -247,7 +247,7 @@ const NewHeader = () => {
         <Typography variant="h7" sx={{ display: { xs: "none", sm: "block" },color: "#41B06E" ,"@media (max-width: 790px)": {
             fontSize:"13px"}}}>
           Occupational Health Center
-          <Typography component="span" sx={{color: "#45474B" ,"@media (max-width: 790px)": {
+          <Typography  sx={{color: "#45474B" ,"@media (max-width: 790px)": {
             fontSize:"12px"}}}>
              (Delhi, Plant OHC)
         </Typography>
@@ -270,9 +270,9 @@ const NewHeader = () => {
             src=""
             onClick={() => setOpen(true)}
           />
-          <Typography variant="subtitle1" sx={{ color: "#45474B"}} onClick={() => setOpen(true)}>
+          <Typography variant="subtitle1" component={'div'} sx={{ color: "#45474B"}} onClick={() => setOpen(true)}>
             ADMIN1,
-            <Typography variant="subtitle2" component={'span'} sx={{ color: "#45474B",fontSize:"12px"}} onClick={() => setOpen(true)}>
+            <Typography variant="subtitle2"  sx={{ color: "#45474B",fontSize:"12px"}} onClick={() => setOpen(true)}>
               Application Admin
             </Typography>
           </Typography>
@@ -283,9 +283,9 @@ const NewHeader = () => {
             // src=""
             onClick={() => setOpen(true)}
           />
-          <Typography variant="subtitle1" sx={{ color: "#45474B",fontSize:"10px"}} onClick={() => setOpen(true)}>
+          <Typography variant="subtitle1"  component={'div'} sx={{ color: "#45474B",fontSize:"10px"}} onClick={() => setOpen(true)}>
             ADMIN1,
-            <Typography variant="subtitle2" component={'span'} sx={{ color: "#45474B",fontSize:"7px"}} onClick={() => setOpen(true)}>
+            <Typography variant="subtitle2"  sx={{ color: "#45474B",fontSize:"7px"}} onClick={() => setOpen(true)}>
               Application Admin
             </Typography>
           </Typography>
