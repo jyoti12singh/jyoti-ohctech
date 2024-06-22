@@ -7,7 +7,7 @@ import {  Grid} from "@mui/material";
   handleBlur,
   errors,
   handleChange,
-//   setFieldValue,
+  //setFieldValue,
   handleSubmit,}) => {
 
 
@@ -29,17 +29,17 @@ import {  Grid} from "@mui/material";
               <Grid item  xs={12} sm={12} spacing={1}  container  justifyContent="center"   alignItems="center">
               <Input
                   label="Indicators"
-                  name="weight"
+                  name="indicators"
                   type="text"
                   size="large"
                   sx={{ width: "300px" }}
-                  value={values.weight}
+                  value={values.indicators}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   helperText={
-                    errors.weight && touched.weight ? (
+                    errors.indicators && touched.indicators ? (
                       <span style={{ color: "red" }}>
-                        {errors.weight}
+                        {errors.indicators}
                       </span>
                     ) : null
                   }
@@ -48,17 +48,17 @@ import {  Grid} from "@mui/material";
               <Grid item  xs={12} sm={12} spacing={1}  container  justifyContent="center"   alignItems="center">
               <Input
                   label="Actual"
-                  name="inKgs"
+                  name="actual"
                   type="number"
                   size="large"
                   sx={{ width: "300px" }}
-                  value={values.inKgs}
+                  value={values.actual}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   helperText={
-                    errors.inKgs && touched.inKgs ? (
+                    errors.actual && touched.actual ? (
                       <span style={{ color: "red" }}>
-                        {errors.inKgs}
+                        {errors.actual}
                       </span>
                     ) : null
                   }
@@ -67,17 +67,17 @@ import {  Grid} from "@mui/material";
               <Grid item  xs={12} sm={12} spacing={1}  container  justifyContent="center"   alignItems="center">
               <Input
                   label="Target"
-                  name="inKgs"
+                  name="target"
                   type="number"
                   size="large"
                   sx={{ width: "300px" }}
-                  value={values.inKgs}
+                  value={values.target}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   helperText={
-                    errors.inKgs && touched.inKgs ? (
+                    errors.target && touched.target ? (
                       <span style={{ color: "red" }}>
-                        {errors.inKgs}
+                        {errors.target}
                       </span>
                     ) : null
                   }
@@ -86,17 +86,17 @@ import {  Grid} from "@mui/material";
               <Grid item  xs={12} sm={12} spacing={1}  container  justifyContent="center"   alignItems="center">
               <Input
                   label="Percent"
-                  name="inKgs"
+                  name="percent"
                   type="number"
                   size="large"
                   sx={{ width: "300px" }}
-                  value={values.inKgs}
+                  value={values.percent}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   helperText={
-                    errors.inKgs && touched.inKgs ? (
+                    errors.percent && touched.percent ? (
                       <span style={{ color: "red" }}>
-                        {errors.inKgs}
+                        {errors.percent}
                       </span>
                     ) : null
                   }

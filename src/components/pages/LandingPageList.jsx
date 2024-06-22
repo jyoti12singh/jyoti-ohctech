@@ -3,9 +3,11 @@ import { AgGridReact } from 'ag-grid-react';
 import useAxiosPrivate from '../../utils/useAxiosPrivate';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
+// import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import LandingPageForm from "./LandingPageForm"
+import LandingPageForm from './LandingPageForm';
+// import { VaccineValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,6 +17,7 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+// new
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
@@ -24,10 +27,20 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Link } from 'react-router-dom';
 import PersonIcon from '@mui/icons-material/Person';
 import { Box, IconButton, TextField, ButtonGroup, Button, Stack, Avatar } from '@mui/material';
+import * as Yup from 'yup';
+
+
+const LandingPageValidationForm = Yup.object({
+    indicators: Yup.string().required("Please enter indicators"),
+    actual: Yup.string().required("Please enter actual Amount"),
+    target: Yup.number().required("Please enter target "),
+    percent: Yup.number().required("Please enter percent"),
+
+  });
+
 
 
 const LandingPageList = () => {
-
 
     const [rowData, setRowData] = useState([]);
 
@@ -52,8 +65,12 @@ const LandingPageList = () => {
     // console.log("check",paginationPageSize);
 
     const initialValues = {
-        weight:"",
-        inKgs: "",
+        indicators:"",
+        actual:"",
+        target:"",
+        percent:"",
+        lastModified:"",
+        modifiedBy:"",
       };
 
 
@@ -68,7 +85,7 @@ const LandingPageList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: VaccineValidationForm,
+        validationSchema: LandingPageValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
@@ -108,8 +125,10 @@ const LandingPageList = () => {
           const response = await axiosClientPrivate.get(`/measurements/${id}`);
             console.log(response.data);
             setFieldValue("id",response.data.id);
-            setFieldValue("weight",response.data.weight);
-            setFieldValue("inKgs",response.data.inKgs);
+            setFieldValue("indicators",response.data.indicators);
+            setFieldValue("actual",response.data.actual);
+            setFieldValue("target",response.data.target);
+            setFieldValue("percent",response.data.percent);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -186,8 +205,10 @@ const LandingPageList = () => {
                 if (items.length > 0) {
 
                     const headerMappings = {
-                        weight: " Weight",
-                        inKgs : "in Kgs",
+                        indicators: " Indicators",
+                        actual : "Actual",
+                        target: "Target",
+                        percent: "Percent",
                     };
 
                    const  columns = Object.keys(items[0]).map(key => ({
@@ -232,11 +253,13 @@ const LandingPageList = () => {
     const exportpdf = async () => {
        
         const doc = new jsPDF();
-        const header = [['Id', 'Weight',"In Kgs"]];
+        const header = [['Id', 'Indicators',"Actual","Target","Percent"]];
         const tableData = rowData.map(item => [
           item.id,
-          item.weight,
-          item.inKgs,          
+          item.indicators,
+          item.actual,
+          item.target,
+          item.percent,          
         ]);
         doc.autoTable({
           head: header,
@@ -265,8 +288,10 @@ const LandingPageList = () => {
         
         const columnWidths = {
             Id: 10,
-            weight: 20,
-            inKgs: 20,
+            indicators: 20,
+            actual: 20,
+            target: 20,
+            percent: 20,
             vaccineDesc: 25,
       };
       
@@ -274,16 +299,20 @@ const LandingPageList = () => {
         //                 inKgs : "inKgs",
         sheet.columns = [
           { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
-          { header: "Weight", key: 'weight', width: columnWidths.weight, style: headerStyle },
-          { header: "In Kgs", key: 'inKgs', width: columnWidths.inKgs, style: headerStyle },
+          { header: "Indicators", key: 'weight', width: columnWidths.weight, style: headerStyle },
+          { header: "Actual", key: 'inKgs', width: columnWidths.inKgs, style: headerStyle },
+          { header: "Target", key: 'weight', width: columnWidths.weight, style: headerStyle },
+          { header: "Percent", key: 'inKgs', width: columnWidths.inKgs, style: headerStyle },
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
                 id: product.id,
-                weight: product.weight,
-                inKgs: product.inKgs,
+                indicators: product.indicators,
+                actual: product.actual,
+                target: product.target,
+                percent: product.percent,
             })
         });
   
@@ -358,27 +387,30 @@ const handleNextDay = () => {
     setSelectedDate(prev => new Date(prev.setDate(prev.getDate() + 1)));
 };
 
+const navigateToAnotherPage = () => {
+    window.location.href = '/NutrientList'; // Adjust the path as needed
+};
+
     return (
         <>
         <ToastContainer />
             <Box
                 className="ag-theme-quartz" 
-                style={{ height: 500 }}
+                style={{ height: '110vh' }}
             >
 
                 <Stack sx={{ display: 'flex', flexDirection: 'row' }} marginY={1} paddingX={1}>
                     <ButtonGroup variant="contained" aria-label="Basic button group">
                         <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }}>Add New</Button>
                         <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
-                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button> 
+                        <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>}>Excel</Button>
                     </ButtonGroup>
-                    
                     <IconButton onClick={handlePrevDay}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: '150px' }}>
                         <ArrowBackIosIcon />
                     </div>
                     </IconButton>
-                    <LocalizationProvider dateAdapter={AdapterDateFns} style={{ textDecoration: 'none', marginLeft: 'auto' }}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns} >
                         <DatePicker
                             value={selectedDate}
                             onChange={handleDateChange}
@@ -405,6 +437,7 @@ const handleNextDay = () => {
                     pagination={true}
                     paginationPageSize={paginationPageSize}
                     paginationPageSizeSelector={pageSizeOptions}
+                    Sx={{height:'100%',width: '100%'}}
                     onPaginationChanged={(event) => {
                         setPaginationPageSize(event.api.paginationGetPageSize());
                         setIndex(event.api.paginationGetCurrentPage());
