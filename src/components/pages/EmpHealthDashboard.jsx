@@ -32,15 +32,60 @@ const EmpHealthDasboard = () => {
                             Employee Health Dashboard
                         </Typography>
                         <Stack direction={isMobile ? "column" : "row"} spacing={2} marginTop={isMobile ? 2 : 0}>
-                            <Button variant="contained" sx={{ backgroundColor: '#ce93d8', borderRadius: 0, width: 80, height: 64 }}>HEIGHT</Button>
-                            <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#000', borderRadius: 0, width: 80, height: 64 }}>WEIGHT</Button>
-                            <Button variant="contained" sx={{ backgroundColor: '#9e9e9e', borderRadius: 0, width: 80, height: 64 }}>BMI</Button>
-                            <Button variant="contained" sx={{ backgroundColor: '#000000', borderRadius: 0, width: 80, height: 64 }}>BP</Button>
-                            <Button variant="contained" sx={{ backgroundColor: '#8bc34a', borderRadius: 0, width: 80, height: 64 }}>PULSE</Button>
-                            <Button variant="contained" sx={{ backgroundColor: '#29b6f6', borderRadius: 0, width: 80, height: 64 }}>HEALTH INDEX</Button>
-                            <Button variant="contained" sx={{ backgroundColor: '#a5d6a7', borderRadius: 0, width: 80, height: 64 }}>FBS</Button>
-                            <Button variant="contained" sx={{ backgroundColor: '#cfd8dc', borderRadius: 0, width: 80, height: 64 }}>RBS</Button>
-                            <Button variant="contained" sx={{ backgroundColor: '#ffcc80', borderRadius: 0, width: 80, height: 64 }}>PPBS</Button>
+                            <Button variant="contained" sx={{ backgroundColor: '#ce93d8', borderRadius: 0, width: 80, height: 64, textTransform: 'none' }}>
+                                <Box>
+                                    <Typography variant="body2">120cm</Typography>
+                                    <Typography>Height</Typography>
+                                </Box>
+                            </Button>
+                            <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#000', borderRadius: 0, width: 80, height: 64, textTransform: 'none' }}>
+                                <Box>
+                                    <Typography variant="body2">50Kg</Typography>
+                                    <Typography>Weight</Typography>
+                                </Box>
+                            </Button>
+                            <Button variant="contained" sx={{ backgroundColor: '#9e9e9e', borderRadius: 0, width: 80, height: 64, textTransform: 'none' }}>
+                                <Box>
+                                    <Typography variant="body2">22</Typography>
+                                    <Typography>Bmi</Typography>
+                                </Box>
+                            </Button>
+                            <Button variant="contained" sx={{ backgroundColor: '#000000', borderRadius: 0, width: 80, height: 64, textTransform: 'none' }}>
+                                <Box>
+                                    <Typography variant="body2">120/80</Typography>
+                                    <Typography>Bp</Typography>
+                                </Box>
+                            </Button>
+                            <Button variant="contained" sx={{ backgroundColor: '#8bc34a', borderRadius: 0, width: 80, height: 64, textTransform: 'none' }}>
+                                <Box>
+                                    <Typography variant="body2">72bpm</Typography>
+                                    <Typography>Pulse</Typography>
+                                </Box>
+                            </Button>
+                            <Button variant="contained" sx={{ backgroundColor: '#29b6f6', borderRadius: 0, width: 80, height: 64, textTransform: 'none' }}>
+                                <Box>
+                                    <Typography variant="body2">80%</Typography>
+                                    <Typography>Health Index</Typography>
+                                </Box>
+                            </Button>
+                            <Button variant="contained" sx={{ backgroundColor: '#a5d6a7', borderRadius: 0, width: 80, height: 64, textTransform: 'none' }}>
+                                <Box>
+                                    <Typography variant="body2">90 mg/dL</Typography>
+                                    <Typography>Fbs</Typography>
+                                </Box>
+                            </Button>
+                            <Button variant="contained" sx={{ backgroundColor: '#cfd8dc', borderRadius: 0, width: 80, height: 64, textTransform: 'none' }}>
+                                <Box>
+                                    <Typography variant="body2">140 mg/dL</Typography>
+                                    <Typography>Rbs</Typography>
+                                </Box>
+                            </Button>
+                            <Button variant="contained" sx={{ backgroundColor: '#ffcc80', borderRadius: 0, width: 80, height: 64, textTransform: 'none' }}>
+                                <Box>
+                                    <Typography variant="body2">160 mg/dL</Typography>
+                                    <Typography>Ppbs</Typography>
+                                </Box>
+                            </Button>
                         </Stack>
                     </Grid>
                 </Grid>
