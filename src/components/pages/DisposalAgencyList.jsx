@@ -22,12 +22,12 @@ import * as Yup from 'yup';
 
 const DisposalAgencyValidationForm = Yup.object({
   
-    agencyname: Yup.string().required("Please enter agency Name"),
-    agencyaddress: Yup.string().required("Please enter Agency Address"),
-    registrationno: Yup.string().required("Please enter registration no."),
-    allocation: Yup.string().required("Please enter allocation"),
-    hodname: Yup.string().required("Please enter hod name"),
-    hodemail: Yup.string().required("Please enter hod mail"),
+    agencyName: Yup.string().required("Please enter agency Name"),
+    agencyAddress: Yup.string().required("Please enter Agency Address"),
+    registrationNo: Yup.string().required("Please enter registration no."),
+    allocationRegNo: Yup.string().required("Please enter allocation"),
+    hodName: Yup.string().required("Please enter hod name"),
+    hodEmail: Yup.string().required("Please enter hod mail"),
     
   });
 
@@ -49,12 +49,13 @@ const DisposalAgencyList = () => {
 
 
     const initialValues = {
-        agencyname: "",
-        agencyaddress: "",
-        registrationno: "",
-        allocation: "",
-        hodname: "",
-        hodemail: ""
+        agencyName: "",
+        agencyAddress: "",
+        registrationNo: "",
+        allocationRegNo: "",
+        hodName: "",
+        hodEmail: "",
+        modifiedBy:"",
       };
       const {
         values,
@@ -74,14 +75,14 @@ const DisposalAgencyList = () => {
         //   },
         onSubmit: async (values, {resetForm}) => {
         try {
-            const response = await axiosClientPrivate.post('/business-units', values);
+            const response = await axiosClientPrivate.post('/disposal-agencies', values);
             toast.success("Saved Successfully!",{
                 position:"top-center"
              }); 
                    // getting id(key,value) of last index
-            //     const id = rowData[rowData.length-1].buId;
+            //     const id = rowData[rowData.length-1].registrationno;
             //     const obj = {
-            //         buId : id+1,
+            //         registrationno : id+1,
             //         ...values
             //     }
             //  console.log(obj);
@@ -102,12 +103,14 @@ const DisposalAgencyList = () => {
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/business-units/${id}`);
+          const response = await axiosClientPrivate.get(`/disposal-agencies/${id}`);
             console.log(response.data);
-            setFieldValue("buEmail",response.data.buEmail);
-            setFieldValue("buHeadName",response.data.buHeadName);
-            setFieldValue("buId",response.data.buId);
-            setFieldValue("buName",response.data.buName);
+            setFieldValue("agencyName",response.data.agencyName);
+            setFieldValue("agencyAddress",response.data.agencyAddress);
+            setFieldValue("registrationNo",response.data.registrationNo);
+            setFieldValue("allocationRegNo",response.data.allocationRegNo);
+            setFieldValue("hodName",response.data.hodName);
+            setFieldValue("hodEmail",response.data.hodEmail);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -123,7 +126,7 @@ const DisposalAgencyList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(`/business-units/${id}`,update);
+             await axiosClientPrivate.put(`/disposal-agencies/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -145,8 +148,8 @@ const DisposalAgencyList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(`/business-units/${id}`);
-        //    setRowData(prevData => prevData.filter(row => row.buId !== id));
+           await axiosClientPrivate.delete(`/disposal-agencies/${id}`);
+        //    setRowData(prevData => prevData.filter(row => row.registrationno !== id));
         setFetchTrigger(prev => prev+1);
 
        } catch (error) {
@@ -174,22 +177,33 @@ const DisposalAgencyList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
+                const response = await axiosClientPrivate.get('disposal-agencies', { signal: controller.signal });
                 const items = response.data.content;
                     // console.log(items);
                 setRowData(items);
                 if (items.length > 0) {
+                    const headerMappings = {
+                        agencyName: "Agency Name",
+                        agencyAddress : "Agency Address",
+                        registrationNo : "Registration No",
+                        allocationRegNo : "Allocation",
+                        hodName : "HOD Name",
+                        hodEmail : "HOD Email",
+                    };
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName: key.charAt(0).toUpperCase() + key.slice(1),
-                        filter: true,
+                        headerName:headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
+                       // filter: true,
                         floatingFilter: true,
-                        sortable: true
+                        sortable: true,
+                        filter: 'agTextColumnFilter' ,
+                        width: key === 'id' ? 100 : undefined,
+                 
                     }));
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.registrationno;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -219,12 +233,14 @@ const DisposalAgencyList = () => {
     const exportpdf = async () => {
         
         const doc = new jsPDF();
-        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const header = [['Agency Name', 'Agency Address', 'Registration No.', 'Allocation','HOD Name','HOD Email']];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.buName,
-          item.buHeadName,
-          item.buEmail,
+          item.agencyName,
+          item.agencyAddress,
+          item.registrationNo,
+          item.allocationRegNo,
+          item.hodnNme,
+          item.hodEmail,
           
         ]);
         doc.autoTable({
@@ -236,7 +252,7 @@ const DisposalAgencyList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("BussinessList.pdf");
+        doc.save("DisposalAgencyList.pdf");
     };
 
 
@@ -253,26 +269,32 @@ const DisposalAgencyList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            Id: 10,
-            buName: 20,
-            buHeadName: 15,
-            buEmail: 25,
+            agencyName: 20,
+            agencyAddress: 15,
+            registrationNo:20,
+            allocationRegNo: 20,
+            hodName: 15,
+            hodEmail: 25,
       };
   
         sheet.columns = [
-          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
-          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "Agency Name", key: 'agencyName', width: columnWidths.agencyName, style: headerStyle },
+          { header: "Agency Address", key: 'agencyAddress', width: columnWidths.agencyAddress, style: headerStyle },
+          { header: "Registration No.", key: 'registrationNo', width: columnWidths.registrationNo, style: headerStyle },
+          { header: "Allocation", key: 'allocationRegNo', width: columnWidths.allocationRegNo, style: headerStyle },
+          { header: "HOD  Name", key: 'hodName', width: columnWidths.hodName, style: headerStyle },
+          { header: "HOD Email", key: 'hodEmail', width: columnWidths.hodEmail, style: headerStyle },
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
-                buName: product.buName,
-                buHeadName: product.buHeadName,
-                buEmail: product.buEmail,
+                agencyName: product.agencyName,
+                agencyAddress: product.agencyAddress,
+                registrationNo: product.registrationNo,
+                allocationRegNo: product.allocationRegNo,
+                hodName: product.hodName,
+                hodEmail: product.hodEmail,
             })
         });
   
@@ -283,7 +305,7 @@ const DisposalAgencyList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'DisposalAgencyList.xlsx';
             anchor.click();
             
         })
@@ -316,7 +338,7 @@ const DisposalAgencyList = () => {
                 />
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Config">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Disposal Agency Form">
 
                 <DisposalAgencyForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
