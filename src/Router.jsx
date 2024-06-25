@@ -57,6 +57,9 @@ import PatientAndContact from "./components/pages/PatientAndContact";
 import AdminDashboard from "./components/pages/AdminDashboard";
 import ExerciseList from "./components/pages/ExerciseList";
 import FoodMasterList from "./components/pages/FoodMasterList";
+import UnitList from "./components/pages/UnitList"
+import NutrientUnitList from "./components/pages/NutrientUnitList";
+
 
 const router = createBrowserRouter([
   {
@@ -278,6 +281,14 @@ const router = createBrowserRouter([
               {
                 path : "/FoodMasterList",
                 element : <FoodMasterList />
+              },
+              {
+                path : "/UnitList",
+                element : <UnitList />
+              },
+              {
+                path : "/NutrientUnitList",
+                element : <NutrientUnitList />
               }
             ],
           },

@@ -7,8 +7,8 @@ import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded';
 // import ImportExportRoundedIcon from '@mui/icons-material/ImportExportRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import Popup from './Popup';
-import UnitForm from "./UnitForm";
-//import { UnitValidationForm } from './Validationform';
+import NutrientUnitForm from './NutrientUnitForm';
+// import { VaccineValidationForm } from './Validationform';
 import { useFormik } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,15 +18,18 @@ import ExcelJS from 'exceljs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import PropTypes from "prop-types";
+// new
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
 import * as Yup from 'yup';
 
-const UnitValidationForm = Yup.object({
-  id: Yup.string().required("Please enter unit id"),
-  unitName: Yup.string().required("Please Enter unit name"),
-  unitRemarks: Yup.string().required("Please Enter Remarks"),
-});
+// const FoodValidationForm = Yup.object({
+//     nutrientName: Yup.string().required("Please Enter Nutrient Name "),
+//     unit: Yup.string().required("Please Enter Unit"),
+// });
 
-const UnitList = () => {
+
+const NutrientUnitList = () => {
 
 
     const [rowData, setRowData] = useState([]);
@@ -43,12 +46,19 @@ const UnitList = () => {
 
     const [fetchTrigger, setFetchTrigger] = useState(0);
 
+    const [paginationPageSize, setPaginationPageSize] = useState(10);
+
+    const [unit,setUnit] = useState([{}]);
+
+    // const [change, setChange] = useState("";)
+
+    // console.log("check",paginationPageSize);
 
     const initialValues = {
-       
-        id:"",
-        unitName:"",
-        unitRemarks:""
+        nutrientName: "",
+        unit : "",
+        lastModified: "",
+        modifiedBy: ""
       };
 
 
@@ -60,17 +70,24 @@ const UnitList = () => {
         handleChange,
         setFieldValue,
         handleSubmit,
-        resetForm,
+        resetForm
       } = useFormik({
         initialValues: initialValues,
-        validationSchema: UnitValidationForm,
+        // validationSchema:FoodValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
         //   },
         onSubmit: async (values, {resetForm}) => {
+
+            const fooddish = unit.find(item => item.label === values.unit);
+            const dishid = fooddish ? fooddish.value : null;
+            values['unitId'] = values.unit;
+            delete values.unit;
+            values.unitId = dishid;
+
         try {
-            const response = await axiosClientPrivate.post('/units', values);
+            const response = await axiosClientPrivate.post('/nutrient-masters', values);
             toast.success("Saved Successfully!",{
                 position:"top-center"
              }); 
@@ -93,16 +110,16 @@ const UnitList = () => {
         },
       });
 
-
+      
 
       const handleEdit = async (id) => {
         // alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/units/${id}`);
+          const response = await axiosClientPrivate.get(`/nutrient-masters/${id}`);
             console.log(response.data);
             setFieldValue("id",response.data.id);
-            setFieldValue("unitName",response.data.unitName);
-            setFieldValue("unitRemarks",response.data.unitRemarks);
+            setFieldValue("foodCode",response.data.foodCode);
+            setFieldValue("foodName",response.data.foodName);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -118,14 +135,14 @@ const UnitList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(`/units/${id}`,update);
+             await axiosClientPrivate.put(`/nutrient-masters/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
              });
              resetForm();
-             //setRowData(rowData => [...rowData,values]);
-             setFetchTrigger(prev => prev+1);
+            // setRowData(rowData => [...rowData,values]);
+            setFetchTrigger(prev => prev+1);
 
         }
         catch(err){
@@ -140,7 +157,7 @@ const UnitList = () => {
         // alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(`/units/${id}`);
+           await axiosClientPrivate.delete(`/nutrient-masters/${id}`);
         //    setRowData(prevData => prevData.filter(row => row.buId !== id));
         setFetchTrigger(prev => prev+1);
 
@@ -159,34 +176,82 @@ const UnitList = () => {
 
 };
 
-    const pagination = true;
-    const paginationPageSize = 50;
-    const paginationPageSizeSelector = [50, 100, 200, 500];
+    
+
+useEffect(() => {
+    const controller = new AbortController();
+
+    const getAllOhc = async () => {
+        
+        try {
+            const response = await axiosClientPrivate.get('http://localhost:8080/units', { signal: controller.signal });
+            const items = response.data.content;
+                console.log("unit names :-",items);
+
+                // const newDiagnosisMap = new Map();
+                // items.forEach(item => newDiagnosisMap.set(item.ailmentSysName, item.id));
+                // setBodysystem(newDiagnosisMap);
+
+                // console.log(diagnosisMap.size);
+                // const ailment = items.map((item)=>{
+                //   // diagnosisMap.set(item.id,item.ailmentSysName);
+                //   return item.ailmentSysName;
+                // });
+
+                const options = items.map((item)=>{
+                  return {label : item.unitName,value : item.id};
+                });
+
+                setUnit(options);
+                // console.log(ailment);
+
+        } catch (err) {
+            console.error("Failed to fetch data: ", err);
+        }
+    };
+
+    getAllOhc();
+
+    return () => {
+        controller.abort();
+    };
+
+}, []);
+
+
+
+
+    
+    // const paginationPageSizeSelector = [50, 100, 200, 500];
+    const pageSizeOptions = [2, 4, 8, 10];
+
+    
 
     useEffect(() => {
         const controller = new AbortController();
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get(`http://localhost:8080/units?page=0&size=${paginationPageSize}`, { signal: controller.signal });
+                const response = await axiosClientPrivate.get(`http://localhost:8080/nutrient-masters?page=0&size=${paginationPageSize}`, { signal: controller.signal });
                 const items = response.data.content;
-                    console.log(items);
+                    console.log("new",items);
                 setRowData(items);
+
                 if (items.length > 0) {
 
-                  const headerMappings = {
-                    id: "Unit ID",
-                    unitName : "Unit Name",
-                    unitRemarks : "Remarks",
-                };
+                    const headerMappings = {
+                        nutrientName: "Nutrient name",
+                        unit : "Unit name"
+                    };
 
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
                         headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
+                        // filter: true,
+                        floatingFilter: true,
+                        sortable: true,
                         filter: 'agTextColumnFilter' ,
                         width: key === 'id' ? 100 : undefined,
-                        floatingFilter: true,
-                        sortable: true
                     }));
 
                     columns.unshift({
@@ -213,40 +278,41 @@ const UnitList = () => {
             controller.abort();
         };
 
-    }, [fetchTrigger]);
+    }, [paginationPageSize,fetchTrigger,axiosClientPrivate]);
 
 
      
 
     const exportpdf = async () => {
-       
+        
         const doc = new jsPDF();
-        const header = [['Unit ID', 'Unit Name',"Remarks"]];
+        const header = [['Id', 'Food code','Food name']];
         const tableData = rowData.map(item => [
           item.id,
-          item.unitName,
-          item.unitRemarks,
+          item.foodCode,
+          item.foodName,
+          
+          
         ]);
         doc.autoTable({
           head: header,
           body: tableData,
-          startY: 20, 
-          theme: 'grid', 
-          margin: { top: 30 },
+          startY: 20, // Start Y position for the table
+          theme: 'grid', // Optional theme for the table
+          margin: { top: 30 }, // Optional margin from top
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("UnitList.pdf");
+        doc.save("NutrientUnitList.pdf");
     };
 
 
     const exportExcelfile = async () => {
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('My Sheet');
-       
   
         const headerStyle = {
-         
+          // font: { bold: true, size: 12 },
           alignment: { horizontal: 'center' }
           
       };
@@ -254,23 +320,24 @@ const UnitList = () => {
       sheet.getRow(1).font = { bold: true };
         
         const columnWidths = {
-            id: 10,
-            unitName: 20,
-            unitRemarks: 15,
+            Id: 10,
+            foodName: 20,
+            foodCode : 20,
       };
+      
   
         sheet.columns = [
-          { header: "Unit ID", key: 'id', width: columnWidths.id, style: headerStyle },
-          { header: "Unit Name", key: 'unitName', width: columnWidths.unitName, style: headerStyle },
-          { header: "Remarks", key: 'unitRemarks', width: columnWidths.unitRemarks, style: headerStyle },
+          { header: "Id", key: 'id', width: columnWidths.id, style: headerStyle },
+          { header: "Food code", key: 'foodCode', width: columnWidths.foodCode, style: headerStyle },
+          { header: "Food name", key: 'foodName', width: columnWidths.foodName, style: headerStyle },
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
                 id: product.id,
-                unitName: product.unitName,
-                unitRemarks: product.unitRemarks,
+                foodCode : product.foodCode,
+                foodName: product.foodName,
             })
         });
   
@@ -281,19 +348,63 @@ const UnitList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'UnitList.xlsx';
+            anchor.download = 'NutrientUnitList.xlsx';
             anchor.click();
-            
+            // anchor.URL.revokeObjectURL(url);
         })
     }
    
+
+    // filter
+    const [temp,setTemp] = useState("");
+
+    const onFilterChanged = (params) => {
+        const filterModel = params.api.getFilterModel();
+        setTemp(filterModel)
+        // console.log("search string",filterModel);
+        // fetchFilteredData(filterModel);
+    };
+
+    console.log("tempppp filter",temp);
+
+
+
+//  index page
+const [index,setIndex] = useState();
+
+// const gridOptions = useMemo(() => ({
+    
+//     // pagination: true,
+//     // paginationPageSize: 10,
+//     // rowModelType: 'serverSide',
+//     // cacheBlockSize: 10,
+//     // serverSideStoreType: 'partial',
+//     paginationNumberFormatter: (params) => {
+//       return `Page ${params.value + 1}`;
+//     },
+//     // onGridReady: params => {
+//     //   params.api.setServerSideDatasource(serverSideDatasource());
+//     // },
+//     onRowClicked: (event) => {
+//         setIndex(event.node.rowIndex);
+//     },
+//   }), []);
+
+
+//   const paginationNumberFormatter = useCallback((params) => {
+//     return "[" + params.value.toLocaleString() + "]";  
+//   }, []);
+
+  console.log("index for next page : ",index);
+  
+//   console.log("grid api");
 
     return (
         <>
         <ToastContainer />
             <Box
                 className="ag-theme-quartz" 
-                style={{ height: 500 }}
+                style={{ height: '110vh' }}
             >
 
                 <Stack sx={{ display: 'flex', flexDirection: 'row' }} marginY={1} paddingX={1}>
@@ -304,23 +415,40 @@ const UnitList = () => {
                     </ButtonGroup>
 
                 </Stack>
+
                 <AgGridReact
                     rowData={rowData}
                     columnDefs={colDefs}
                     animateRows={true} 
-                    pagination={pagination}
+                    pagination={true}
                     paginationPageSize={paginationPageSize}
-                    paginationPageSizeSelector={paginationPageSizeSelector}
+                    paginationPageSizeSelector={pageSizeOptions}
+                    Sx={{height:'100%',width: '100%'}}
+                    onPaginationChanged={(event) => {
+                        setPaginationPageSize(event.api.paginationGetPageSize());
+                        setIndex(event.api.paginationGetCurrentPage());
+                    }}
+                    
+                    onFilterChanged={onFilterChanged}
+                    // paginationNumberFormatter={paginationNumberFormatter}
+                    // onGridReady={(params) => {
+                    //     params.api.paginationGoToPage(currentPageIndex);
+                    // }}
+                    // paginationTotalRowCount = {200}
+                    // paginationGetPageSize = {200}
+                    
                 />
+
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Add Unit">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Food Master">
 
-                <UnitForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
+                <NutrientUnitForm unit={unit} values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
             </Popup>
         </>
     );
 };
 
-export default UnitList;
+export default NutrientUnitList;
+

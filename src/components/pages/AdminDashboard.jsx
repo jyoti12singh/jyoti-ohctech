@@ -102,10 +102,10 @@ const AdminDashboard = () => {
                 </Stack>
                 <Stack direction="row" spacing={60} justifyContent="center">
                     <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#000', borderRadius: 0, width: 250, height: 64, boxShadow: 3 }} onClick={handleToggleOsiChart}>
-                        OSI Weekly Report
+                    Trend of users registered
                     </Button>
                     <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#000', borderRadius: 0, width: 250, height: 64, boxShadow: 3 }} onClick={handleToggleInjuryChart}>
-                        Injury Weekly Report
+                    Trends(avg)
                     </Button>
                 </Stack>
                 <Grid container spacing={2} sx={{ marginTop: 4 }}>

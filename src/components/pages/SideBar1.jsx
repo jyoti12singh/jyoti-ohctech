@@ -36,7 +36,7 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import Toolbar from "@mui/material/Toolbar";
 import { Link } from "react-router-dom";
 
-// import DutyRooster from '../../assets/images/DutyRooster.png';
+import DutyRooster from '../../assets/images/DutyRooster.png';
 // import Inventory from '../../assets/images/Inventory.png'
 import OPDSetupMaster from '../../assets/images/OPS Setup Master.png'
 // import StoreIssue from '../../assets/images/Store Issue.png'
@@ -54,7 +54,7 @@ import { useEffect } from "react";
 // import MuiDrawer from '@mui/material/Drawer';
 import DateTime from "./DateTime";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { useRef } from "react";
 const drawerWidth = 250;
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -244,7 +244,10 @@ const SideBar1 = ()=> {
   //  };
    // const navigate = useNavigate();
  
+   const runOnce = useRef(false);
+
    useEffect(() => {
+    let isMounted = true;
      const controller = new AbortController();
  
      const getRoles = async () => {
@@ -258,20 +261,29 @@ const SideBar1 = ()=> {
             console.log("side bar menu: ",response.data),
             // setFetchTrigger(prev => prev+1);
          //   setData(JSON.stringify(response.data)); string
-         setData(response.data);
+        //  setData(response.data);
+        isMounted && setData(response.data);
        } catch (err) {
          console.error(err);
          setData([]);
        }
      };
- 
-     getRoles();
+
+     if(runOnce.current){
+      getRoles();
+     }
+     
  
      return () => {
+      isMounted = false;
        controller.abort();
+       runOnce.current = true;
      };
+
    }, [axiosClientPrivate, roleId]);
 
+
+console.log("menus",data);
 
 // new 
   
@@ -279,7 +291,7 @@ const SidebarMap = {
   DataSetup: DataSetup,
   OPDSetupMaster: OPDSetupMaster,
   PatientManagement : PatientManagement,
-//   CMO: chiefmedoff,
+  DutyRooster: DutyRooster,
 //   EMP : employee,
 //   PHY :  pharmacy
 };
@@ -339,7 +351,7 @@ const SidebarMap = {
                       {secondItem.childMenus.length > 0
                         ? secondItem.childMenus && (isopen === childIndex ? <ExpandLess /> : <ExpandMore />)
                         : ''}
-                    </ListItemButton>
+                    </ListItemButton> 
                   </Link>
                     </ListItem>
                     {secondItem.childMenus && (
