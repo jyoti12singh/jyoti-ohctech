@@ -480,10 +480,14 @@ const [index,setIndex] = useState();
                     Contact
                 </Button>
                 </Link>
-                <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }} sx={{marginRight : "5px"}}>Add New</Button>
-                <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
-                <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>} sx={{marginLeft : "5px"}}>Excel</Button>
-                 </ButtonGroup>
+                </ButtonGroup>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: '250px' }}>
+                    <Button variant="contained" endIcon={<AddCircleOutlineRoundedIcon />} onClick={() => { setOpenPopup(true) }} sx={{marginRight : "5px"}}>Add New</Button>
+                    <Button variant="contained" onClick={exportpdf} color="success" endIcon={<PictureAsPdfIcon/>}>PDF</Button>
+                    <Button variant="contained" onClick={()=> exportExcelfile()}  color="success" endIcon={<DownloadIcon/>} sx={{marginLeft : "5px"}}>Excel</Button>
+                </div>
+                
+                 
                 </Stack>
 
                 <AgGridReact
