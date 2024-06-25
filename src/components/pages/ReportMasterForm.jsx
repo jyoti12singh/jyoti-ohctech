@@ -1,4 +1,3 @@
-import Ohclogo from "./Ohclogo";
 import { FormControl, Grid} from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
@@ -28,8 +27,6 @@ const ReportMasterForm = ({
   };
 
 
-//   const Medselect = ["Active", "Not Active"];
-//   const isDefault = ["Yes", "No"];
 
 const Typearr = ["YES","NO"];
 
@@ -43,15 +40,15 @@ const Typearr = ["YES","NO"];
               <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="Report Code"
-                    name="ReportCode"
+                    name="reportCode"
                     type="text"
                     size="large"
-                    value={values.ReportCode}
+                    value={values.reportCode}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.ReportCode && touched.ReportCode? (
-                        <span style={{ color: "red" }}>{errors.ReportCode}</span>
+                      errors.reportCode && touched.reportCode? (
+                        <span style={{ color: "red" }}>{errors.reportCode}</span>
                       ) : null
                     }
                   />
@@ -59,15 +56,15 @@ const Typearr = ["YES","NO"];
               <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="Report Name"
-                    name="ReportName"
+                    name="reportName"
                     type="text"
                     size="large"
-                    value={values.ReportName}
+                    value={values.reportName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.ReportName && touched.ReportName? (
-                        <span style={{ color: "red" }}>{errors.ReportName}</span>
+                      errors.reportName && touched.reportName? (
+                        <span style={{ color: "red" }}>{errors.reportName}</span>
                       ) : null
                     }
                   />
@@ -75,15 +72,14 @@ const Typearr = ["YES","NO"];
 
                 <Grid item  xs={12} container spacing={1} justifyContent="center" alignItems="center">
                 <SingleSelect
-                  // sx={{ width: "150px" }}
                   arr={Typearr}
                   label="Report Type"
-                  name="ReportType"
-                  value={values.ReportType}
+                  name="reportType"
+                  value={values.reportType}
                   onChange={(event, newValue) => {
                     const syntheticEvent = {
                       target: {
-                        name: 'ReportType', 
+                        name: 'reportType', 
                         value: newValue, 
                       },
                     };
@@ -92,8 +88,8 @@ const Typearr = ["YES","NO"];
                   onBlur={handleBlur}
                   type="text"
                   helpertext={
-                    errors.ReportType && touched.ReportType ? (
-                      <span style={{ color: "red" }}>{errors.ReportType}</span>
+                    errors.reportType && touched.reportType ? (
+                      <span style={{ color: "red" }}>{errors.reportType}</span>
                     ) : null
                   }
                 />
@@ -104,15 +100,15 @@ const Typearr = ["YES","NO"];
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="URL"
-                    name="url"
+                    name="reportUrl"
                     type="text"
                     size="large"
-                    value={values.url}
+                    value={values.reportUrl}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.url && touched.url? (
-                        <span style={{ color: "red" }}>{errors.url}</span>
+                      errors.reportUrl && touched.reportUrl? (
+                        <span style={{ color: "red" }}>{errors.reportUrl}</span>
                       ) : null
                     }
                   />
@@ -121,15 +117,15 @@ const Typearr = ["YES","NO"];
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="Function Name"
-                    name="FunctionName"
+                    name="funName"
                     type="text"
                     size="large"
-                    value={values.FunctionName}
+                    value={values.funName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.FunctionName && touched.FunctionName? (
-                        <span style={{ color: "red" }}>{errors.FunctionName}</span>
+                      errors.funName && touched.funName? (
+                        <span style={{ color: "red" }}>{errors.funName}</span>
                       ) : null
                     }
                   />
