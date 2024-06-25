@@ -399,19 +399,23 @@ const SidebarMap = {
           </IconButton>
         )}
         {/* </Grid> */}
-        <Grid item>
+        {/* <Grid item>
           <Typography variant="body1" component="div" sx={{ ml: 3, mt: 1 }}>
             <DateTime />
           </Typography>
-        </Grid>
+        </Grid> */}
       </Grid>
       </Toolbar>
-      <Divider />
+      
       <List>
-        <ListItem disablePadding>
+        <ListItem  sx={{ position: 'absolute', top: "450px", width: '100%',ml: 3 ,mt: -2}}>
+          <ListItemText primary={<DateTime />} />
+        </ListItem>
+        <Divider sx={{ position: 'absolute', top: "500px", width: '100%' }}/>
+        <ListItem disablePadding sx={{ position: 'absolute', top: "500px", width: '100%' }}>
           <ListItemButton>
             <ListItemIcon>
-              <img src={Logout} width="20"/>
+              <img src={Logout} width="20" />
             </ListItemIcon>
             <ListItemText primary="Logout" />
           </ListItemButton>

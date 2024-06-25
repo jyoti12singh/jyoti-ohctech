@@ -309,6 +309,7 @@ const NewHeader = () => {
             }}
           >
             <MenuItem><AccountCircleIcon/>Profile</MenuItem>
+            <MenuItem><SwapHorizIcon/><Link to="/ohcSelection">Switch OHC</Link></MenuItem>
             <MenuItem><SwapHorizIcon/><Link to="/roleSelection">Switch Role</Link></MenuItem>
             <MenuItem><VpnKeyIcon/>Change Password</MenuItem>
             <MenuItem><LibraryBooksRoundedIcon/>Read Manual</MenuItem>
