@@ -1,4 +1,3 @@
-import Ohclogo from "./Ohclogo";
 import { FormControl, Grid} from "@mui/material";
 import PropTypes from "prop-types";
 import Input from "../common/Input";
@@ -26,11 +25,6 @@ const GradeForm = ({
   };
 
 
-//   const Medselect = ["Active", "Not Active"];
-//   const isDefault = ["Yes", "No"];
-
-
-
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit}>
@@ -42,15 +36,15 @@ const GradeForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="Grade Name"
-                    name="GradeName"
+                    name="gradeName"
                     type="text"
                     size="large"
-                    value={values.GradeName}
+                    value={values.gradeName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.GradeName && touched.GradeName? (
-                        <span style={{ color: "red" }}>{errors.GradeName}</span>
+                      errors.gradeName && touched.gradeName? (
+                        <span style={{ color: "red" }}>{errors.gradeName}</span>
                       ) : null
                     }
                   />

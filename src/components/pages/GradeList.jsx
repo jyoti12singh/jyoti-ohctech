@@ -21,7 +21,7 @@ import PropTypes from "prop-types";
 import * as Yup from 'yup';
 
 const GradeValidationForm = Yup.object({
-    GradeName: Yup.string().required("Please enter Grade Name"),
+    gradeName: Yup.string().required("Please enter Grade Name"),
     
   });
 
@@ -43,7 +43,8 @@ const GradeList = () => {
 
 
     const initialValues = {
-        GradeName:"",
+        gradeName:"",
+        modifiedBy:"",
       };
 
 
@@ -65,7 +66,7 @@ const GradeList = () => {
         //   },
         onSubmit: async (values, {resetForm}) => {
         try {
-            const response = await axiosClientPrivate.post('/business-units', values);
+            const response = await axiosClientPrivate.post('/grade-units', values);
             toast.success("Saved Successfully!",{
                 position:"top-center"
              }); 
@@ -93,12 +94,11 @@ const GradeList = () => {
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/business-units/${id}`);
+          const response = await axiosClientPrivate.get(`/grade-units/${id}`);
             console.log(response.data);
-            setFieldValue("buEmail",response.data.buEmail);
-            setFieldValue("buHeadName",response.data.buHeadName);
-            setFieldValue("buId",response.data.buId);
-            setFieldValue("buName",response.data.buName);
+          
+            setFieldValue("gradeName",response.data.gradeName);
+           
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -114,7 +114,7 @@ const GradeList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(`/business-units/${id}`,update);
+             await axiosClientPrivate.put(`/grade-units/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -136,7 +136,7 @@ const GradeList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(`/business-units/${id}`);
+           await axiosClientPrivate.delete(`/grade-units/${id}`);
         //    setRowData(prevData => prevData.filter(row => row.buId !== id));
         setFetchTrigger(prev => prev+1);
 
@@ -164,22 +164,29 @@ const GradeList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
+                const response = await axiosClientPrivate.get('grade-units', { signal: controller.signal });
                 const items = response.data;
                     // console.log(items);
                 setRowData(items);
                 if (items.length > 0) {
+
+                    const headerMappings = {
+                        gradeName: "Grade Name",
+                    };
+
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName: key.charAt(0).toUpperCase() + key.slice(1),
-                        filter: true,
+                        headerName: headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
+                       // filter: true,
                         floatingFilter: true,
-                        sortable: true
+                        sortable: true,
+                        filter: 'agTextColumnFilter' ,
+                        width: key === 'id' ? 100 : undefined,
                     }));
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.Id;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -209,12 +216,11 @@ const GradeList = () => {
     const exportpdf = async () => {
         
         const doc = new jsPDF();
-        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const header = [['Id', 'Grade Name']];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.buName,
-          item.buHeadName,
-          item.buEmail,
+          item.Id,
+          item.gradeName,
+         
           
         ]);
         doc.autoTable({
@@ -226,7 +232,7 @@ const GradeList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("BussinessList.pdf");
+        doc.save("GradeList.pdf");
     };
 
 
@@ -245,25 +251,22 @@ const GradeList = () => {
         
         const columnWidths = {
             Id: 10,
-            buName: 20,
-            buHeadName: 15,
-            buEmail: 25,
+            gradeName: 20,
+           
       };
   
         sheet.columns = [
-          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
-          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "Id", key: 'Id', width: columnWidths.Id, style: headerStyle },
+          { header: "Grade Name", key: 'gradeName', width: columnWidths.gradeName, style: headerStyle },
           
       ];
   
+
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
-                buName: product.buName,
-                buHeadName: product.buHeadName,
-                buEmail: product.buEmail,
+                Id: product.Id,
+                gradeName: product.gradeName,
+                
             })
         });
   
@@ -274,7 +277,7 @@ const GradeList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'GradeList.xlsx';
             anchor.click();
             
         })

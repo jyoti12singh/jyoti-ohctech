@@ -21,11 +21,11 @@ import PropTypes from "prop-types";
 import * as Yup from 'yup';
 
 const ReportMasterValidationForm = Yup.object({
-    ReportType: Yup.string().min(2).max(25).required("Please enter report type"),
-    FunctionName: Yup.string().min(2).max(25).required("Please enter Function Name"),
-    url: Yup.string().min(2).max(25).required("Please enter url"),
-    ReportName: Yup.string().min(2).max(25).required("Please enter Report Name"),
-    ReportCode: Yup.string().email().required("Please enter Report Code"),
+    reportCode: Yup.string().email().required("Please enter Report Code"),
+    reportName: Yup.string().min(2).max(25).required("Please enter Report Name"),
+    reportType: Yup.string().min(2).max(25).required("Please enter Report Type"),
+    reportUrl: Yup.string().min(2).max(25).required("Please enter url"),
+    funName: Yup.string().min(2).max(25).required("Please enter Function Name"),
        
   });
 
@@ -48,11 +48,12 @@ const ReportMasterList = () => {
 
 
     const initialValues = {
+        reportCode:"",
+        reportName:"",
         ReportType:"",
-        FunctionName:"",
-        url:"",
-        ReportName:"",
-        ReportCode:"",
+        reportUrl:"",
+        funName:"",
+        modifiedBy:"",
       };
 
 
@@ -74,14 +75,14 @@ const ReportMasterList = () => {
         //   },
         onSubmit: async (values, {resetForm}) => {
         try {
-            const response = await axiosClientPrivate.post('/business-units', values);
+            const response = await axiosClientPrivate.post('/report-units', values);
             toast.success("Saved Successfully!",{
                 position:"top-center"
              }); 
                    // getting id(key,value) of last index
-            //     const id = rowData[rowData.length-1].buId;
+            //     const id = rowData[rowData.length-1].reportType;
             //     const obj = {
-            //         buId : id+1,
+            //         reportType : id+1,
             //         ...values
             //     }
             //  console.log(obj);
@@ -102,12 +103,13 @@ const ReportMasterList = () => {
       const handleEdit = async (id) => {
         alert(id);
         try {
-          const response = await axiosClientPrivate.get(`/business-units/${id}`);
+          const response = await axiosClientPrivate.get(`/report-units/${id}`);
             console.log(response.data);
-            setFieldValue("buEmail",response.data.buEmail);
-            setFieldValue("buHeadName",response.data.buHeadName);
-            setFieldValue("buId",response.data.buId);
-            setFieldValue("buName",response.data.buName);
+            setFieldValue("reportCode",response.data.reportCode);
+            setFieldValue("reportName",response.data.reportName);
+            setFieldValue("reportType",response.data.reportType);
+            setFieldValue("reportUrl",response.data.reportUrl);
+            setFieldValue("funName",response.data.funName);
             setFieldValue("lastModified", response.data.lastModified);
             setFieldValue("modifiedBy", response.data.modifiedBy);
           setId(id);
@@ -123,7 +125,7 @@ const ReportMasterList = () => {
         const update = values;
         try{
              console.log(values);
-             await axiosClientPrivate.put(`/business-units/${id}`,update);
+             await axiosClientPrivate.put(`/report-units/${id}`,update);
              toast.success("Updated Successfully!",{
                 position:"top-center",
                 autoClose: 3000,
@@ -144,8 +146,8 @@ const ReportMasterList = () => {
         alert(id)
        if(window.confirm('Are you sure you want to delete this data?')){
        try {
-           await axiosClientPrivate.delete(`/business-units/${id}`);
-        //    setRowData(prevData => prevData.filter(row => row.buId !== id));
+           await axiosClientPrivate.delete(`/report-units/${id}`);
+        //    setRowData(prevData => prevData.filter(row => row.reportType !== id));
         setFetchTrigger(prev => prev+1);
 
        } catch (error) {
@@ -172,22 +174,33 @@ const ReportMasterList = () => {
 
         const getAllOhc = async () => {
             try {
-                const response = await axiosClientPrivate.get('business-units', { signal: controller.signal });
+                const response = await axiosClientPrivate.get('report-units', { signal: controller.signal });
                 const items = response.data;
                     // console.log(items);
                 setRowData(items);
                 if (items.length > 0) {
+                    const headerMappings = {
+                        reportCode: "Report Code",
+                        reportName: "Report Name",
+                        reportType: "Report Type",
+                        reportUrl: "Report Url",
+                        funName : "Function Name",
+                    };
+
+
                    const  columns = Object.keys(items[0]).map(key => ({
                         field: key,
-                        headerName: key.charAt(0).toUpperCase() + key.slice(1),
-                        filter: true,
+                        headerName:headerMappings[key] || key.charAt(0).toUpperCase() + key.slice(1),
+                        //filter: true,
                         floatingFilter: true,
-                        sortable: true
+                        sortable: true,
+                        filter: 'agTextColumnFilter' ,
+                        width: key === 'id' ? 100 : undefined,
                     }));
 
                     columns.unshift({
                         field: "Actions", cellRenderer:  (params) =>{
-                            const id = params.data.buId;
+                            const id = params.data.reportType;
                             return <CustomActionComponent id={id} />
                         }
                     });
@@ -217,12 +230,13 @@ const ReportMasterList = () => {
     const exportpdf = async () => {
         
         const doc = new jsPDF();
-        const header = [['Id', 'buName',"buHeadName","buEmail"]];
+        const header = [['Report Code','Report Name','Report Type', 'Report Url','Function Name']];
         const tableData = rowData.map(item => [
-          item.buId,
-          item.buName,
-          item.buHeadName,
-          item.buEmail,
+          item.reportCode,
+          item.reportName,
+          item.reportType,
+          item.reportUrl,
+          item.funName,
           
         ]);
         doc.autoTable({
@@ -234,7 +248,7 @@ const ReportMasterList = () => {
           styles: { fontSize: 5 },
           columnStyles: { 0: { cellWidth: 'auto' }, 1: { cellWidth: 'auto' } }
       });
-        doc.save("BussinessList.pdf");
+        doc.save("ReportMasterList.pdf");
     };
 
 
@@ -253,25 +267,29 @@ const ReportMasterList = () => {
         
         const columnWidths = {
             Id: 10,
-            buName: 20,
-            buHeadName: 15,
-            buEmail: 25,
+            reportCode: 25,
+            reportName: 15,
+            reportType: 20,
+            reportUrl: 20,
+            funName: 20,
       };
   
         sheet.columns = [
-          { header: "Id", key: 'buId', width: columnWidths.buId, style: headerStyle },
-          { header: "buName", key: 'buName', width: columnWidths.buName, style: headerStyle },
-          { header: "buHeadName", key: 'buHeadName', width: columnWidths.buHeadName, style: headerStyle },
-          { header: "buEmail", key: 'buEmail', width: columnWidths.buEmail, style: headerStyle },
+          { header: "Report Code", key: 'reportCode', width: columnWidths.reportCode, style: headerStyle },
+          { header: "Report Name", key: 'reportName', width: columnWidths.reportName, style: headerStyle },
+          { header: "Report Type", key: 'reportType', width: columnWidths.reportType, style: headerStyle },
+          { header: "Report Url", key: 'reportUrl', width: columnWidths.reportUrl, style: headerStyle },
+          { header: "Function Name", key: 'funName', width: columnWidths.funName, style: headerStyle },
           
       ];
   
         rowData.map(product =>{
             sheet.addRow({
-                buId: product.buId,
-                buName: product.buName,
-                buHeadName: product.buHeadName,
-                buEmail: product.buEmail,
+                reportCode: product.reportCode,
+                reportName: product.reportName,
+                reportType: product.reportType,
+                reportUrl: product.reportUrl,
+                funName: product.funName,
             })
         });
   
@@ -282,7 +300,7 @@ const ReportMasterList = () => {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = 'download.xlsx';
+            anchor.download = 'ReportMasterList.xlsx';
             anchor.click();
             
         })

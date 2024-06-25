@@ -7,7 +7,6 @@ import { InputLabel, MenuItem, Select } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useState } from "react";
 import MultiCheckbox from "./MultiCheckbox";
-//import Select from "@mui/material";
 const DisposalAgencyForm = ({
   values,
   touched,
@@ -27,10 +26,7 @@ const DisposalAgencyForm = ({
     handleSubmit: PropTypes.func.isRequired,
   };
 
-  //const ohcselect = ["Student", "Employee"];
- // const adroute=["ICU","Personal Clinic","Government Hospital"];
-  //const dename=["AED","Blood Pressure Monitors","Nebulizers","Oxygen canisters"];
- 
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit}>
@@ -58,15 +54,15 @@ const DisposalAgencyForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="Enter Agency Address"
-                    name="agencyaddress"
+                    name="agencyAddress"
                     type="text"
                     size="large"
-                    value={values.agencyaddress}
+                    value={values.agencyAddress}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.agencyaddress && touched.agencyaddress? (
-                        <span style={{ color: "red" }}>{errors.agencyaddress}</span>
+                      errors.agencyAddress && touched.agencyAddress? (
+                        <span style={{ color: "red" }}>{errors.agencyAddress}</span>
                       ) : null
                     }
                   />
@@ -74,15 +70,15 @@ const DisposalAgencyForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="Enter Registration No."
-                    name="registrationno"
+                    name="registrationNo"
                     type="text"
                     size="large"
-                    value={values.registrationno}
+                    value={values.registrationNo}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.registrationno && touched.registrationno? (
-                        <span style={{ color: "red" }}>{errors.registrationno}</span>
+                      errors.registrationNo && touched.registrationNo? (
+                        <span style={{ color: "red" }}>{errors.registrationNo}</span>
                       ) : null
                     }
                   />
@@ -90,15 +86,15 @@ const DisposalAgencyForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="Enter Allocated Reg No to OHC"
-                    name="allocation"
+                    name="allocationRegNo"
                     type="text"
                     size="large"
-                    value={values.allocation}
+                    value={values.allocationRegNo}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.allocation && touched.allocation? (
-                        <span style={{ color: "red" }}>{errors.allocation}</span>
+                      errors.allocationRegNo && touched.allocationRegNo? (
+                        <span style={{ color: "red" }}>{errors.allocationRegNo}</span>
                       ) : null
                     }
                   />
@@ -106,15 +102,15 @@ const DisposalAgencyForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="Enter HOD  Name"
-                    name="hodname"
+                    name="hodName"
                     type="text"
                     size="large"
-                    value={values.hodname}
+                    value={values.hodName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.hodname && touched.hodname? (
-                        <span style={{ color: "red" }}>{errors.hodname}</span>
+                      errors.hodName && touched.hodName? (
+                        <span style={{ color: "red" }}>{errors.hodName}</span>
                       ) : null
                     }
                   />
@@ -122,15 +118,15 @@ const DisposalAgencyForm = ({
                 <Grid item xs={12}  container spacing={1} justifyContent="center" alignItems="center">
                 <Input
                     label="Enter HOD Email"
-                    name="hodemail"
+                    name="hodEmail"
                     type="text"
                     size="large"
-                    value={values.hodemail}
+                    value={values.hodEmail}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     helperText={
-                      errors.hodemail && touched.hodemail? (
-                        <span style={{ color: "red" }}>{errors.hodemail}</span>
+                      errors.hodEmail && touched.hodEmail? (
+                        <span style={{ color: "red" }}>{errors.hodEmail}</span>
                       ) : null
                     }
                   />
