@@ -21,6 +21,13 @@ import PropTypes from "prop-types";
 // new
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import * as Yup from 'yup';
+
+const ExerciseMinuteValidationForm = Yup.object({
+    exerciseName: Yup.string().required("Please Enter Exercise Name "),
+    minutes: Yup.string().required("Please Enter Minutes "),
+  
+});
 
 
 const ExerciseMinuteList = () => {
@@ -63,7 +70,7 @@ const ExerciseMinuteList = () => {
         resetForm
       } = useFormik({
         initialValues: initialValues,
-        // validationSchema: VaccineValidationForm,
+        validationSchema: ExerciseMinuteValidationForm,
         // onSubmit: (values, action) => {
         //     console.log(values);
         //     action.resetForm();
@@ -343,7 +350,7 @@ const [index,setIndex] = useState();
         <ToastContainer />
             <Box
                 className="ag-theme-quartz" 
-                style={{ height: 500 }}
+                style={{ height: "110vh" }}
             >
 
                 <Stack sx={{ display: 'flex', flexDirection: 'row' }} marginY={1} paddingX={1}>
@@ -362,6 +369,7 @@ const [index,setIndex] = useState();
                     pagination={true}
                     paginationPageSize={paginationPageSize}
                     paginationPageSizeSelector={pageSizeOptions}
+                    Sx={{height:'100%',width: '100%'}}
                     onPaginationChanged={(event) => {
                         setPaginationPageSize(event.api.paginationGetPageSize());
                         setIndex(event.api.paginationGetCurrentPage());
@@ -379,7 +387,7 @@ const [index,setIndex] = useState();
 
             </Box>
 
-            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Vaccine Master">
+            <Popup showupdate={showupdate} id= {id} handleUpdate={handleUpdate} setShowupdate={setShowupdate} resetForm={resetForm} handleSubmit={handleSubmit}  openPopup={openPopup} setOpenPopup={setOpenPopup} title="Exercise Minutes Master">
 
                 <ExerciseMinuteForm values={values} touched={touched} errors={errors} handleBlur={handleBlur} handleChange={handleChange} setFieldValue={setFieldValue} handleSubmit={handleSubmit} />
                 
