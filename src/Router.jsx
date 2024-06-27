@@ -3,7 +3,7 @@ import Root from "./components/pages/Root";
 import ErrorPage from "./components/pages/ErrorPage";
 // import Ohcs from "./components/pages/Ohcs";
 // import Roles from "./components/pages/Roles";
-import ProtectedRoute from "./utils/ProtectedRoute";
+//import ProtectedRoute from "./utils/ProtectedRoute";
 // import Login from "./components/pages/Login";
 import Login from "./components/pages/Signup";
 import PersistLogin from "./utils/PersistLogin";
@@ -59,6 +59,7 @@ import ExerciseList from "./components/pages/ExerciseList";
 import FoodMasterList from "./components/pages/FoodMasterList";
 import UnitList from "./components/pages/UnitList"
 import NutrientUnitList from "./components/pages/NutrientUnitList";
+//import DiagnosisList from "./components/pages/DiagnosisList";
 
 
 const router = createBrowserRouter([
@@ -72,7 +73,7 @@ const router = createBrowserRouter([
     element: <PersistLogin />,
     children: [
       {
-        element: <ProtectedRoute />,
+        //element: <ProtectedRoute />,
         children: [
           {
             path: "/ohcSelection",
@@ -104,7 +105,7 @@ const router = createBrowserRouter([
         element: <PersistLogin />,
         children: [
           {
-            element: <ProtectedRoute />,
+            //element: <ProtectedRoute />,
             children: [
               {
                 path:'/AdminDashboard',
@@ -243,7 +244,7 @@ const router = createBrowserRouter([
                 element : <Patient />
               },
               {
-                path : "/MedFreqList",
+                path : "/FreqListMed",
                 element : <MedFreqList/ >
               },
               {
@@ -289,6 +290,10 @@ const router = createBrowserRouter([
               {
                 path : "/NutrientUnitList",
                 element : <NutrientUnitList />
+              },
+              {
+                path : "/DiagnosisList",
+                element : <DiagnosisList />
               }
             ],
           },
